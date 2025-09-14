@@ -79,6 +79,63 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \end{enumerate}
 \end{problem}
 
+\begin{enumerate}[a)]
+    \item We say that a vector space $V$ over a field $\mathbb{F}$ is finite dimensional if there exists $S \subseteq V$ such that $\#(S) < \infty$ and $\operatorname{span}(S) = V$.
+    \item \begin{enumerate}[i)]
+        \item Statement: Show that $V = \mathbb{F}[x]$ is not finite dimensional.
+        \item Main Points:
+        \begin{itemize}
+            \item Suppose $V$ is finite dimensional with a finite spanning set $S$.
+            \item Let $m$ be the maximum degree of the polynomials in $S$ and find a polynomial $q(x)$ with degree greater than $m$.
+            \item Show that $q(x)$ cannot be written as a linear combination of the polynomials in $S$, leading to a contradiction.
+        \end{itemize}
+        \item Proof: 
+        \begin{proof}
+            Suppose $V$ is finite dimensional. Then there exists $S \subseteq V$ such that $\#(S) < \infty$ and $\operatorname{span}(S) = V$. Let $S = \{p_1(x), p_2(x), \ldots, p_n(x)\}$. Let $m = \max(\deg(p_i(x)))$ for $1 \leq i \leq n$. Then consider the polynomial $q(x) = x^{m+1}$. Since $\deg(q(x)) > m$, $q(x)$ cannot be written as a linear combination of the polynomials in $S$. This contradicts the fact that $\operatorname{span}(S) = V$. Thus, $V$ is not finite dimensional.
+        \end{proof}
+        \end{enumerate}
+
+        \item \begin{enumerate}[i)]
+            \item Statement: Show that $V = \mathbb{F}(X)$ is finite dimensional.
+            \item Main Points:
+                \begin{itemize}
+                    \item Since $X$ is finite, say $X = \{x_1, x_2, \ldots, x_n\}$, consider the set of functions $\{\delta_{x_i}\}_{i=1}^n$, where
+                    \[
+                        \delta_{x_i}(x_j) = \begin{cases}
+                            1 & \text{if } i = j \\
+                            0 & \text{if } i \neq j
+                        \end{cases}
+                    \]
+                    \item Show that $\{\delta_{x_i}\}_{i=1}^n$ forms a basis for $V$.
+                \end{itemize}
+            \item Proof:
+            \begin{proof}
+                Since $X$ is finite, say $X = \{x_1, x_2, \ldots, x_n\}$, consider the set of functions $\{\delta_{x_i}\}_{i=1}^n$, where
+                \[
+                    \delta_{x_i}(x_j) = \begin{cases}
+                        1 & \text{if } i = j \\
+                        0 & \text{if } i \neq j
+                    \end{cases}
+                \]
+                We will show that $\{\delta_{x_i}\}_{i=1}^n$ forms a basis for $V$. First, we show that they span $V$. Let $f \in V$. Then we can write
+                \[
+                    f(x) = \sum_{i=1}^n f(x_i) \delta_{x_i}(x)
+                \]
+                for all $x \in X$. Thus, $\{\delta_{x_i}\}_{i=1}^n$ spans $V$. Next, we show that they are linearly independent. Suppose
+                \[
+                    \sum_{i=1}^n a_i \delta_{x_i}(x) = 0
+                \]
+                for some scalars $a_i \in \mathbb{F}$. Evaluating at $x = x_j$, we get
+                \[
+                    a_j = 0
+                \]
+                for all $j = 1, 2, \ldots, n$. Thus, all $a_i = 0$, and $\{\delta_{x_i}\}_{i=1}^n$ are linearly independent. Therefore, $\{\delta_{x_i}\}_{i=1}^n$ forms a basis for $V$, and hence $V$ is finite dimensional with $\dim(V) = n$.
+            \end{proof}
+        \end{enumerate}
+    \end{enumerate}
+
+
+
 
 
 \begin{problem}
