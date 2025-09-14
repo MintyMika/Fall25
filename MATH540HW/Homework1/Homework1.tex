@@ -46,26 +46,26 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \hfill Homework 1
     \hfill \textit{Stephen Cornelius}
 \end{center}
-\textbf{Remarks:} \\
-\begin{enumerate}[A)]
-    \item Definition is just a definition, there is no need to jjustify or explain it.
-    \item Answers to questions with proofs should be written, as much as you can, in the following format: \\
-    \begin{enumerate}[i)]
-        \item Statement
-        \item Main points that will appear in your proof
-        \item The actual proof
-    \end{enumerate}
-    Answers to questions with computations should be written, as much as possible, in the following format:
-    \begin{enumerate}[i)]
-        \item Statement and Result
-        \item Main points that will appear in your computation.
-        \item The actual computation
-    \end{enumerate}
-\end{enumerate}
+% \textbf{Remarks:} \\
+% \begin{enumerate}[A)]
+%     \item Definition is just a definition, there is no need to jjustify or explain it.
+%     \item Answers to questions with proofs should be written, as much as you can, in the following format: \\
+%     \begin{enumerate}[i)]
+%         \item Statement
+%         \item Main points that will appear in your proof
+%         \item The actual proof
+%     \end{enumerate}
+%     Answers to questions with computations should be written, as much as possible, in the following format:
+%     \begin{enumerate}[i)]
+%         \item Statement and Result
+%         \item Main points that will appear in your computation.
+%         \item The actual computation
+%     \end{enumerate}
+% \end{enumerate}
 
 
 
-% Start of problems
+% % Start of problems
 
 
 
@@ -228,9 +228,74 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \end{problem}
 
 \begin{enumerate}[a)]
-    \item 
-\end{enumerate}
+    \item There exists a unique function $\dim: \operatorname{Vect}_{\mathbb{F}}^{fd} \to \mathbb{N}$ such that
+    \begin{enumerate}[i)]
+        \item for a short exact sequence like (1), we have
+        \[
+            \dim(V) = \dim(U) + \dim(W),
+        \]
+        \item $\dim(\mathbb{F}) = 1$.
+    \end{enumerate}
 
-
+    \item \begin{enumerate}[i)]
+        \item Statement: We have that $\dim(M_n(\mathbb{F})) = n^2$.
+        \item Main Points:
+        \begin{itemize}
+            \item Consider the standard basis for $M_n(\mathbb{F})$ consisting of matrices with a single entry of 1 and all other entries 0.
+            \item Count the number of such basis matrices.
+        \end{itemize}
+        \item Computation: \\
+        The standard basis for $M_n(\mathbb{F})$ consists of matrices $E_{ij}$ where the $(i,j)$-th entry is 1 and all other entries are 0, for $1 \leq i,j \leq n$. There are $n$ choices for $i$ and $n$ choices for $j$, giving a total of $n \times n = n^2$ basis matrices. Therefore, $\dim(M_n(\mathbb{F})) = n^2$.
+    \end{enumerate}
+    \item \begin{enumerate}[i)]
+        \item \begin{itemize}
+            \item Statement: We have that $U = A_n(\mathbb{F})$, $V = M_n(\mathbb{F})$, and $W = S_n(\mathbb{F})$ form a short exact sequence.
+            \item Main Points:
+            \begin{itemize}
+                \item Define the inclusion map $\iota: U \to V$ and the projection map $\epsilon: V \to W$.
+                \item Show that $\iota$ is injective.
+                \item Show that $\epsilon$ is surjective.
+                \item Show that $\operatorname{im}(\iota) = \ker(\epsilon)$.
+            \end{itemize}
+            \item Proof:
+            \begin{proof}
+                Define the inclusion map $\iota: U \to V$ by $\iota(A) = A$ for all $A \in U$. This map is injective because if $\iota(A) = 0$, then $A = 0$. Next, define the projection map $\epsilon: V \to W$ by
+                \[
+                    \epsilon(B) = \frac{1}{2}(B + B^T)
+                \]
+                for all $B \in V$. This map is surjective because for any $C \in W$, we can take $B = C$ and have $\epsilon(B) = C$. Finally, we need to show that $\operatorname{im}(\iota) = \ker(\epsilon)$. If $A \in U$, then $\epsilon(\iota(A)) = 0$ since $A^T = -A$. Conversely, if $B \in V$ and $\epsilon(B) = 0$, then $B^T = -B$, which means that $B$ must be in the image of $\iota$. Therefore, we have shown that the sequence
+                \[
+                    0 \xrightarrow{} U \xrightarrow{\iota} V \xrightarrow{\epsilon} W \xrightarrow{} 0
+                \]
+                is a short exact sequence.
+            \end{proof}
+        \end{itemize} \newpage
+        \item \begin{itemize}
+            \item Statement: We have that $\dim(A_n(\mathbb{F})) = \frac{n(n-1)}{2}$ and $\dim(S_n(\mathbb{F})) = \frac{n(n+1)}{2}$.
+            \item Main Points:
+            \begin{itemize}
+                \item Use the short exact sequence from part (i).
+                \item Apply the dimension function to the sequence.
+                \item Use the fact that $\dim(M_n(\mathbb{F})) = n^2$.
+                \item Solve for the dimensions of $A_n(\mathbb{F})$ and $S_n(\mathbb{F})$.
+            \end{itemize}
+            \item Computation: \\
+            From the short exact sequence in part (i), we have
+            \[
+                \dim(V) = \dim(U) + \dim(W).
+            \]
+            Substituting the known dimension of $V = M_n(\mathbb{F})$, we get
+            \[
+                n^2 = \dim(A_n(\mathbb{F})) + \dim(S_n(\mathbb{F})).
+            \]
+            Next, we count the dimensions of $A_n(\mathbb{F})$ and $S_n(\mathbb{F})$. A matrix in $A_n(\mathbb{F})$ is determined by its entries above the main diagonal, since the entries below the main diagonal are determined by the anti-symmetry condition. There are $\frac{n(n-1)}{2}$ such entries, so $\dim(A_n(\mathbb{F})) = \frac{n(n-1)}{2}$. Similarly, a matrix in $S_n(\mathbb{F})$ is determined by its entries on and above the main diagonal. There are $\frac{n(n+1)}{2}$ such entries, so $\dim(S_n(\mathbb{F})) = \frac{n(n+1)}{2}$. Therefore, we have
+            \[
+                n^2 = \frac{n(n-1)}{2} + \frac{n(n+1)}{2},
+            \]
+            which confirms our calculations. Thus, $\dim(A_n(\mathbb{F})) = \frac{n(n-1)}{2}$ and $\dim(S_n(\mathbb{F})) = \frac{n(n+1)}{2}$.
+        \end{itemize}
+        \end{enumerate}
+    \end{enumerate}
+    General Remark(s): I had plenty of extra time on this homework, so I typed it up and tried to make it look nice. If there are any issues with the formatting or if you would like me to change anything, please let me know. Depending on my homework load in the future, I may not be able to type up future homeworks, but I will do my best to make them look nice if I can. This homework was fun, and I look forward to the rest of the course!
 
 \end{document}
