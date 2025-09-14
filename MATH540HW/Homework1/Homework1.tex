@@ -14,7 +14,7 @@
 \makeatletter
 \newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
 \makeatother
-
+% Change enumerate labels to (a), (b), (c), ...
 % Define a new environment for problems
 \newcounter{problemCounter}
 \newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
@@ -47,16 +47,16 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \hfill \textit{Stephen Cornelius}
 \end{center}
 \textbf{Remarks:} \\
-\begin{enumerate}
+\begin{enumerate}[A)]
     \item Definition is just a definition, there is no need to jjustify or explain it.
     \item Answers to questions with proofs should be written, as much as you can, in the following format: \\
-    \begin{enumerate}
+    \begin{enumerate}[i)]
         \item Statement
         \item Main points that will appear in your proof
         \item The actual proof
     \end{enumerate}
     Answers to questions with computations should be written, as much as possible, in the following format:
-    \begin{enumerate}
+    \begin{enumerate}[i)]
         \item Statement and Result
         \item Main points that will appear in your computation.
         \item The actual computation
@@ -64,8 +64,8 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \end{enumerate}
 \begin{problem}
     \textit{Vector Spaces}. Suppose $\mathbb{F}$ is a field.
-    \begin{enumerate}
-        \item Define when we say that a vector space $V$ overa  field $\mathbb{F}$ is \textit{finite dimensional}.
+    \begin{enumerate}[a)]
+        \item Define when we say that a vector space $V$ over a field $\mathbb{F}$ is \textit{finite dimensional}.
         \item Consider the vector space
         \[
             V = \mathbb{F}[x]
@@ -87,16 +87,16 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         0 \xrightarrow{} U \xrightarrow{\iota} V \xrightarrow{\epsilon} W \xrightarrow{} 0,
     \end{equation}
     where $0 \to U$, are the obvious maps from the zero space into $U$, and from the space $W$ onto the zero space, respectively. \\
-    \begin{enumerate}
+    \begin{enumerate}[a)]
         \item Define when we say that the sequence (1) is \underline{short exact sequence} (s.e.s.).
-        \item Given two subspaces $U,V < V$, such that $V = U \oplus W$, Show that there is a natural s.e.s. associated with the spaces of functions $U = \mathbb{F}(U), V = \mathbb{F}(V)$ and $W = \mathbb{F}(Y \backslash X)$, where $Y \backslash X$ denotes set-minus, i.e., the set of elements which are in $Y$ and are not in $X$.
+        \item Given two subspaces $U,V < V$, such that $V = U \oplus W$, Show that there is a natural s.e.s.associated with the spaces of functions $U = \mathbb{F}(U), V = \mathbb{F}(V)$ and $W = \mathbb{F}(Y \backslash X)$, where $Y \backslash X$ denotes set-minus, i.e., the set of elements which are in $Y$ and are not in $X$.
     \end{enumerate}
 \end{problem}
 
 
 \begin{problem}
     \textit{Dimension}. Denote by $\operatorname{Vect}_{}\mathbb{F}^{fd}$ the collection of finite-dimensional vector spaces over $\mathbb{F}$, with linear transformations between them.
-    \begin{enumerate}
+    \begin{enumerate}[a)]
         \item State the fact about uniqueness and existence of unique dimenstion function
         \[
             \dim: \operatorname{Vect}_\mathbb{F}^{fd} \to \mathbb{N},
@@ -104,8 +104,8 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         that satisfies certain desired properties. \\
         \textbf{Def.} For $V$ finite dimensional, the integer $\dim(V)$ is called the \underline{dimension} of $V$.
         \item Show that $\dim(M_n(\mathbb{F})) = n^2$.
-        \item Suppose $1 + 1 \neq 0$ in $\mathbb{F}$. Consider the spaces $U = A_n(\mathbb{F})$, $V = M_n(\mathbb{F})$, $W = S_n(\mathbb{F})$, of anti-symmetric matrices ($A^T = -A$), all matrices, and symmetric matrices (sastisfy $A^T = A$), respectively.
-        \begin{enumerate}
+        \item Suppose $1 + 1 \neq 0$ in $\mathbb{F}$. Consider the spaces $U = A_n(\mathbb{F})$, $V = M_n(\mathbb{F})$, $W = S_n(\mathbb{F})$, of anti-symmetric matrices ($A^T = -A$), all matrices, and symmetric matrices (sastisfy $A^T = A$), respectively. 
+        \begin{enumerate}[i)]
             \item Show that, they form in a natural why a s.e.s.
             \item Deduce that $\dim(A_n(\mathbb{F})) = \frac{n(n-1)}{2}$ and $\dim(S_n(\mathbb{F})) = \frac{n(n+1)}{2}$.
         \end{enumerate}
