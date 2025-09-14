@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 540
+    \hfill Homework 1
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+\textbf{Remarks:} \\
+\begin{enumerate}
+    \item Definition is just a definition, there is no need to jjustify or explain it.
+    \item Answers to questions with proofs should be written, as much as you can, in the following format: \\
+    \begin{enumerate}
+        \item Statement
+        \item Main points that will appear in your proof
+        \item The actual proof
+    \end{enumerate}
+    Answers to questions with computations should be written, as much as possible, in the following format:
+    \begin{enumerate}
+        \item Statement and Result
+        \item Main points that will appear in your computation.
+        \item The actual computation
+    \end{enumerate}
+\end{enumerate}
+\begin{problem}
+    \textit{Vector Spaces}. Suppose $\mathbb{F}$ is a field.
+    \begin{enumerate}
+        \item Define when we say that a vector space $V$ overa  field $\mathbb{F}$ is \textit{finite dimensional}.
+        \item Consider the vector space
+        \[
+            V = \mathbb{F}[x]
+        \]
+        of all polynomials with coefficients in $\mathbb{F}$. Show that $V$ is not finite dimensional.
+        \item Suppose $X$ is a finite set. Consider the vector space $V$, of all functions from $X$ to $\mathbb{F}$,
+        \[
+            V = \mathbb{F}(X):= \{\text{all }f: X \to \mathbb{F}; \text{s.t. $f$ is a function}\},
+        \]
+        with the standard addition and multiplication by scalars from $\mathbb{F}$. Show that $V$ is finite dimensional.
+    \end{enumerate}
+\end{problem}
+
+
+
+\begin{problem}
+    \textit{Short exact sequences}. Suppose $U,V,W$ are three vector spaces over $\mathbb{F}$. Consider the following seequence of spaces and linear transformations between them:
+    \begin{equation}
+        0 \xrightarrow{} U \xrightarrow{\iota} V \xrightarrow{\epsilon} W \xrightarrow{} 0,
+    \end{equation}
+    where $0 \to U$, are the obvious maps from the zero space into $U$, and from the space $W$ onto the zero space, respectively. \\
+    \begin{enumerate}
+        \item Define when we say that the sequence (1) is \underline{short exact sequence} (s.e.s.).
+        \item Given two subspaces $U,V < V$, such that $V = U \oplus W$, Show that there is a natural s.e.s. associated with the spaces of functions $U = \mathbb{F}(U), V = \mathbb{F}(V)$ and $W = \mathbb{F}(Y \backslash X)$, where $Y \backslash X$ denotes set-minus, i.e., the set of elements which are in $Y$ and are not in $X$.
+    \end{enumerate}
+\end{problem}
+
+
+\begin{problem}
+    \textit{Dimension}. Denote by $\operatorname{Vect}_{}\mathbb{F}^{fd}$ the collection of finite-dimensional vector spaces over $\mathbb{F}$, with linear transformations between them.
+    \begin{enumerate}
+        \item State the fact about uniqueness and existence of unique dimenstion function
+        \[
+            \dim: \operatorname{Vect}_\mathbb{F}^{fd} \to \mathbb{N},
+        \]
+        that satisfies certain desired properties. \\
+        \textbf{Def.} For $V$ finite dimensional, the integer $\dim(V)$ is called the \underline{dimension} of $V$.
+        \item Show that $\dim(M_n(\mathbb{F})) = n^2$.
+        \item Suppose $1 + 1 \neq 0$ in $\mathbb{F}$. Consider the spaces $U = A_n(\mathbb{F})$, $V = M_n(\mathbb{F})$, $W = S_n(\mathbb{F})$, of anti-symmetric matrices ($A^T = -A$), all matrices, and symmetric matrices (sastisfy $A^T = A$), respectively.
+        \begin{enumerate}
+            \item Show that, they form in a natural why a s.e.s.
+            \item Deduce that $\dim(A_n(\mathbb{F})) = \frac{n(n-1)}{2}$ and $\dim(S_n(\mathbb{F})) = \frac{n(n+1)}{2}$.
+        \end{enumerate}
+    \end{enumerate}
+\end{problem}
+
+\end{document}
