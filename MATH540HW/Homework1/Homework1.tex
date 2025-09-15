@@ -154,7 +154,8 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     where $0 \to U$, are the obvious maps from the zero space into $U$, and from the space $W$ onto the zero space, respectively. \\
     \begin{enumerate}[a)]
         \item Define when we say that the sequence (1) is \underline{short exact sequence} (s.e.s.).
-        \item Given two subspaces $U,V < V$, such that $V = U \oplus W$, Show that there is a natural s.e.s.associated with the spaces of functions $U = \mathbb{F}(U), V = \mathbb{F}(V)$ and $W = \mathbb{F}(Y \backslash X)$, where $Y \backslash X$ denotes set-minus, i.e., the set of elements which are in $Y$ and are not in $X$.
+        \item Given two subspaces $U,W < V$, such that $V = U \oplus W$, write down a natural s.e.s. of the form (1).
+        \item Show that there is a natural s.e.s.associated with the spaces of functions $U = \mathbb{F}(U), V = \mathbb{F}(V)$ and $W = \mathbb{F}(Y \backslash X)$, where $Y \backslash X$ denotes set-minus, i.e., the set of elements which are in $Y$ and are not in $X$.
     \end{enumerate}
 \end{problem}
 
@@ -168,6 +169,12 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \[
         \iota \text{ is injective}, \quad \epsilon \text{ is surjective}, \quad \operatorname{im}(\iota) = \ker(\epsilon).
     \]
+    \item Given two subspaces $U,W < V$ such that $V = U \oplus W$, we can define the inclusion map $\iota: U \to V$ by $\iota(u) = u$ for all $u \in U$, and the projection map $\epsilon: V \to W$ by $\epsilon(v) = w$ where $v = u + w$ for some $u \in U$ and $w \in W$. Then the sequence
+    \[
+        0 \xrightarrow{} U \xrightarrow{\iota} V \xrightarrow{\epsilon} W \xrightarrow{} 0
+    \]
+    is a short exact sequence.
+
     \item \begin{enumerate}[i)]
         \item Statement: There is a natural s.e.s. associated with the spaces of functions $U = \mathbb{F}(U), V = \mathbb{F}(V)$ and $W = \mathbb{F}(Y \backslash X)$.
         \item Main Points:
