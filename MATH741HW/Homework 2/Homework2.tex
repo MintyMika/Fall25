@@ -52,23 +52,79 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     If $N_1 \triangleleft G_1$, $N_2 \triangleleft G_2$, then $(N_1 \times N_2) \triangleleft (G_1 \times G_2)$ and $(G_1 \times G_2)/(N_1 \times N_2) \cong (G_1/N_1) \times (G_2/N_2)$.
 \end{problem}
 
+\begin{proof}
+    %TODO: Read this over.
+    Let $(n_1, n_2) \in N_1 \times N_2$ and $(g_1, g_2) \in G_1 \times G_2$. Then
+    \[
+        (g_1, g_2)(n_1, n_2)(g_1, g_2)^{-1} = (g_1 n_1 g_1^{-1}, g_2 n_2 g_2^{-1}) \in N_1 \times N_2
+    \]
+    since $N_i \triangleleft G_i$ for $i = 1, 2$. Thus $N_1 \times N_2 \triangleleft G_1 \times G_2$.
+
+    Now define $\varphi: G_1 \times G_2 \to (G_1/N_1) \times (G_2/N_2)$ by $\varphi(g_1, g_2) = (g_1 N_1, g_2 N_2)$. This is a homomorphism since
+    \begin{align*}
+        \varphi((g_1, g_2)(h_1, h_2)) &= \varphi(g_1 h_1, g_2 h_2) = (g_1 h_1 N_1, g_2 h_2 N_2) \\
+        &= (g_1 N_1, g_2 N_2)(h_1 N_1, h_2 N_2) = \varphi(g_1, g_2)\varphi(h_1, h_2)
+    \end{align*}
+    for all $(g_i, h_i) \in G_i$, $i = 1, 2$. It is surjective since for any $(g'_1 N_1, g'_2 N_2) \in (G/N_i)$ we have $\varphi(g'_1, g'_2) = (g'_1 N_i, g'_2 N_i)$.
+
+    Finally,
+    \begin{align*}
+        \ker(\varphi) &= \{(g_1, g_2) : (g_1 N_i, g_2 N_i) = (N_i, N_i)\} = \{(g_1, g_2) : g_1 \in N_1, g_2 \in N_2\} = N_1 \times N_2
+    \end{align*}
+    Thus by the First Isomorphism Theorem,
+    \[
+        (G_1 \times G_2)/(N_1 \times N_2) \cong (G_1/N_1) \times (G_2/N_2)
+    \]
+    as desired.
+\end{proof}
+
 
 
 \begin{problem}[1.6.11] \\ 
     Find all normal subgroups of $D_n$.
 \end{problem}
 
+For notation, let $a$ be a rotation of order $n$ and $b$ be a reflection of order $2$. Then $D_n = \langle a, b : a^n = e, b^2 = e, bab = a^{-1} \rangle$. If $n$ is odd then we have that $\langle a^i \rangle \triangleleft D_n$ for all $i$ dividing $n$, and these are the only normal subgroups. If $n$ is even then we have that $\langle a^i \rangle \triangleleft D_n$ for all $i$ dividing $n$, as well as $\langle a^2, b \rangle \triangleleft D_n$ and $\langle a^2, ab \rangle \triangleleft D_n$, and these are the only normal subgroups. This is because the rotations form a cyclic subgroup which is normal, and the conjugacy classes of reflections depend on the parity of $n$.
+
 
 
 \begin{problem}[1.8.2] \\ 
     Give an example of groups $H_i, K_j$ such that $H_1 \times H_2 \cong K_1 \times K_2$ and no $H_i$ is isomorphic to any $K_j$.
 \end{problem}
+Consider $H_1 = \zz_4, H_2 = \zz_3, K_1 = \zz_6, K_2 = \zz_2$. Then $H_1 \times H_2 \cong \zz_{12} \cong K_1 \times K_2$, but no $H_i$ is isomorphic to any $K_j$.
 
 
 
 \begin{problem}[1.8.3] \\ 
     Let $G$ be an (additive) abelian group with subgroups $H$ and $K$. Show that $G \cong H \oplus K$ if and only if there are homomorphisms $H \mathrel{\mathop{\leftrightarrows}^{{\pi_1}}_{\iota_1}} G \mathrel{\mathop{\leftrightarrows}^{{\pi_2}}_{\iota_2}} K$ such that $\pi_1\iota_1 = 1_H, \pi_2\iota_2 = 1_K, \pi_1\iota_2 = 0,$ and $\pi_2\iota_1 = 0$, where $0$ is the map sending every element onto the zero (identity) element, and $\iota_1\pi_1(x) + \iota_2\pi_2(x) = x$ for all $x \in G$.
 \end{problem}
+
+\begin{proof}
+    %TODO: Read this over.
+    ($\Rightarrow$) Suppose $G \cong H \oplus K$. Then every $g \in G$ can be uniquely written as $g = h + k$ for some $h \in H, k \in K$. Define $\pi_1: G \to H$ by $\pi_1(g) = h$ and $\pi_2: G \to K$ by $\pi_2(g) = k$. Also define $\iota_1: H \to G$ by $\iota_1(h) = h + 0_K$ and $\iota_2: K \to G$ by $\iota_2(k) = 0_H + k$. Then for any $h \in H, k \in K, g \in G$ we have
+    \begin{align*}
+        \pi_1\iota_1(h) &= \pi_1(h + 0_K) = h, & \pi_2\iota_2(k) &= \pi_2(0_H + k) = k, \\
+        \pi_1\iota_2(k) &= \pi_1(0_H + k) = 0_H, & \pi_2\iota_1(h) &= \pi_2(h + 0_K) = 0_K, \\
+        \iota_1\pi_1(g) + \iota_2\pi_2(g) &= (h + 0_K) + (0_H + k) = h + k = g.
+    \end{align*}
+    Thus the desired homomorphisms exist.
+
+    ($\Leftarrow$) Suppose the homomorphisms $\pi_i, \iota_i$ exist as described. Then for any $g \in G$, we have
+    \[
+        g = \iota_1\pi_1(g) + \iota_2\pi_2(g)
+    \]
+    where $\iota_1\pi_1(g) \in H$ and $\iota_2\pi_2(g) \in K$. Thus every element of $G$ can be written as a sum of an element of $H$ and an element of $K$. Now suppose $h + k = h' + k'$ for some $h, h' \in H$ and $k, k' \in K$. Then
+    \begin{align*}
+        h + k &= h' + k' \\
+        \iota_1\pi_1(h + k) + \iota_2\pi_2(h + k) &= \iota_1\pi_1(h' + k') + \iota_2\pi_2(h' + k') \\
+        \iota_1(\pi_1(h) + \pi_1(k)) + \iota_2(\pi_2(h) + \pi_2(k)) &= \iota_1(\pi_1(h') + \pi_1(k')) + \iota_2(\pi_2(h') + \pi_2(k')) \\
+        \iota_1(\pi_1(h) + 0_H) + \iota_2(0_K + \pi_2(k)) &= \iota_1(\pi_1(h') + 0_H) + \iota_2(0_K + \pi_2(k')) \\
+        \iota_1\pi_1(h) + \iota_2\pi_2(k) &= \iota_1\pi_1(h') + \iota_2\pi_2(k') \\
+        h + k &= h' + k'
+    \end{align*}
+    Thus the representation of elements in $G$ as sums of elements from $H$ and $K$ is unique, and $G \cong H \oplus K$.
+
+\end{proof}
 
 
 
@@ -77,11 +133,22 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     Let $G, H$ be finite cyclic groups. Then $G \times H$ is cyclic if and only if $(|G|,|H|) = 1$.
 \end{problem}
 
+\begin{proof}
+    ($\Rightarrow$) Suppose $G \times H$ is cyclic. Then there exists some $(g, h) \in G \times H$ such that $\langle (g, h) \rangle = G \times H$. Thus $|\langle (g, h) \rangle| = |G \times H| = |G||H|$. But $|\langle (g, h) \rangle| = \mathrm{lcm}(|g|, |h|)$, so $\mathrm{lcm}(|g|, |h|) = |G||H|$. Since $|g|$ divides $|G|$ and $|h|$ divides $|H|$, we have that $\mathrm{lcm}(|g|, |h|)$ divides $\mathrm{lcm}(|G|, |H|)$. Thus $\mathrm{lcm}(|G|, |H|)$ must be equal to $|G||H|$, which implies that $(|G|, |H|) = 1$.
+
+    ($\Leftarrow$) Suppose $(|G|, |H|) = 1$. Let $g$ be a generator of $G$ and $h$ be a generator of $H$. Then consider the element $(g, h) \in G \times H$. We have that $|(g, h)| = \mathrm{lcm}(|g|, |h|) = \mathrm{lcm}(|G|, |H|) = |G||H|$ since $(|G|, |H|) = 1$. Thus $|(g, h)| = |G \times H|$, so $\langle (g, h) \rangle = G \times H$ and $G \times H$ is cyclic.
+\end{proof}
+
 
 
 \begin{problem}[1.8.9] \\ 
     If a group $G$ is the (internal) direct product of its subgroups $H, K$, then $H \cong G/K$ and $G/H \cong K$.
 \end{problem}
+
+
+\begin{proof}
+    
+\end{proof}
 
 
 
