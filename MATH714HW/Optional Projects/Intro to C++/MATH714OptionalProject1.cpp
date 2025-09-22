@@ -8,23 +8,6 @@ using namespace std;
 
 int PascalTriangle_Coefficients(int n, int k)
 {
-   /*
-   Instructions:
-    (a) Write a program that can evaluate the numbers $c_{n,k}$ in Pascal's triangle using a recurrence relation.
-   Define $c_{n,0} = 1$ for all $n \geq 0$ and $c_{0,k}=0$ for $k \geq 0$. Then the entries for $n + 1$ and be computed from the entries for $n$ using 
-   \[
-		c_{n+1,k} = c_{n,k} + c_{n,k-1}.
-	\]
-	Print a table of entries in Pascal's triangle for $0 \leq n \leq 7$ and $0 \leq k \leq 7$. You should find that $c_{n,k} = 0$ for $k > n$, and those terms can be left blank in your table.
-
-
-	(b) Extend your program so that it prints ASCII art, displaying a "." character for each even number and a "#" character for each odd number. Hence the first few lines would be
-	#
-	##
-	#.#
-	####
-	Using your program, extend this output to $n = 31$.
-   */ 
 	if (k == 1) return 1;
 	if (n == 0) return 0;
 	return PascalTriangle_Coefficients(n - 1, k) + PascalTriangle_Coefficients(n - 1, k - 1);
@@ -65,6 +48,7 @@ void Q1b() {
 		for (int k = 0; k < pascalTriangle[n].size(); k++)
 		{
 			int temp = pascalTriangle[n][k];
+			// Print '#' for odd and '.' for even
 			if (temp % 2 == 0) {
 				cout << ".";
 			}
@@ -165,7 +149,7 @@ void Q3a() {
 	grid[rows - 1][cols / 2 - 2] = 1;
 	grid[rows - 1][cols / 2 + 1] = 1;
 	grid[rows - 1][cols / 2 + 2] = 1;
-	// Print the initial state
+	// Print the initial state to make sure it's correct
 	cout << "Initial State:" << endl;
 	for (const auto& row : grid) {
 		for (const auto& cell : row) {
@@ -232,37 +216,6 @@ int main()
 	// Uncomment for answer to Q1b
 	// Q1b();
 
-
-	/*
-	\begin{ enumerate } [a)]
-		\item Write a function that takes in two arrays and preforms matrix multiplication. \\
-		Your function's signature should be:
-		\begin{ verbatim }
-	void mat_mul(const double* A, const double* B, double* C, int m, int n, int p);
-	\end{ verbatim }
-		The function should compute $C = AB$, where $A \in \rr^ { m\times n }, B \in \rr^ { n \times p }$, and $C \in \rr^ { m \times p }$.Test your program on the matrices
-		\[
-			A = \begin{ pmatrix }
-				0 & 1 & 2 \\
-				0 & 1 & 2
-				\end{ pmatrix },
-				\quad
-				B = \begin{ pmatrix }
-				0 & 1 & 2 & 3 \\
-				0 & 1 & 2 & 3 \\
-				0 & 1 & 2 & 3
-				\end{ pmatrix },
-				\]
-		which can be generated using the provided \verb | gradient_matrix | function.
-		\item \textbf{ Optional. } Measure the time $T(m)$ to generate two random matrices $A, B \in \rr^ { m\times m }$ and multiply them together using your routine.Calculate $T(m)$ for $m = 100, 200, 300, \dots, 1600$.Use linear regression on fit the data to
-		\[
-			T(m) = Cm ^ \alpha
-				\]
-		for constants $C$ and $\alpha$, comment on whether the value $\alpha$ is consistent with your matrix multiplication algorithm.
-			\end{ enumerate }
-
-	*/
-
 	// Uncomment below for answer to Q2a
 	// Q2a();
 
@@ -271,7 +224,7 @@ int main()
 
 
 	// Uncomment below for answer to Q3a
-	Q3a();
+	// Q3a();
 
 
 
