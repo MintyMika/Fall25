@@ -43,11 +43,11 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \begin{document}
 
 \begin{center}
-    Math 741
-    \hfill Homework 2
+    Math 714
+    \hfill Optional Project: Introduction to C++ Questions 
     \hfill \textit{Stephen Cornelius}
 \end{center}
-
+\textbf{Note(s):} Use of Generative AI was used for styling images in the \LaTeX $\,$document. I was unsure of what was wanted as answers to the questions so if the following is not what was intended please let me know and I will redo the assignment.
 \begin{problem} \\ 
 \begin{enumerate}[a)]
     \item Write a program that can evaluate the numbers $c_{n,k}$ in Pascal's triangle using a recurrence relation.
@@ -74,7 +74,7 @@ Define $c_{n,0} = 1$ for all $n \geq 0$ and $c_{0,k}=0$ for $k \geq 0$. Then the
         \includegraphics[width=0.5\textwidth]{OpHw1_1a.png}
     \end{center}
     \newpage
-    \item I was tasked with outputting a table of for Pascal's triangle where each even number was replaced by a "." and each odd number was replaced by a "\#". I modified my previous program to do this. Below is the output of the program when I input 31 rows. \\
+    \item I was tasked with outputting a table of for Pascal's triangle where each even number was replaced by a "." and each odd number was replaced by a "\#". I modified my previous program to do this. The output reminded me of the Serpinski triangle. Below is the output of the program when I input 31 rows. \\
     \begin{center}
         \includegraphics[width=0.5\textwidth]{OpHw1_1b.png}
     \end{center}
@@ -108,9 +108,62 @@ Define $c_{n,0} = 1$ for all $n \geq 0$ and $c_{0,k}=0$ for $k \geq 0$. Then the
     \] 
     for constants $C$ and $\alpha$, comment on whether the value $\alpha$ is consistent with your matrix multiplication algorithm.
     \end{enumerate}
-    
-    
 \end{problem}
+
+\begin{enumerate}[a)]
+    \item I created the function \verb|mat_mul| that takes in two matrices and performs matrix multiplication. I also created a function \verb|print_matrix| to print the resulting matrix in a nice format. Below is the output of the program when I input the matrices given in the problem statement. \\
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{OpHw1_2a.png}
+    \end{center}
+    \item I did not do the optional part of this problem as I ran out of time.
+\end{enumerate}
+
+
+\begin{problem} \\ 
+    Consider Conway's Game of Life on a regular periodic $m \times n$ grid, with cells indexed as $(i,j)$ where $i \in \{ 0, 1, \dots, m-1 \}$ and $j \in \{ 0, 1, \dots, n-1 \}$. Each cell can either be alive or dead. Each cell has eight neighbors (the cells directly adjacent to it, including diagonals) --- This is also known as the 9-cell (Moore) neighborhood. Define $N_{i,j}$ to be the number alive neighbors of $(i,j)$. Hence $0 \leq N_{i,j} \leq 8$. \\
+    In one generation, all cells are simultaneously updated according to the following rules:
+    \begin{itemize}
+        \item An alive cell at $(i,j)$ remains alive if $N_{i,j} \in \{ 2, 3 \}$, and dies otherwise.
+        \item A dead cell at $(i,j)$ becomes alive if $N_{i,j} = 3$.
+        \item All other cells remain unchanged.
+    \end{itemize}
+
+    \begin{enumerate}[a)]
+        \item Implement this automaton on a grid of size $(m,n) = (80,40)$. Initialize the grid as empty except for the following configuration, where gray indicates alive cells:
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{OpHw1_3aQ.png}
+        \end{center}
+        Since periodic boundary conditions are used, the exact placement of the pattern in the grid is not important. \\
+        Print a snapshow of the intitial condition, using ASCII art or another method of your choice. Run the system for 200 generations, and rpint snapshots after 1, 2, 4, 50, 100, and 200 generations.
+        \item \textbf{Optional.} Experiment with other known patterns in the Game of Life. Or create your own patterns!
+    \end{enumerate}
+\end{problem}
+
+\begin{enumerate}[a)]
+    \item I implemented the Game of Life automaton on a grid of size $(m,n) = (80,40)$. The initial configuration was set up as specified in the problem statement. Below is a snapshot of the initial condition:
+    \begin{center}
+        \includegraphics[width=0.25\textwidth]{OpHw1_3aInit.png}
+    \end{center}
+    I ran the system for 200 generations and printed snapshots after 1, 2, 4, 50, 100, and 200 generations. Below are the snapshots at the specified generations:
+    \begin{center}
+        \includegraphics[width=0.25\textwidth]{OpHw1_3a1.png}    
+        \includegraphics[width=0.25\textwidth]{OpHw1_3a2.png} \\
+        Generation 1 \hspace{3cm} Generation 2
+    \end{center}
+    \begin{center}
+        \includegraphics[width=0.25\textwidth]{OpHw1_3a4.png}
+        \includegraphics[width=0.25\textwidth]{OpHw1_3a50.png} \\
+        Generation 4 \hspace{3cm} Generation 50
+    \end{center}
+    \begin{center}
+        \includegraphics[width=0.25\textwidth]{OpHw1_3a100.png}
+        \includegraphics[width=0.25\textwidth]{OpHw1_3a200.png} \\
+        Generation 100 \hspace{3cm} Generation 200
+    \end{center}
+\end{enumerate}
+
+
+
 
 
 
