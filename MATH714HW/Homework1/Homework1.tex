@@ -10,12 +10,11 @@
 \usepackage{indentfirst}
 \usepackage{mathrsfs}
 \usepackage{hyperref}
-\usepackage{extarrows}
 \graphicspath{./}
 \makeatletter
 \newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
 \makeatother
-
+% Change enumerate labels to (a), (b), (c), ...
 % Define a new environment for problems
 \newcounter{problemCounter}
 \newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
@@ -48,8 +47,9 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \hfill \textit{Stephen Cornelius}
 \end{center}
 
+
 \begin{problem} \\ 
-    TODO: Write up Questions.
+  Something in here.
 \end{problem}
 
 
