@@ -72,28 +72,289 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 \begin{problem} \\ 
    \begin{enumerate}[a)]
-    \item A space $W$ is called a quotient space of $V$ modulo $U$, denoted $W = V/U$, if there exists a surjective linear transformation $e: V \to W$ such that $\ker(e) = U$.
-    \item For any $v \in V$, consider the left coset $v + U = \{v + u : u \in U\}$. Define $q: V \to V/U$ by $v \mapsto v + U$. Clearly $q$ is surjective. Recall that $\tilde{v} \mapsto \tilde{v} + U = U$ if and only if $\tilde{v} \in U$. Then we have that $\ker(q)$ is precisely the set of all $\tilde{v} \in V$ such that $\tilde{v} + U = U$, which is exactly $U$. Thus, $q: V \to V/U$ is a surjective linear transformation with $\ker(q) = U$, so $V/U$ is a quotient space of $V$ modulo $U$.
-    \item 
+      \item Define when we say that a vector space $W$ is a \underline{quotient of $V$ modulo $U$}.
+      \item Recall the construction (given in class) of the vector space $V/U$, and the onto map $q: V \to V/U$, with kernel $\ker(q) = U$.
+      \item Suppose $T$ is a linear transformation between vector spaces $V$ and $W$, 
+      \[
+         T: V \to W,
+      \]
+      write down the natural induced map
+      \[
+         \tilde{T}: V/\ker(T) \to \operatorname{im}(T),
+      \]
+      and show that it is an isomorphism.
    \end{enumerate}
 \end{problem}
 
+
+\begin{enumerate}[a)]
+ \item A space $W$ is called a quotient space of $V$ modulo $U$, denoted $W = V/U$, if there exists a surjective linear transformation $e: V \to W$ such that $\ker(e) = U$.
+ 
+ \item For any $v \in V$, consider the left coset $v + U = \{v + u : u \in U\}$. Define $q: V \to V/U$ by $v \mapsto v + U$. Clearly $q$ is surjective. Recall that $\tilde{v} \mapsto \tilde{v} + U = U$ if and only if $\tilde{v} \in U$. Then we have that $\ker(q)$ is precisely the set of all $\tilde{v} \in V$ such that $\tilde{v} + U = U$, which is exactly $U$. Thus, $q: V \to V/U$ is a surjective linear transformation with $\ker(q) = U$, so $V/U$ is a quotient space of $V$ modulo $U$.
+ 
+ \item First we write down the natural induced map $\tilde{T}: V/\ker(T) \to \operatorname{im}(T)$ by $\tilde{v} + \ker(T) \mapsto T(\tilde{v})$. To show that this is well-defined, suppose $\tilde{v} + \ker(T) = \tilde{w} + \ker(T)$ for some $\tilde{v}, \tilde{w} \in V$. Then $\tilde{v} - \tilde{w} \in \ker(T)$, so $T(\tilde{v} - \tilde{w}) = 0$, and thus $T(\tilde{v}) = T(\tilde{w})$. Hence, $\tilde{T}$ is well-defined. \\ 
+ Next we show that $\tilde{T}$ is an isomorphism. First, we show that $\tilde{T}$ is linear. For any $\tilde{v}, \tilde{w} \in V$ and $a, b \in \mathbb{F}$, we show that $\tilde{T}(a(\tilde{v} + \ker(T)) + b(\tilde{w} + \ker(T))) = a\tilde{T}(\tilde{v} + \ker(T)) + b\tilde{T}(\tilde{w} + \ker(T))$. Consider 
+ \[
+      \tilde{T}(a(\tilde{v} + \ker(T)) + b(\tilde{w} + \ker(T))) = \tilde{T}((a\tilde{v} + b\tilde{w}) + \ker(T)) = T(a\tilde{v} + b\tilde{w}) = aT(\tilde{v}) + bT(\tilde{w}) = a\tilde{T}(\tilde{v} + \ker(T)) + b\tilde{T}(\tilde{w} + \ker(T)).
+ \]
+   Thus, $\tilde{T}$ is linear. \\
+   Next, we show that $\tilde{T}$ is surjective. For any $w \in \operatorname{im}(T)$, there exists some $v \in V$ such that $T(v) = w$. Then $\tilde{T}(v + \ker(T)) = T(v) = w$, so $\tilde{T}$ is surjective. \\
+   Finally, we show that $\tilde{T}$ is injective. Suppose $\tilde{T}(\tilde{v} + \ker(T)) = 0$ for some $\tilde{v} \in V$. Then $T(\tilde{v}) = 0$, so $\tilde{v} \in \ker(T)$, and thus $\tilde{v} + \ker(T) = \ker(T)$, the zero element of $V/\ker(T)$. Hence, $\tilde{T}$ is injective. \\
+   Thus we have that $\tilde{T}$ is a bijective linear transformation, and hence an isomorphism.
+\end{enumerate}
+\textbf{Note:} In part (c), I believe that we could also use the First Isomorphism Theorem to show that $\tilde{T}$ is an isomorphism, since we have that $\tilde{T}$ is a linear transformation from $V/\ker(T)$ to $\operatorname{im}(T)$ with kernel $\{0\}$, so by the First Isomorphism Theorem, $V/\ker(T) \cong \operatorname{im}(T)$.
+
+
+\begin{problem} \\ 
+   \textit{Basis.} Let $V$ be a vector space over $\mathbb{F}$, and $\mathscr{B} \subset V$.
+   \begin{enumerate}[a)]
+    \item Complete the following definition: \\ \textbf{Definition.} We say that $\mathscr{B}$ is a \underline{basis} of $V$ if ...
+    \item Suppose $V$ is finite dimensional. Write down the general facts we know about existence and cardinality of bases for $V$.
+    \item Suppose $V$ is finite-dimensional and $U < V$, is a subspace. Suppose $\mathscr{B}_U$ is a basis for $U$. Complete it to a basis $\mathscr{B}$ for $V$, and consider the set $\mathscr{C} = \mathscr{B} \setminus \mathscr{B}_U$. Show that the set
+    \[
+      \mathscr{B}_{V/U} = \{q(v) ; v \in \mathscr{C}\},
+    \]
+    (where $q: V \to V/U$ is the quotient map) is a basis for the quotient space $V/U$ constructed above.
+   \end{enumerate}
+\end{problem}
+
+
+
+\begin{enumerate}[a)]
+   \item We say that $\mathscr{B}$ is a basis of $V$ if $\mathscr{B}$ is linearly independent and spans $V$.
+   \item From Linear Algebra 1, if $V$ is finite dimensional, then $V$ has a basis, and any two bases of $V$ have the same cardinality. We call this cardinality the dimension of $V$, denoted $\dim(V)$.
+   \item Suppose $V$ is finite-dimensional and $U < V$, is a subspace. Suppose $\mathscr{B}_U$ is a basis for $U$. Complete it to a basis $\mathscr{B}$ for $V$, and consider the set $\mathscr{C} = \mathscr{B} \setminus \mathscr{B}_U$. Show that the set
+   \[
+     \mathscr{B}_{V/U} = \{q(v) ; v \in \mathscr{C}\},
+   \]
+   (where $q: V \to V/U$ is the quotient map) is a basis for the quotient space $V/U$ constructed above. \\
+   \begin{proof}
+      First we show that $\mathscr{B}_{V/U}$ spans $V/U$. For any $\tilde{v} + U \in V/U$, since $\mathscr{B}$ spans $V$, we can write $\tilde{v} = a_1b_1 + a_2b_2 + \cdots + a_nb_n$ for some $b_i \in \mathscr{B}$ and $a_i \in \mathbb{F}$. We can separate the $b_i$ into those that are in $\mathscr{B}_U$ and those that are in $\mathscr{C}$. Thus, we can write
+      \[
+         \tilde{v} = c_1u_1 + c_2u_2 + \cdots + c_mu_m + d_1c_1' + d_2c_2' + \cdots + d_kc_k',
+      \]
+      where $u_i \in \mathscr{B}_U$, $c_j' \in \mathscr{C}$, and $c_i, d_j \in \mathbb{F}$. Then 
+      \[
+         \tilde{v} + U = (d_1c_1' + d_2c_2' + \cdots + d_kc_k') + U = d_1(c_1' + U) + d_2(c_2' + U) + \cdots + d_k(c_k' + U),
+      \]
+      so $\tilde{v} + U$ is in the span of $\mathscr{B}_{V/U}$. Thus, $\mathscr{B}_{V/U}$ spans $V/U$. \\ 
+      Next we show that $\mathscr{B}_{V/U}$ is linearly independent. Suppose 
+      \[
+         a_1(q(c_1')) + a_2(q(c_2')) + \cdots + a_k(q(c_k')) = 0,
+      \]
+      for some $c_i' \in \mathscr{C}$ and $a_i \in \mathbb{F}$. Then 
+      \[
+         q(a_1c_1' + a_2c_2' + \cdots + a_kc_k') = 0,
+      \]
+      so $a_1c_1' + a_2c_2' + \cdots + a_kc_k' \in U$. Since $c_i' \in \mathscr{C}$ and $\mathscr{C}$ is linearly independent, we must have $a_i = 0$ for all $i$. Thus, $\mathscr{B}_{V/U}$ is linearly independent. \\ 
+      We have shown that $\mathscr{B}_{V/U}$ spans $V/U$ and is linearly independent, so it is a basis for $V/U$.
+   \end{proof}
+\end{enumerate}
 
 
 
 \begin{problem} \\ 
+   \textit{Dual Space.} Let $V$ be a vector space over $\mathbb{F}$.
    \begin{enumerate}[a)]
-    \item We say that $V$ is a basis for $V$ if 
+      \item Define the \underline{dual space} of $V$. \\ 
+      We denote the dual space by $V^*$, and call its elements \underline{functionals}.
+      \item Suppose $V$ is finite dimensional and $\mathscr{B}$ is a basis for $V$. For $v \in \mathscr{B}$ define a functional $\varphi_v \in V^*$ by the following values on every $u \in \mathscr{B}$,
+      \[
+         \varphi_v(u) = \begin{cases}
+            1 & \text{if } u = v, \\
+            0 & \text{if } u \neq v.
+         \end{cases}
+      \]
+      Show that $\mathscr{B}^* = \{\varphi_v : v \in \mathscr{B}\}$ is a basis for $V^*$ (it is called the dual basis to $\mathscr{B}$). \\
+      In particular, $\dim(V^*) = \dim(V)$.
+      \item Write down a natural isomorphism
+      \[
+         \mathbb{F}^n_{\text{row}} \to (\mathbb{F}^n_{\text{col}})^*.
+      \]
    \end{enumerate}
 \end{problem}
 
 
-
-
-\begin{problem}
+\begin{enumerate}[a)]
+   \item According to the definition given in class, the dual space of $V$, denoted $V^*$, is $\operatorname{Hom}(V, \mathbb{F})$, the set of all linear transformations from $V$ to $\mathbb{F}$. 
    
+   \item \begin{proof}
+      We show that $\mathscr{B}^* = \{ \varphi_v : v \in \mathscr{B} \}$ is a basis for $V^*$. \\
+      First we show that $\mathscr{B}^*$ spans $V^*$. For any $\psi \in V^*$, since $\mathscr{B}$ is a basis for $V$, we can write any $x \in V$ as $x = a_1b_1 + a_2b_2 + \cdots + a_nb_n$ for some $b_i \in \mathscr{B}$ and $a_i \in \mathbb{F}$. Then we have that 
+      \[
+         \psi(x) = \psi(a_1b_1 + a_2b_2 + \cdots + a_nb_n) = a_1\psi(b_1) + a_2\psi(b_2) + \cdots + a_n\psi(b_n).
+      \]
+      Since $\psi \in V^*$, we can express $\psi(b_i)$ in terms of the dual basis elements:
+      \[
+         \psi(b_i) = \varphi_{b_i}(b_i) = 1 \quad \text{and} \quad \psi(b_j) = 0 \text{ for } j \neq i.
+      \]
+      Thus,
+      \[
+         \psi(x) = a_i\varphi_{b_i}(b_i) = a_i.
+      \]
+      This shows that $\mathscr{B}^*$ spans $V^*$. \\
+      Next we show that $\dim(V^*) = \dim(V)$. Since $\mathscr{B}$ is a basis for $V$, we have that $\dim(V) = |\mathscr{B}|$. Since $\mathscr{B}^*$ is constructed by taking one functional $\varphi_v$ for each $v \in \mathscr{B}$, we have that $|\mathscr{B}^*| = |\mathscr{B}|$. Thus, $\dim(V^*) = |\mathscr{B}^*| = |\mathscr{B}| = \dim(V)$. \\
+   \end{proof}
+   \item The natural isomorphism $\Phi: \mathbb{F}^n_{\text{row}} \to (\mathbb{F}^n_{\text{col}})^*$ is given by
+   \[
+      \Phi((a_1, a_2, \ldots, a_n))((x_1, x_2, \ldots, x_n)^T) = a_1x_1 + a_2x_2 + \cdots + a_nx_n,
+   \]
+   where $(a_1, a_2, \ldots, a_n) \in \mathbb{F}^n_{\text{row}}$ and $(x_1, x_2, \ldots, x_n)^T \in \mathbb{F}^n_{\text{col}}$. This map is linear, bijective, and thus an isomorphism.
+\end{enumerate}
+
+
+
+\begin{problem} \\ 
+   \textit{Determinant.} Denote $\mathbb{F}^2_{\text{col}}$ the vector space of column vectors of length two over a field $\mathbb{F}$. We assume that $-1 \neq 1$ in $\mathbb{F}$.
+   \begin{enumerate}[a)]
+      \item Complete the definition: The vector space $\Lambda(\mathbb{F}^2_{\text{col}})$, called the \underline{determinant} of $\mathbb{F}^2_{\text{col}}$, is the collection of functions 
+      \[
+         \mathscr{A}: (\mathbb{F}^2_{\text{col}}) \times (\mathbb{F}^2_{\text{col}}) \to \mathbb{F},
+      \]
+      that satisfies:
+      \begin{enumerate}[1.]
+         \item \textit{Multilinearity:} Namely,
+         \item \textit{Skew-symmetry:} Namely,
+      \end{enumerate}
+      \item Show that 
+      \begin{enumerate}[1.]
+         \item An element, $\mathscr{A} \in \Lambda(\mathbb{F}^2_{\text{col}})$, is completely determined by the value 
+         \[
+            \mathscr{A}((1,0),(0,1)).
+         \]
+         \item Show that $\Lambda(\mathbb{F}^2_{\text{col}})$ is $1$-dimensional.
+         \item Verify that the element $\mathscr{A}_1\in \Lambda(\mathbb{F}^2_{\text{col}})$ that satisfies
+         \[
+            \mathscr{A}_1((1,0),(0,1)) = 1,
+         \]
+         has the formula 
+         \[
+            \mathscr{A}_1((x,y),(x',y')) = xy' - x'y.
+         \]
+      \end{enumerate}
+      \item Consider the natural action $M[\mathscr{A}]$ of a matrix $M \in M_2(\mathbb{F})$ on an element $\mathscr{A} \in \Lambda(\mathbb{F}^2_{\text{col}})$, where $M(\mathscr{A})$ is given by
+      \[
+         M[\mathscr{A}]((x,y),(x',y')) = \mathscr{A}((x,y)M,(x',y')M).
+      \]
+      Compute a formula for the scalar $d(M) \in \mathbb{F}$, such that 
+      \[
+         M[\mathscr{A}] = d(M) \cdot \mathscr{A}.
+      \]
+      \textit{Hint:} Since $\dim(\Lambda(\mathbb{F}^2_{\text{col}})) = 1$, the linear transformation on $\Lambda(\mathbb{F}^2_{\text{col}})$ is given by $\mathscr{A} \mapsto M[\mathscr{A}]$ is just multiplication by a scalar $d(M)$. For 
+      \[
+         M = \begin{pmatrix}
+            a & b \\
+            c & d
+         \end{pmatrix},
+      \]
+      this scalar can be computed by computing both sides of (1) in the following case
+      \[
+         M[\mathscr{A}_1]((1,0),(0,1)) = d(M) \cdot \mathscr{A}_1((1,0),(0,1)),
+      \]
+      where $\mathscr{A}_1$ is the function defined in the previous section.
+      \end{enumerate}
 \end{problem}
 
+
+
+
+\begin{enumerate}[a)]
+   \item Complete the definition: The vector space $\Lambda(\mathbb{F}^2_{\text{col}})$, called the \underline{determinant} of $\mathbb{F}^2_{\text{col}}$, is the collection of functions 
+      \[
+         \mathscr{A}: (\mathbb{F}^2_{\text{col}}) \times (\mathbb{F}^2_{\text{col}}) \to \mathbb{F},
+      \]
+      that satisfies:
+      \begin{enumerate}[1.]
+         \item \textit{Multilinearity:} Namely, for all $u, v, w \in \mathbb{F}^2_{\text{col}}$ and all $c \in \mathbb{F}$, 
+         \[
+            \mathscr{A}((u+v), w) = \mathscr{A}(u, w) + \mathscr{A}(v, w),
+         \]
+         \[
+            \mathscr{A}(u, (v+w)) = \mathscr{A}(u, v) + \mathscr{A}(u, w),
+         \]
+         \[
+            \mathscr{A}((cu), v) = c \cdot \mathscr{A}(u, v),
+         \]
+         \[
+            \mathscr{A}(u, (cv)) = c \cdot \mathscr{A}(u, v).
+         \]
+         \item \textit{Skew-symmetry:} Namely, for all $u, v \in \mathbb{F}^2_{\text{col}}$,
+         \[
+            \mathscr{A}(u, v) = -\mathscr{A}(v, u).
+         \]
+      \end{enumerate}
+   \item \begin{enumerate}[1.]
+      \item \begin{proof}
+         Let $\mathscr{A} \in \Lambda(\mathbb{F}^2_{\text{col}})$. For any $(x,y), (x',y') \in \mathbb{F}^2_{\text{col}}$, we can write
+         \[
+            (x,y) = x(1,0) + y(0,1),
+         \]
+         \[
+            (x',y') = x'(1,0) + y'(0,1).
+         \]
+         Then by multilinearity, we have
+         \[
+            \mathscr{A}((x,y),(x',y')) = \mathscr{A}(x(1,0) + y(0,1), x'(1,0) + y'(0,1)).
+         \]
+         Expanding this using multilinearity, we get
+         \[
+            = xx'\mathscr{A}((1,0),(1,0)) + xy'\mathscr{A}((1,0),(0,1)) + yx'\mathscr{A}((0,1),(1,0)) + yy'\mathscr{A}((0,1),(0,1)).
+         \]
+         By skew-symmetry, we have $\mathscr{A}((1,0),(1,0)) = 0$ and $\mathscr{A}((0,1),(0,1)) = 0$. Also by skew-symmetry, we have $\mathscr{A}((0,1),(1,0)) = -\mathscr{A}((1,0),(0,1))$. Thus,
+         \[
+            \mathscr{A}((x,y),(x',y')) = xy'\mathscr{A}((1,0),(0,1)) - yx'\mathscr{A}((1,0),(0,1)) = (xy' - yx')\mathscr{A}((1,0),(0,1)).
+         \]
+         This shows that $\mathscr{A}$ is completely determined by the value $\mathscr{A}((1,0),(0,1))$.
+      \end{proof}
+      \item \begin{proof}
+         From part (1), we have that any $\mathscr{A} \in \Lambda(\mathbb{F}^2_{\text{col}})$ is completely determined by the value $\mathscr{A}((1,0),(0,1))$. Thus, we can define a linear transformation $\Phi: \Lambda(\mathbb{F}^2_{\text{col}}) \to \mathbb{F}$ by $\Phi(\mathscr{A}) = \mathscr{A}((1,0),(0,1))$. This map is linear and surjective. The kernel of this map is the set of all $\mathscr{A}$ such that $\mathscr{A}((1,0),(0,1)) = 0$. But from part (1), this means that $\mathscr{A}$ is the zero map. Thus, the kernel is trivial, so $\Phi$ is injective. Hence, $\Phi$ is an isomorphism. Since $\mathbb{F}$ is 1-dimensional, we have that $\Lambda(\mathbb{F}^2_{\text{col}})$ is also 1-dimensional.
+      \end{proof}
+      \item \begin{proof}
+         Let $\mathscr{A}_1 \in \Lambda(\mathbb{F}^2_{\text{col}})$ be such that $\mathscr{A}_1((1,0),(0,1)) = 1$. For any $(x,y), (x',y') \in \mathbb{F}^2_{\text{col}}$, we have
+         \begin{align*}
+            \mathscr{A}_1((x,y),(x',y')) &= \mathscr{A}_1(x(1,0) + y(0,1), x'(1,0) + y'(0,1)) \\
+            &= xx'\mathscr{A}_1((1,0),(1,0)) + xy'\mathscr{A}_1((1,0),(0,1)) + yx'\mathscr{A}_1((0,1),(1,0)) + yy'\mathscr{A}_1((0,1),(0,1)) \\
+            &= xy' \cdot 1 + yx' \cdot (-1) \\
+            &= xy' - yx'.
+         \end{align*}
+         Thus, $\mathscr{A}_1((x,y),(x',y')) = xy' - yx'$.
+      \end{proof}
+   \end{enumerate}
+   \item We compute the formula for the scalar $d(M) \in \mathbb{F}$ such that 
+      \[
+         M[\mathscr{A}] = d(M) \cdot \mathscr{A}.
+      \]
+      Let 
+      \[
+         M = \begin{pmatrix}
+            a & b \\
+            c & d
+         \end{pmatrix}.
+      \]
+      We compute both sides of the equation
+      \[
+         M[\mathscr{A}_1]((1,0),(0,1)) = d(M) \cdot \mathscr{A}_1((1,0),(0,1)).
+      \]
+      First, we compute the left side:
+      \begin{align*}
+         M[\mathscr{A}_1]((1,0),(0,1)) &= \mathscr{A}_1((1,0)M,(0,1)M) \\
+         &= \mathscr{A}_1((a,c),(b,d)) \\
+         &= ad - bc.
+      \end{align*}
+      Next, we compute the right side:
+      \[
+         d(M) \cdot \mathscr{A}_1((1,0),(0,1)) = d(M) \cdot 1 = d(M).
+      \]
+      Equating both sides, we have
+      \[
+         ad - bc = d(M).
+      \]
+      Thus, the formula for the scalar $d(M)$ is 
+      \[
+         d(M) = ad - bc,
+      \]
+      which is the determinant of the matrix $M$.
+\end{enumerate}
 
 
 \end{document}
