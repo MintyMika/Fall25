@@ -10,7 +10,7 @@
 \usepackage{indentfirst}
 \usepackage{mathrsfs}
 \usepackage{hyperref}
-\graphicspath{./}
+\graphicspath{{./}{gr/}}
 \makeatletter
 \newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
 \makeatother
@@ -21,11 +21,18 @@
 
 % \renewcommand{\labelenumi}{\alph{enumi})}
 \def\zz{{\mathbb Z}}
-\def\rr{{\mathbb R}}
+\def\R{{\mathbb R}}
 \def\qq{{\mathbb Q}}
 \def\cc{{\mathbb C}}
-\def\nn{{\mathbb N}}
+\def\N{{\mathbb N}}
 \def\ss{{\mathbb S}}
+
+\newcommand{\p}{\partial}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\Lag}{\mathcal{L}}
+\newcommand{\sep}{\,:\,}
+
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
@@ -49,7 +56,191 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 
 \begin{problem} \\ 
-  Something in here.
+  \textbf{Finite difference approximation (3 points).}
+        Let $f: \R \to \R$ be a smooth function, and let $x_1<x_2<x_3<x_4$ be
+        four increasing values.
+        \begin{enumerate}[a)]
+          \item Derive a finite difference (FD) approximation for $f''(x_2)$ that
+                is as accurate as possible, based on the four values of $f_1=f(x_1),
+                  \ldots, f_4 = f(x_4)$. Calculate an expression for the dominant term
+                in the error.
+          \item Write a program to test the FD approximation
+                on the function
+                \begin{equation}
+                  f(x) = e^{-x} \tan x.
+                \end{equation}
+                Consider step sizes of $H=10^{-k/100}$ for $k={100,101,\ldots,300}$.
+                For each $H$, set $x_1=0$ and $x_4=H$. Choose $x_2$ and $x_3$ as uniformly
+                randomly distributed random numbers over the range from $0$ to
+                $H$.\footnote{If $x_2>x_3$, then swap the two values to ensure the
+                  ordering is preserved. If $x_2=x_3$, then choose new random numbers.}
+                Make a log--log plot showing the absolute error magnitude $E$ of the FD
+                approximation versus $H$. Use linear regression to fit the data to
+                \begin{equation}
+                  E = C H^p
+                \end{equation}
+                and determine $C$ and $p$ to three significant figures.\footnote{Since sample
+                  points for the FD approximation are randomly chosen, there will be
+                  small variations in the values of $C$ and $p$ that you compute.}
+          \item \textbf{Optional.}\footnote{Optional questions are not graded.}
+                Examine and discuss whether your value of the
+                fitted parameter $C$ is consistent with the dominant error term from
+                part (a).
+        \end{enumerate}
+\end{problem}
+
+
+\begin{enumerate}[a)]
+  \item Using the method of undetermined coefficients as explained in class and in textbook, we seek to find coefficients
+        $a,b,c,d$ such that
+        \begin{equation}
+          f''(x_2) = a f(x_1) + b f(x_2) + c f(x_3) + d f(x_4) + E
+        \end{equation}
+        where $E$ is the error term. Using Taylor expansions about $x_2$, we have
+        \begin{align}
+          f(x_1) & = f(x_2) + f'(x_2)(x_1-x_2) + \frac{f''(x_2)}{2}(x_1-x_2)^2 + \frac{f^{(3)}(x_2)}{6}(x_1-x_2)^3 + \frac{f^{(4)}(\xi_1)}{24}(x_1-x_2)^4, \\
+          f(x_3) & = f(x_2) + f'(x_2)(x_3-x_2) + \frac{f''(x_2)}{2}(x_3-x_2)^2 + \frac{f^{(3)}(x_2)}{6}(x_3-x_2)^3 + \frac{f^{(4)}(\xi_3)}{24}(x_3-x_2)^4, \\
+          f(x_4) & = f(x_2) + f'(x_2)(x_4-x_2) + \frac{f''(x_2)}{2}(x_4-x_2)^2 + \frac{f^{(3)}(x_2)}{6}(x_4-x_2)^3 + \frac{f^{(4)}(\xi_4)}{24}(x_4-x_2)^4,
+        \end{align}
+        where $\xi_i$ is some point between $x_i$ and $x_2$. Substituting these into
+        the original equation and collecting terms gives
+        \begin{align}
+          f''(x_2) & = (a+b+c+d)f(x_2)                                                                                     \\
+                   & \phantom{=}+ (a(x_1-x_2)+c(x_3-x_2)+d(x_4-x_2))f'(x_2)                                               \\
+                   & \phantom{=}+ \left(\frac{a(x_1-x_2)^2}{2} + \frac{c(x_3-x_2)^2}{2} + \frac{d(x_4-x_2)^2}{2}\right)f''(x_2)               \\
+                   & \phantom{=}+ \left(\frac{a(x_1-x_2)^3}{6} + \frac{c(x_3-x_2)^3}{6} + \frac{d(x_4-x_2)^3}{6}\right)f^{(3)}(x_2)               \\
+                   & \phantom{=}+ \left(\frac{a(x_1-x_2)^4}{24}f^{(4)}(\xi_1) + \frac{c(x_3-x_2)^4}{24}f^{(4)}(\xi_3) + \frac{d(x_4-x_2)^4}{24}f^{(4)}(\xi_4)\right).
+        \end{align}
+        To ensure that the approximation is exact for polynomials of degree up to 3, we require that the coefficients of $f(x_2)$, $f'(x_2)$, $f''(x_2)$, and $f^{(3)}(x_2)$ match on both sides, leading to the system of equations:
+        \begin{align}
+          a + b + c + d & = 0, \\
+          a(x_1 - x_2) + c(x_3 - x_2) + d(x_4 - x_2) & = 0, \\
+          \frac{a(x_1 - x_2)^2}{2} + \frac{c(x_3 - x_2)^2}{2} + \frac{d(x_4 - x_2)^2}{2} & = 1, \\
+          \frac{a(x_1 - x_2)^3}{6} + \frac{c(x_3 - x_2)^3}{6} + \frac{d(x_4 - x_2)^3}{6} & = 0.
+        \end{align}
+\end{enumerate}
+
+
+
+\begin{problem} \\ 
+  \textbf{Mixed boundary value problem (5 points).}
+        For a smooth function $u(x)$ and source term $f(x)$, consider the two
+        point boundary value problem (BVP)
+        \begin{equation}
+          u''+u = f(x)
+        \end{equation}
+        on the domain $x\in [0,\pi]$, using the mixed boundary conditions
+        \begin{equation}
+          u'(0) - u(0) = 0, \qquad u'(\pi) + u(\pi) =0.
+        \end{equation}
+        \begin{enumerate}[a)]
+          \item Use a mesh width of $h=\pi/n$ where $n\in \N$ and introduce grid
+                points at $x_j=jh$ for $j=0,1,\ldots, n$. Construct a second-order
+                accurate finite-difference method for this BVP. Write
+                your method as a linear system of the form $AU=F$.
+          \item Construct the exact solution $u(x)$ to the BVP when $f(x)=-e^x$.
+          \item Verify that your method is second-order accurate by solving the BVP
+                with $f(x)=-e^x$ using $n=20,40,80,160$. For each $n$, construct the
+                error measure
+                \begin{equation}
+                  E_n = \sqrt{ h \sum_{j=0}^n q_j (U_j - u(x_j))^2 }
+                \end{equation}
+                where $U_j$ is the numerical solution at $x_j$. Here, $q_j = \tfrac12$
+                when $j\in \{0,n\}$ and $q_j=1$ otherwise. Present your results in a
+                table, and comment on whether the trend in the errors is expected for a
+                second-order method.
+        \end{enumerate}
+\end{problem}
+
+
+
+\begin{problem} \\ 
+  \textbf{Nonlinear BVP (4 points).}
+        Consider the nonlinear BVP
+        \begin{equation}
+          u''(x) - 80\cos u(x) = 0
+        \end{equation}
+        with the boundary conditions $u(0)=0$ and $u(1)=10$. Define the mesh width
+        $h=\tfrac1n$ for $n\in \N$, and introduce gridpoints $x_j=jh$ for
+        $j=0,1,\ldots,n$.
+
+        Let $U_i$ be the approximation of $u(x_i)$. From the boundary conditions,
+        $U_0=0$ and $U_n=10$. Let $U=(U_1,U_2,\ldots,U_{n-1})$ be the vector of
+        unknown function values, and write $F(U)=0$ as the nonlinear system
+        of algebraic equations from the finite-difference approximation, where
+        $F:\R^{n-1} \to \R^{n-1}$. The components are
+        \begin{align}
+          F_1(U)     & = \frac{U_2 - 2U_1}{h^2} - 80 \cos U_1,                                                 \\
+          F_i(U)     & = \frac{U_{i+1} - 2U_i+ U_{i-1}}{h^2} - 80 \cos U_i \qquad \text{for $i=2,\ldots,n-2$,} \\
+          F_{n-1}(U) & = \frac{10 - 2U_{n-1} + U_{n-2}}{h^2} - 80 \cos U_{n-1}.
+        \end{align}
+        \begin{enumerate}[a)]
+          \item Calculate the Jacobian $J_F \in \R^{(n-1)\times(n-1)}$ for the function $F$ and
+                describe its structure.
+          \item Use Newton's method to solve the BVP for $n=100$, using the Jacobian matrix from part (a). Write $U^k$ to indicate the $k$th Newton step, and start with the initial guess $U^0=0$. Terminate Newton's method when the relative step size $\|\Delta U^k\|_2 / \|U^k\|_2$ is less than $10^{-10}$. Plot the solution $U$ over the interval $[0,1]$, and report the value of $U_{50}$ to three significant figures.
+        \end{enumerate}
+\end{problem}
+
+
+
+
+\begin{problem} \\ 
+  \textbf{FD in a triangular domain (8 points).}
+        Let $T$ be a domain in the shape of an equilateral triangle with vertices
+        at $(0,0)$, $(1,0)$, and $(\tfrac12,s)$ where $s=\tfrac{\sqrt{3}}{2}$. For $n \in \N$,
+        define $h=\tfrac{1}{n}$, and introduce grid points
+        \begin{equation}
+          \vx_{i,j} = (h(i+\tfrac12 j), hsj))
+        \end{equation}
+        for $0\le i\le n$, $0\le j \le n-i$. An example grid for $n=7$ is shown in
+        Fig.~\ref{fig:tri}. The grid points on the boundary $\p T$ correspond to
+        $i=0$, $j=0$, or $i+j=n$. All other points are defined as a interior points.
+        \begin{enumerate}
+          \item Let $u: T \to \R$ be a smooth function, and write $u_{i,j} =
+                  u(\vx_{i,j})$. For an interior point $\vx_{i,j}$, consider the finite
+                difference approximation
+                \begin{equation}
+                  \nabla^2_3u_{i,j} = \alpha u_{i,j} + \beta u_{i+1,j} + \gamma u_{i,j-1} + \delta u_{i-1,j+1}. \label{eq:lap1}
+                \end{equation}
+                Derive the values of $\alpha$, $\beta$, $\gamma$, and $\delta$ so that
+                \begin{equation}
+                  \nabla^2_3u_{i,j} = \nabla^2 u (\vx_{i,j}) + h W + O(h^2)
+                \end{equation}
+                and determine the form of $W$ in terms of partial derivatives of $u$.
+                By considering the function $u(x,y)=x^3$ show that $\nabla^2_3 u_{i,j}$
+                is a first-order accurate approximation for $\nabla^2 u(\vx_{i,j})$,
+                but it is not second-order accurate.
+          \item Using your result from part (a), or otherwise, determine
+                the constants $c_0,c_1,\ldots, c_6$ such that the finite difference
+                approximation
+                \begin{align}
+                  \nabla^2_6u_{i,j} & = c_0 u_{i,j} + c_1 u_{i+1,j} + c_2 u_{i,j-1} + c_3 u_{i-1,j+1} \nonumber   \\
+                                    & \phantom{=}+c_4 u_{i-1,j} + c_5 u_{i,j+1} + c_6 u_{i+1,j-1} \label{eq:lap2}
+                \end{align}
+                satisfies $\nabla^2_6u_{i,j} = \nabla^2 u(\vx_{i,j}) + O(h^2)$.
+          \item Write a program to solve the equation
+                \begin{equation}
+                  \nabla^2 u = f
+                \end{equation}
+                on the domain $T$ using the boundary conditions that $u(\vx)=0$ for
+                $\vx\in \p T$. Using the method of manufactured solutions, determine
+                the value of $f(x,y)$ such that the solution will be
+                \begin{equation}
+                  u^{\text{ex}}(x,y) = \left( (2y-\sqrt{3})^2- 3(2x-1)^2 \right) \sin y.
+                \end{equation}
+                Consider values of $n=10,20,40,80,160$, and compute the error measure
+                \begin{equation}
+                  E_n = \sqrt{\frac{s}{2n^2} \sum_{j=1}^{n-1} \sum_{i=1}^{n-j-1} (u_{i,j}-u^{\text{ex}}(\vx_{i,j}))^2}.
+                \end{equation}
+                Make a log--log plot of $E_n$ versus $n$, and use linear regression to
+                fit the data to $E_n = C n^{-p}$, reporting your values of $C$ and $p$ to
+                three significant figures.
+          \item Repeat part (c) for the finite difference approximation given in Eq.~\eqref{eq:lap2}.
+        \end{enumerate}
+        %\setlength{\unitlength}{0.0042\textwidth}
+        \begin{center}
+          \includegraphics[width=1.0\textwidth]{tri.png}
+        \end{center}
 \end{problem}
 
 
