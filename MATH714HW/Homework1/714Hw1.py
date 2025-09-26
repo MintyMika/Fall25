@@ -1,31 +1,4 @@
 def problem1():
-    # Problem statement: 
-    # Let $f: \R \to \R$ be a smooth function, and let $x_1<x_2<x_3<x_4$ be
-    #     four increasing values.
-    #     \begin{enumerate}[(a)]
-    #       \item Derive a finite difference (FD) approximation for $f''(x_2)$ that
-    #             is as accurate as possible, based on the four values of $f_1=f(x_1),
-    #               \ldots, f_4 = f(x_4)$. Calculate an expression for the dominant term
-    #             in the error.
-    #       \item Write a program to test the FD approximation
-    #             on the function
-    #             \begin{equation}
-    #               f(x) = e^{-x} \tan x.
-    #             \end{equation}
-    #             Consider step sizes of $H=10^{-k/100}$ for $k={100,101,\ldots,300}$.
-    #             For each $H$, set $x_1=0$ and $x_4=H$. Choose $x_2$ and $x_3$ as uniformly
-    #             randomly distributed random numbers over the range from $0$ to
-    #             $H$.\footnote{If $x_2>x_3$, then swap the two values to ensure the
-    #               ordering is preserved. If $x_2=x_3$, then choose new random numbers.}
-    #             Make a log--log plot showing the absolute error magnitude $E$ of the FD
-    #             approximation versus $H$. Use linear regression to fit the data to
-    #             \begin{equation}
-    #               E = C H^p
-    #             \end{equation}
-    #             and determine $C$ and $p$ to three significant figures.\footnote{Since sample
-    #               points for the FD approximation are randomly chosen, there will be
-    #               small variations in the values of $C$ and $p$ that you compute.}
-
     # Finite Difference Approximation Testing on the function f(x) = e^{-x}\tan(x). Also plot the log-log plot of error magnitude E vs H as well as a linear regression fit to E = C*H^p and determine C and p to three significant figures.
     # import statements
     import numpy as np
@@ -37,11 +10,80 @@ def problem1():
     def f(x):
         return exp(-x) * tan(x)
 
+    def f_double_prime(x):
+        return exp(-x) * (2 * tan(x)**3 - 2 * tan(x)**2 + 2 * tan(x) - 1)
+    
+    # Finite difference approximation for f''(x2)
+    def finite_difference_approximation(f1, f2, f3, f4, x1, x2, x3, x4):
+        # Using the method of undetermined coefficients I derived the following formula:
+        a = (2*x2 - x3 - x4) / ((x1 - x2)*(x1 - x3)*(x1 - x4))
+        b = (2*x2 - x1 - x4) / ((x2 - x1)*(x2 - x3)*(x2 - x4))
+        c = (2*x2 - x1 - x4) / ((x3 - x1)*(x3 - x2)*(x3 - x4))
+        d = (2*x2 - x1 - x3) / ((x4 - x1)*(x4 - x2)*(x4 - x3))
 
-    pass
+        return a*f1 + b*f2 + c*f3 + d*f4
+    
+    # Parameters
+    H_values = [10**(-k/100) for k in range(100, 301)]  #
+    errors = []
+    x1 = 0
+    x2 = None  # Will be randomly chosen < x3
+    x3 = None  # Will be randomly chosen > x2
+    x4 = None  # Will be set to H in the loop
+    true_value = f_double_prime(0)  # f''(0)
+
+    for H in H_values:
+        x4 = H
+        # Randomly choose x2 and x3
+        while True:
+            x2, x3 = np.sort(np.random.uniform(0, H, 2))
+            if x2 != x3:
+                break
+        
+        # Make sure x2 < x3
+        x2, x3 = min(x2, x3), max(x2, x3)
+
+
+        # Function values
+        f1 = f(x1)
+        f2 = f(x2)
+        f3 = f(x3)
+        f4 = f(x4)
+
+        approx = finite_difference_approximation(f1, f2, f3, f4, x1, x2, x3, x4)
+        error = abs(approx - true_value)
+        errors.append(error)
+
+    # Log-log plot
+    plt.figure()
+    plt.loglog(H_values, errors, marker='o', linestyle='None')
+    plt.xlabel('H')
+    plt.ylabel('Error')
+    plt.title('Error of Finite Difference Approximation')
+    plt.grid()
+
+    # Linear regression
+    log_H = np.log(H_values)
+    log_errors = np.log(errors)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(log_H, log_errors)
+    C = np.exp(intercept)
+    p = slope
+
+    # Print C and p
+    print(f"C: {C:.3}, p: {p:.3}")
+
+    plt.loglog(H_values, C * H_values**p, linestyle='--', color='r')
+    plt.legend(['Error', f'Fit: E = {C:.3f} H^{p:.3f}'])
+    plt.show()
+
 
 def problem2():
-    # TODO: Implement solution for Homework Problem 2
+    # Problem Statement 2:
+
+
+
+
+    
     pass
 
 def problem3():

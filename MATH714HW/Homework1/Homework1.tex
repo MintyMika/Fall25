@@ -131,7 +131,13 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
           E = \left(\frac{a(x_1-x_2)^4}{24}f^{(4)}(\xi_1) + \frac{c(x_3-x_2)^4}{24}f^{(4)}(\xi_3) + \frac{d(x_4-x_2)^4}{24}f^{(4)}(\xi_4)\right).
         \end{equation}
         So we have a third-order accurate finite difference approximation for $f''(x_2)$.
-  \item See the attached code file \texttt{714Hw1.py} for the implementation of the finite difference approximation and the testing on the function $f(x) = e^{-x} \tan x$. The log-log plot of the absolute error magnitude $E$ versus $H$ is shown below, along with the results of the linear regression fit to $E = C H^p$.
+  \item See the attached code file \texttt{714Hw1.py} for the implementation of the finite difference approximation and the testing on the function $f(x) = e^{-x} \tan x$. The log-log plot of the absolute error magnitude $E$ versus $H$ is shown below, along with the results of the linear regression fit to $E = C H^p$ showing the values of $C$ and $p$ to three significant figures.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Q1b.png}
+    \caption{Log-log plot of absolute error magnitude $E$ versus step size $H$. The dashed line represents the linear regression fit to $E = C H^p$.}
+    % \label{fig:loglog_plot}
+  \end{figure}
 \end{enumerate}
 
 
