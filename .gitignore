@@ -12,6 +12,27 @@
 *.cb2
 .*.lb
 
+# Python virtual environments
+venv/
+env/
+.venv/
+.env/
+ENV/
+.Python
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pyenv
+.python-version
+
+# virtualenv
+*.pyc
+__pycache__/
+
 ## Intermediate documents:
 *.dvi
 *.xdv
