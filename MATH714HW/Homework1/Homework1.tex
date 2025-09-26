@@ -59,7 +59,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
   \textbf{Finite difference approximation (3 points).}
         Let $f: \R \to \R$ be a smooth function, and let $x_1<x_2<x_3<x_4$ be
         four increasing values.
-        \begin{enumerate}[a)]
+        \begin{enumerate}[(a)]
           \item Derive a finite difference (FD) approximation for $f''(x_2)$ that
                 is as accurate as possible, based on the four values of $f_1=f(x_1),
                   \ldots, f_4 = f(x_4)$. Calculate an expression for the dominant term
@@ -90,8 +90,8 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \end{problem}
 
 
-\begin{enumerate}[a)]
-  \item Using the method of undetermined coefficients as explained in class and in textbook, we seek to find coefficients
+\begin{enumerate}[(a)]
+  \item Using the method of undetermined coefficients as explained in class and in the textbook, we seek to find coefficients
         $a,b,c,d$ such that
         \begin{equation}
           f''(x_2) = a f(x_1) + b f(x_2) + c f(x_3) + d f(x_4) + E
@@ -113,11 +113,25 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \end{align}
         To ensure that the approximation is exact for polynomials of degree up to 3, we require that the coefficients of $f(x_2)$, $f'(x_2)$, $f''(x_2)$, and $f^{(3)}(x_2)$ match on both sides, leading to the system of equations:
         \begin{align}
+          % Is this right? or is it supposed to be f_i instead of x_i?
           a + b + c + d & = 0, \\
           a(x_1 - x_2) + c(x_3 - x_2) + d(x_4 - x_2) & = 0, \\
           \frac{a(x_1 - x_2)^2}{2} + \frac{c(x_3 - x_2)^2}{2} + \frac{d(x_4 - x_2)^2}{2} & = 1, \\
           \frac{a(x_1 - x_2)^3}{6} + \frac{c(x_3 - x_2)^3}{6} + \frac{d(x_4 - x_2)^3}{6} & = 0.
         \end{align}
+        Solving this system yields the coefficients:
+        \begin{align*}
+          a & = \frac{2x_2 - x_3 - x_4}{(x_1 - x_2)(x_1 - x_3)(x_1 - x_4)}, \\
+          b & = \frac{2x_2 - x_1 - x_4}{(x_2 - x_1)(x_2 - x_3)(x_2 - x_4)}, \\
+          c & = \frac{2x_2 - x_1 - x_4}{(x_3 - x_1)(x_3 - x_2)(x_3 - x_4)}, \\
+          d & = \frac{2x_2 - x_1 - x_3}{(x_4 - x_1)(x_4 - x_2)(x_4 - x_3)}.
+        \end{align*}
+        The dominant term in the error is given by
+        \begin{equation}
+          E = \left(\frac{a(x_1-x_2)^4}{24}f^{(4)}(\xi_1) + \frac{c(x_3-x_2)^4}{24}f^{(4)}(\xi_3) + \frac{d(x_4-x_2)^4}{24}f^{(4)}(\xi_4)\right).
+        \end{equation}
+        So we have a third-order accurate finite difference approximation for $f''(x_2)$.
+  \item See the attached code file \texttt{714Hw1.py} for the implementation of the finite difference approximation and the testing on the function $f(x) = e^{-x} \tan x$. The log-log plot of the absolute error magnitude $E$ versus $H$ is shown below, along with the results of the linear regression fit to $E = C H^p$.
 \end{enumerate}
 
 
@@ -133,7 +147,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \begin{equation}
           u'(0) - u(0) = 0, \qquad u'(\pi) + u(\pi) =0.
         \end{equation}
-        \begin{enumerate}[a)]
+        \begin{enumerate}[(a)]
           \item Use a mesh width of $h=\pi/n$ where $n\in \N$ and introduce grid
                 points at $x_j=jh$ for $j=0,1,\ldots, n$. Construct a second-order
                 accurate finite-difference method for this BVP. Write
@@ -151,6 +165,165 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
                 second-order method.
         \end{enumerate}
 \end{problem}
+
+
+
+
+\begin{enumerate}[(a)]
+  \item Consider the following: \\
+  % My question is when dealing with the u'' + u = f(x) does that mean that we have to incorporate the u into the matrix? What about the bourdary conditions? In the final vector is it actually 0, f(x_1), f(x_2), ..., f(x_n-1), 0 or is it something else in the first and last position? I don't know how to incorporate the boundary conditions into the matrix and the final vector. \\
+  As given in the problem statement, we have the differential equation
+  \begin{equation*}
+    u''(x) + u(x) = f(x), \quad x \in [0,\pi]
+  \end{equation*}
+  with boundary conditions
+  \begin{align*}
+    u'(0) - u(0) & = 0, \\
+    u'(\pi) + u(\pi) & = 0.
+  \end{align*}
+  We discretize the domain using a uniform grid with mesh width $h = \pi/n$ and grid points $x_j = jh$ for $j = 0, 1, \ldots, n$. Let $U_j$ be the approximation of $u(x_j)$. We will use a second-order central difference approximation for the second derivative at interior points. So for each interior point $j = 1, 2, \ldots, n-1$, we have
+  \begin{equation*}
+    u''(x_j) \approx \frac{U_{j-1} - 2U_j + U_{j+1}}{h^2}.
+  \end{equation*}
+  Substituting this into the differential equation gives
+  \begin{equation*}
+    \frac{U_{j-1} - 2U_j + U_{j+1}}{h^2} + U_j = f(x_j), \quad j = 1, 2, \ldots, n-1.
+  \end{equation*}
+  so the matrix (for the interior points) will be a tridiagonal matrix of the form
+  \begin{equation*}
+    A = \frac{1}{h^2}\begin{pmatrix}
+      -2 + h^2 & 1        & 0        & \cdots & 0        \\
+      1        & -2 + h^2 & 1        & \cdots & 0        \\
+      0        & 1        & -2 + h^2 & \cdots & 0        \\
+      \vdots   & \vdots   & \vdots   & \ddots & \vdots   \\
+      0        & 0        & 0        & \cdots & -2 + h^2
+    \end{pmatrix}.
+  \end{equation*}
+  Next, we need to incorporate the boundary conditions. For the first boundary condition at $x=0$, we can use a the second order accurate forward difference approximation for $u'(0)$:
+  \begin{equation*}
+    u'(0) \approx \frac{-3U_0 + 4U_1 - U_2}{2h}.
+  \end{equation*}
+  Substituting this into the boundary condition gives
+  \begin{align*}
+    \frac{-3U_0 + 4U_1 - U_2}{2h} - U_0 &= 0 \\
+    \frac{U_0(-3-2h) + 4U_1 - U_2}{2h} &= 0.
+  \end{align*}
+  We can then incorporate this into the first row of the matrix $A$ and the first entry of the vector $F$. The first row of $A$ becomes
+  \begin{equation*}
+    A_{0,:} = \frac{1}{2h}\begin{pmatrix}
+      -3 - 2h & 4 & -1 & 0 & \cdots & 0
+    \end{pmatrix},
+    F_0 = 0.
+  \end{equation*}
+  For the second boundary condition at $x=\pi$, we can use a second-order accurate backward difference approximation for $u'(\pi)$:
+  \begin{equation*}
+    u'(\pi) \approx \frac{3U_n - 4U_{n-1} + U_{n-2}}{2h}.
+  \end{equation*}
+  Substituting this into the boundary condition gives
+  \begin{align*}
+    \frac{3U_n - 4U_{n-1} + U_{n-2}}{2h} + U_n &= 0 \\
+    \frac{U_n(3 + 2h) - 4U_{n-1} + U_{n-2}}{2h} &= 0.
+  \end{align*}
+  We can then incorporate this into the last row of the matrix $A$ and the last entry of the vector $F$. The last row of $A$ becomes
+  \begin{equation*}
+    A_{n,:} = \frac{1}{2h}\begin{pmatrix}
+      0 & \cdots & 0 & 1 & -4 & 3 + 2h
+    \end{pmatrix},
+    F_n = 0.
+  \end{equation*}
+  Thus, we have that the linear system $AU = F$ is given by
+  \begin{equation*}
+    AU = \begin{pmatrix}
+      \frac{-3 - 2h}{2h} & \frac{4}{2h} & \frac{-1}{2h} & 0 & \cdots & 0 \\
+      \frac{1}{h^2} & \frac{-2 + h^2}{h^2} & \frac{1}{h^2} & 0 & \cdots & 0 \\
+      0 & \frac{1}{h^2} & \frac{-2 + h^2}{h^2} & \frac{1}{h^2} & \cdots & 0 \\
+      \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+      0 & 0 & 0 & \cdots & \frac{1}{h^2} & \frac{-2 + h^2}{h^2} \\
+      0 & \cdots & 0 & \frac{1}{2h} & \frac{-4}{2h} & \frac{3 + 2h}{2h}
+    \end{pmatrix}
+    \begin{pmatrix}
+      U_0 \\ U_1 \\ U_2 \\ \vdots \\ U_{n-1} \\ U_n
+    \end{pmatrix}
+    = \begin{pmatrix}
+      0 \\ f(x_1) \\ f(x_2) \\ \vdots \\ f(x_{n-1}) \\ 0
+    \end{pmatrix} = F.
+  \end{equation*}
+  Since we used second-order accurate finite difference approximations for both the interior points and the boundary conditions, the overall method is second-order accurate.
+  \item To construct the exact solution to the BVP when $f(x) = -e^x$, we first solve the corresponding homogeneous equation
+        \begin{equation*}
+          u''(x) + u(x) = 0.
+        \end{equation*}
+        The characteristic equation is $r^2 + 1 = 0$, which has solutions $r = i$ and $r = -i$. Thus, the general solution to the homogeneous equation is
+        \begin{equation*}
+          u_h(x) = C_1 \cos x + C_2 \sin x,
+        \end{equation*}
+        where $C_1$ and $C_2$ are constants to be determined by the boundary conditions.
+
+        Next, we find a particular solution to the non-homogeneous equation. We can use the method of undetermined coefficients and try a particular solution of the form
+        \begin{equation*}
+          u_p(x) = Ae^x,
+        \end{equation*}
+        where $A$ is a constant to be determined. Substituting this into the differential equation gives
+        \begin{equation*}
+          A e^x + A e^x = -e^x,
+        \end{equation*}
+        which simplifies to
+        \begin{equation*}
+          2A e^x = -e^x.
+        \end{equation*}
+        Dividing both sides by $e^x$ (which is never zero), we find
+        \begin{equation*}
+          2A = -1 \implies A = -\frac{1}{2}.
+        \end{equation*}
+        Thus, a particular solution is
+        \begin{equation*}
+          u_p(x) = -\frac{1}{2} e^x.
+        \end{equation*}
+
+        The general solution to the non-homogeneous equation is then
+        \begin{equation*}
+          u(x) = u_h(x) + u_p(x) = C_1 \cos x + C_2 \sin x - \frac{1}{2} e^x.
+        \end{equation*}
+
+        Now, we apply the boundary conditions to determine $C_1$ and $C_2$. The first boundary condition is
+        \begin{equation*}
+          u'(0) - u(0) = 0.
+        \end{equation*}
+        We first compute $u'(x)$:
+        \begin{equation*}
+          u'(x) = -C_1 \sin x + C_2 \cos x - \frac{1}{2} e^x.
+        \end{equation*}
+        Evaluating at $x = 0$ gives
+        \begin{align*}
+          u(0) & = C_1 - \frac{1}{2}, \\
+          u'(0) & = C_2 - \frac{1}{2}.
+        \end{align*}
+        Applying the first boundary condition:
+        \begin{align*}
+        u'(0) - u(0) = 0 &\implies (C_2 - \tfrac{1}{2}) - (C_1 - \tfrac{1}{2}) = 0 \\
+                 &\implies C_2 - C_1 = 0 \\
+                 &\implies C_1 = C_2.
+        \end{align*}
+
+        For the second boundary condition at $x = \pi$:
+        \begin{align*}
+        u(\pi) &= C_1 \cos \pi + C_2 \sin \pi - \tfrac{1}{2} e^{\pi} = -C_1 - \tfrac{1}{2} e^{\pi}, \\
+        u'(\pi) &= -C_1 \sin \pi + C_2 \cos \pi - \tfrac{1}{2} e^{\pi} = C_2 (-1) - \tfrac{1}{2} e^{\pi} = -C_2 - \tfrac{1}{2} e^{\pi}.
+        \end{align*}
+        The boundary condition is $u'(\pi) + u(\pi) = 0$, so:
+        \begin{align*}
+        (-C_2 - \tfrac{1}{2} e^{\pi}) + (-C_1 - \tfrac{1}{2} e^{\pi}) = 0 \\
+        -(C_1 + C_2) - e^{\pi} = 0 \\
+        C_1 + C_2 = -e^{\pi}.
+        \end{align*}
+        But from above, $C_1 = C_2$, so $2C_1 = -e^{\pi}$, hence $C_1 = C_2 = -\frac{1}{2} e^{\pi}$.
+
+        Therefore, the exact solution is
+        \begin{equation*}
+        u(x) = -\frac{1}{2} e^{\pi} \cos x - \frac{1}{2} e^{\pi} \sin x - \frac{1}{2} e^{x}.
+        \end{equation*}
+  \item See the attached code file \texttt{714Hw1.py} for the implementation of the finite difference method and the error calculation. The results for $n=20,40,80,160$ are presented in the following table:
+\end{enumerate}
 
 
 
@@ -181,6 +354,45 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \end{enumerate}
 \end{problem}
 
+
+\begin{enumerate}[(a)]
+  \item We calculate the Jacobian matrix $J_F$ of the function $F$. The Jacobian matrix is defined as
+        \begin{equation*}
+          (J_F)_{ij} = \frac{\partial F_i}{\partial U_j}.
+        \end{equation*}
+        We compute the partial derivatives for each component of $F$:
+        \begin{itemize}
+          \item For $i=1$:
+                \begin{align*}
+                  \frac{\partial F_1}{\partial U_1} & = -\frac{2}{h^2} + 80 \sin U_1, \\
+                  \frac{\partial F_1}{\partial U_2} & = \frac{1}{h^2}, \\
+                  \frac{\partial F_1}{\partial U_j} & = 0 \quad \text{for } j > 2.
+                \end{align*}
+          \item For $2 \leq i \leq n-2$:
+                \begin{align*}
+                  \frac{\partial F_i}{\partial U_{i-1}} & = \frac{1}{h^2}, \\
+                  \frac{\partial F_i}{\partial U_i} & = -\frac{2}{h^2} + 80 \sin U_i, \\
+                  \frac{\partial F_i}{\partial U_{i+1}} & = \frac{1}{h^2}, \\
+                  \frac{\partial F_i}{\partial U_j} & = 0 \quad \text{for } j < i-1 \text{ or } j > i+1.
+                \end{align*}
+          \item For $i=n-1$:
+                \begin{align*}
+                  \frac{\partial F_{n-1}}{\partial U_{n-2}} & = \frac{1}{h^2}, \\
+                  \frac{\partial F_{n-1}}{\partial U_{n-1}} & = -\frac{2}{h^2} + 80 \sin U_{n-1}, \\
+                  \frac{\partial F_{n-1}}{\partial U_j} & = 0 \quad \text{for } j < n-2.
+                \end{align*}
+        \end{itemize}
+        Thus, the Jacobian matrix $J_F$ has the following tridiagonal structure:
+        \begin{equation*}
+          J_F = \begin{pmatrix}
+            -\frac{2}{h^2} + 80 \sin U_1 & \frac{1}{h^2} & 0 & \cdots & 0 \\
+            \frac{1}{h^2} & -\frac{2}{h^2} + 80 \sin U_2 & \frac{1}{h^2} & \cdots & 0 \\
+            0 & \frac{1}{h^2} & -\frac{2}{h^2} + 80 \sin U_3 & \cdots & 0 \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & 0 & \cdots & -\frac{2}{h^2} + 80 \sin U_{n-1}
+          \end{pmatrix}.
+        \end{equation*}
+\end{enumerate}
 
 
 
