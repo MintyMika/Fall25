@@ -330,6 +330,18 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         u(x) = -\frac{1}{2} e^{\pi} \cos x - \frac{1}{2} e^{\pi} \sin x - \frac{1}{2} e^{x}.
         \end{equation*}
   \item See the attached code file \texttt{714Hw1.py} for the implementation of the finite difference method and the error calculation. The results for $n=20,40,80,160$ are presented in the following table:
+  \begin{tabular}{| c | c |}
+    \hline 
+    $n$ & $E_n$ \\ \hline
+    $20$ & $2.3788752785 e-01$ \\
+    $40$ & $6.0669230276e-02$ \\
+    $80$ & $1.5289901217e-02$ \\
+    $160$ & $3.8359976081e-03$ \\
+    \hline
+  \end{tabular}
+  \\
+  Observing the error values, we can see that as $n$ doubles, the error $E_n$ decreases by approximately a factor of 4. This is consistent with the expected behavior of a second-order accurate method, where the error is proportional to $h^2$. Since $h = \pi/n$, halving $h$ (doubling $n$) should reduce the error by a factor of $4$, confirming that our finite difference method is indeed second-order accurate. \\
+  \textit{Note: I also checked the second order accuracy visually by making a log-log plot of the error versus h and seeing that the slope was approximately 2.}
 \end{enumerate}
 
 
@@ -399,6 +411,14 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
             0 & 0 & 0 & \cdots & -\frac{2}{h^2} + 80 \sin U_{n-1}
           \end{pmatrix}.
         \end{equation*}
+        \item For implementation of Newton's method, look at the attached code file \texttt{714Hw1.py}. The function \texttt{problem3} implements the finite difference approximation and Newton's method to solve the BVP. The solution is plotted over the interval $[0,1]$,
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.7\textwidth]{Q3b.png}
+          \caption{Plot of the solution $U$ over the interval $[0,1]$.}
+          % \label{fig:solution_plot}
+        \end{figure}
+        and the value of $U_{50}$ is reported as \texttt{U[50] to three significant figures: 4.78}.
 \end{enumerate}
 
 
@@ -414,7 +434,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         for $0\le i\le n$, $0\le j \le n-i$. An example grid for $n=7$ is shown in
         Fig.~\ref{fig:tri}. The grid points on the boundary $\p T$ correspond to
         $i=0$, $j=0$, or $i+j=n$. All other points are defined as a interior points.
-        \begin{enumerate}
+        \begin{enumerate}[(a)]
           \item Let $u: T \to \R$ be a smooth function, and write $u_{i,j} =
                   u(\vx_{i,j})$. For an interior point $\vx_{i,j}$, consider the finite
                 difference approximation
@@ -462,6 +482,71 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \end{center}
 \end{problem}
 
+
+\begin{enumerate}[(a)]
+  \item First, Taylor expand each neighbor about the point $\vx_{i,j}$:
+  \begin{align*}
+    u_{i+1,j} & = u_{i,j} + h u_x + \frac{h^2}{2} u_{xx} + \frac{h^3}{6} u_{xxx} + O(h^4), \\
+    u_{i,j-1} & = u_{i,j} - hs u_y + \frac{h^2 s^2}{2} u_{yy} - \frac{h^3 s^3}{6} u_{yyy} + O(h^4), \\
+    u_{i-1,j+1} & = u_{i,j} - h u_x + hs u_y + \frac{h^2}{2}(u_{xx} + s^2 u_{yy} - 2s u_{xy}) \\
+               & \phantom{=} - \frac{h^3}{6}(u_{xxx} - s^3 u_{yyy} + 3s^2 u_{yyx} - 3s u_{yxx}) + O(h^4).
+  \end{align*}
+  Then, with substitution, we arrive at 
+  \begin{equation*}
+    u(\vx + e) = u + \nabla u \cdot e + \frac{1}{2} e^T H e + \frac{1}{6} \sum_{i,j,k} \frac{\partial^3 u}{\partial x_i \partial x_j \partial x_k} e_i e_j e_k + O(\|e\|^4),
+  \end{equation*}
+  where $H$ is the Hessian matrix of second derivatives of $u$ at $\vx$ and $e$ is the vector of displacements. Then we can see that $\alpha  + \beta  + \gamma + \delta = 0$ to eliminate the zeroth order term. Similarly, we can set the coefficients of the first derivatives to zero to eliminate the first order terms:
+  \begin{equation*}
+    \frac{1}{2}\sum_{\phi \in \{\alpha,\beta,\delta\}} \phi e^2_{\phi,x} = 1, \quad \frac{1}{2}\sum_{\phi \in \{\alpha,\beta,\delta\}} \phi e^2_{\phi,y} = 1, \quad \sum_{\phi \in \{\alpha,\beta,\delta\}} \phi e_{\phi,x} e_{\phi,y} = 0.
+  \end{equation*}
+  From these equations we can recover the coefficients:
+  \begin{align*}
+    \alpha & = -\frac{4}{h^2}, \\
+    \beta & = \gamma = \delta = \frac{4}{3h^2}.
+  \end{align*}
+  Thus we can see that we have:
+  \begin{equation*}
+    \nabla^2_3 u_{i,j} = -\frac{4}{h^2} u_{i,j} + \frac{4}{3h^2} (u_{i+1,j} + u_{i,j-1} + u_{i-1,j+1} + u_{i-1,j} + u_{i,j+1} + u_{i+1,j-1}).
+  \end{equation*}
+  Next we find the leading error term $W$. We can see that the linear terms cancel out ($\beta e_1 + \gamma e_2 + \delta e_3 = 0$ when $\beta = \gamma = \delta$ and $e_1 + e_2 + e_3 = 0$), so the next non-zero terms come from the cubic terms. If we let $e_k = h v_k$, then collecting the cubic terms gives:
+  \begin{equation*}
+    \nabla^2_3 u_{i,j} = \Delta u_{i,j} = h W(\vx_{i,j}) + O(h^2),
+  \end{equation*}
+  where
+  \begin{equation*}
+    W = \frac{1}{6} u_{xxx} - \frac{1}{2} u_{xyy}.
+  \end{equation*} %where the derivation is from the cubic term $\frac{1}{6} \sum c_k (e_{k,x}^3​u_{xxx​}+3e_{k,x}^2​e_{k,y}​u_{xxy​}+3e_{k,x}​e_{k,y}^2​u_{xyy​}+e_{k,y}^3​u_{yyy})$
+  To show that this is a first-order accurate approximation but not second-order accurate, we can consider the function $u(x,y) = x^3$. Then we have $u_{xxx} = 6$ and all other third derivatives are zero. So, $W = \frac{1}{6} \cdot 6 - \frac{1}{2} \cdot 0 = 1$. Thus, the leading error term is $h W = h \cdot 1 = h$, which shows that the approximation is first-order accurate. However, since $W$ is non-zero, the approximation cannot be second-order accurate.
+  \item Using all six neighbors, we can set up a system of equations to determine the coefficients $c_0, c_1, \ldots, c_6$. We want to eliminate the zeroth and first order terms, and match the second order terms. First, we can notice symmetry in the coefficients:
+  \begin{equation*}
+    c_1 = c_4, \quad c_2 = c_5, \quad c_3 = c_6.
+  \end{equation*}
+  Then, we can set up the following equations:
+  \begin{align*}
+    c_0 + \sum_{i=1}^6 c_i & = 0, \\
+    \sum_{i=1}^6 c_i e^2_{i,x} & = 2, \\
+    \sum_{i=1}^6 c_i e^2_{i,y} & = 2, \\
+  \end{align*}
+  Then, letting $c_1 = c_4 = a$, $c_2 = c_5 = b$, and $c_3 = c_6 = c$, we have
+  \begin{align*}
+    2a + \frac{b + c}{2} &= \frac{2}{h^2}, \\
+    2s^2(b + c) &= \frac{2}{h^2} \implies b + c = \frac{1}{h^2 s^2}.
+  \end{align*}
+  Solving these equations and using $s^2 = \frac{3}{4}$, we find that $a = \frac{2}{3h^2}$, $b = \frac{2}{3h^2}$, and $c = \frac{2}{3h^2}$. Then we can see that all the neighbors have the same coefficient i.e., $\frac{2}{3h^2}$, and we can find $c_0$:
+  \begin{equation*}
+    c_0 = -\sum_{i=1}^6 c_i = -6 \cdot \frac{2}{3h^2} = -\frac{4}{h^2}.
+  \end{equation*}
+  Finally, we have 
+  \[
+    c_0 = -\frac{4}{h^2}, \quad c_1 = c_2 = c_3 = c_4 = c_5 = c_6 = \frac{2}{3h^2}.
+  \]
+  We can also notice that all the cubic terms cancel out due to symmetry, so the leading error term is $O(h^2)$, confirming that this is a second-order accurate approximation.
+
+
+
+
+  \item See the attached code file \texttt{714Hw1.py} for the implementation of the finite difference method and error calculation. The results for $n=10,20,40,80,160$ using the first finite difference approximation from part (a) are presented in the following table:
+\end{enumerate}
 
 
 \end{document}

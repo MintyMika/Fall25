@@ -4,15 +4,15 @@ def problem1():
     import numpy as np
     import matplotlib.pyplot as plt
     from scipy import stats
-    from math import tan, exp, pi
+        
 
     # Define the function and its derivative
     def f(x):
-        return exp(-x) * tan(x)
+        return np.exp(-x) * np.tan(x)
 
     def f_double_prime(x):
-        return exp(-x) * (2 * tan(x)**3 - 2 * tan(x)**2 + 2 * tan(x) - 1)
-    
+        return np.exp(-x) * (2 * np.tan(x)**3 - 2 * np.tan(x)**2 + 2 * np.tan(x) - 1)
+
     # Finite difference approximation for f''(x2)
     def finite_difference_approximation(f1, f2, f3, f4, x1, x2, x3, x4):
         # Using the method of undetermined coefficients I derived the following formula:
@@ -127,7 +127,10 @@ def problem2():
         return np.sqrt(h * np.sum(q * (U - u_exact)**2))
     
     def u_exact(x):
-        return -0.5 * np.exp(x) + 0.5 * (np.cos(x) + np.sin(x)) / np.cos(pi)
+        # \begin{equation*}
+        # u(x) = -\frac{1}{2} e^{\pi} \cos x - \frac{1}{2} e^{\pi} \sin x - \frac{1}{2} e^{x}.
+        # \end{equation*}
+        return -(0.5 * np.exp(pi) * np.cos(x) + 0.5 * np.exp(pi) * np.sin(x) + 0.5 * np.exp(x))
     
     def solve_bvp(n):
         h = pi / n
@@ -160,19 +163,6 @@ def problem2():
         A[n, n - 2] = 1 #/ (2*h)
         F[n] = 0
 
-        # Put the above back in later. Use the regular second-order finite difference for now.
-        # A[0, 0] = (-(2*(1 + h)) / h**2) + 1
-        # A[0, 1] = 2 / h**2
-        # F[0] = f(0)
-        # A[n, n] = (-(2*(1 + h)) / h**2) + 1
-        # A[n, n - 1] = 2 / h**2
-        # F[n] = f(pi) 
-
-        # TODO: Fix this as the matrix A is incorrect because the loglog plot is not linear
-
-
-
-
         # Solve the linear system
         U = np.linalg.solve(A, F)
         return U, x
@@ -187,37 +177,33 @@ def problem2():
         E_n = error_measure(U, u_ex, h)
         errors.append(E_n)
         print(f"{n:<10}{E_n:<20.10e}")
-        # The trend in the errors should show that as n increases (and thus h decreases), the error E_n decreases at a rate consistent with second-order accuracy, i.e., E_n should be proportional to h^2.
-        # This can be verified by observing the ratio of errors for successive n values.
+        
+    
 
-    # Optional: Plotting the error trend
+    # # Optional  |Plotting the error trend
+    # # Debugging |to make sure the solution looks correct
     # hs = [pi / n for n in ns]
-    plt.figure()
-    plt.loglog(ns, errors, marker='o')
-    plt.xlabel('n (log scale)')
-    plt.ylabel('E_n (log scale)')
-    plt.title('Error Trend (log-log)')
-    plt.grid(True, which="both", ls="--")
-    plt.show()
+    # plt.figure()
+    # plt.loglog(hs, errors, marker='o')
+    # plt.xlabel('h (log scale)')
+    # plt.ylabel('E_n (log scale)')
+    # plt.title('Error Trend (log-log)')
+    # plt.grid(True, which="both", ls="--")
+    # plt.show()
 
-    # Plot the equation and the numerical solution for n=160
-    U, x = solve_bvp(160)
-    u_ex = u_exact(x)
-    plt.figure()
-    plt.plot(x, U, label='Numerical Solution (n=160)')
-    plt.plot(x, u_ex, label='Exact Solution', linestyle='--')
-    plt.xlabel('x')
-    plt.ylabel('u(x)')
-    plt.title('Numerical vs Exact Solution')
-    plt.legend()
-    plt.grid()
-    plt.show()
+    # # Plot the equation and the numerical solution for n=160
+    # U, x = solve_bvp(160)
+    # u_ex = u_exact(x)
+    # plt.figure()
+    # plt.plot(x, U, label='Numerical Solution (n=160)')
+    # plt.plot(x, u_ex, label='Exact Solution', linestyle='--')
+    # plt.xlabel('x')
+    # plt.ylabel('u(x)')
+    # plt.title('Numerical vs Exact Solution')
+    # plt.legend()
+    # plt.grid()
+    # plt.show()
 
-    # Based on the regular plot of the numerical and exact solution, the numerical solution should closely follow the exact solution, indicating the accuracy of the finite difference method but it doesn't look like the function f(x) = -e^x 
-
-
-    # Present your results in a table, and comment on whether the trend in the errors is expected for a second-order method.
-    # The graph looks like the function f(x) = \sqrt{x} is it supposed to look like that? 
 
     pass
 
@@ -263,7 +249,6 @@ def problem3():
     import numpy as np
     import matplotlib.pyplot as plt
     from scipy import stats
-    from math import tan, exp, pi
 
     def F(U, h):
         n = len(U) + 1
@@ -287,16 +272,30 @@ def problem3():
         J[n - 2, n - 2] = -2 / h**2 + 80 * np.sin(U[n - 2])
         return J
     
-    def newtons_method(n, tol=1e-10, max_iter=100):
+    def newtons_method(n, tol=10e-10, max_iter=100):
         h = 1 / n
         U = np.zeros(n - 1)  # Initial guess U^0 = 0
         for k in range(max_iter):
+            # Evaluate the function F(U) at the current guess U
             F_val = F(U, h)
+            
+            # Evaluate the Jacobian matrix J_F(U) at the current guess U
             J_val = J_F(U, h)
+            
+            # Solve the linear system J_F(U) * delta_U = -F(U) to find the update delta_U
             delta_U = np.linalg.solve(J_val, -F_val)
+            
+            # Update the solution U with the computed delta_U
             U += delta_U
+            
+            # Check the termination condition: relative step size is less than the tolerance
             if np.linalg.norm(delta_U, 2) / np.linalg.norm(U, 2) < tol:
+                print(f"Newton's method converged in {k+1} iterations.")
                 break
+        else:
+            print("Newton's method did not converge within the maximum number of iterations.")
+        
+        # Return the computed solution U
         return U
     
     n = 100
@@ -316,9 +315,8 @@ def problem3():
     plt.grid()
     plt.show()
 
-    print(f"U[50] to three significant figures: {U_full[50]:.3f}")
+    print(f"U[50] to three significant figures: {U_full[50]:.3}")
 
-    pass
 
 def problem4():
     # TODO: Implement solution for Homework Problem 4
@@ -326,8 +324,8 @@ def problem4():
 
 def main():
     # problem1()
-    # problem2() # TODO: Fix the matrix A as the boundary conditions are not correctly implemented.
-    # problem3() # TODO: Look over this and veryify it is correct.
+    # problem2()
+    problem3() # TODO: Look over this and veryify it is correct.
     # problem4()
 
 if __name__ == "__main__":
