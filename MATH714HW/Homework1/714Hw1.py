@@ -78,40 +78,6 @@ def problem1():
 
 
 def problem2():
-
-    # TODO: Fix the matrix A as the boundary conditions are not correctly implemented.
-
-    # Problem Statement 2:
-    # \textbf{Mixed boundary value problem (5 points).}
-    #     For a smooth function $u(x)$ and source term $f(x)$, consider the two
-    #     point boundary value problem (BVP)
-    #     \begin{equation}
-    #       u''+u = f(x)
-    #     \end{equation}
-    #     on the domain $x\in [0,\pi]$, using the mixed boundary conditions
-    #     \begin{equation}
-    #       u'(0) - u(0) = 0, \qquad u'(\pi) + u(\pi) =0.
-    #     \end{equation}
-    #     \begin{enumerate}[(a)]
-    #       \item Use a mesh width of $h=\pi/n$ where $n\in \N$ and introduce grid
-    #             points at $x_j=jh$ for $j=0,1,\ldots, n$. Construct a second-order
-    #             accurate finite-difference method for this BVP. Write
-    #             your method as a linear system of the form $AU=F$.
-    #       \item Construct the exact solution $u(x)$ to the BVP when $f(x)=-e^x$.
-    #       \item Verify that your method is second-order accurate by solving the BVP
-    #             with $f(x)=-e^x$ using $n=20,40,80,160$. For each $n$, construct the
-    #             error measure
-    #             \begin{equation}
-    #               E_n = \sqrt{ h \sum_{j=0}^n q_j (U_j - u(x_j))^2 }
-    #             \end{equation}
-    #             where $U_j$ is the numerical solution at $x_j$. Here, $q_j = \tfrac12$
-    #             when $j\in \{0,n\}$ and $q_j=1$ otherwise. Present your results in a
-    #             table, and comment on whether the trend in the errors is expected for a
-    #             second-order method.
-    #     \end{enumerate}
-
-
-
     import numpy as np
     import matplotlib.pyplot as plt
     from scipy import stats
@@ -209,43 +175,6 @@ def problem2():
 
 
 def problem3():
-    # Problem Statement 3:
-    # Consider the nonlinear BVP
-    #     \begin{equation}
-    #       u''(x) - 80\cos u(x) = 0
-    #     \end{equation}
-    #     with the boundary conditions $u(0)=0$ and $u(1)=10$. Define the mesh width
-    #     $h=\tfrac1n$ for $n\in \N$, and introduce gridpoints $x_j=jh$ for
-    #     $j=0,1,\ldots,n$.
-
-    #     Let $U_i$ be the approximation of $u(x_i)$. From the boundary conditions,
-    #     $U_0=0$ and $U_n=10$. Let $U=(U_1,U_2,\ldots,U_{n-1})$ be the vector of
-    #     unknown function values, and write $F(U)=0$ as the nonlinear system
-    #     of algebraic equations from the finite-difference approximation, where
-    #     $F:\R^{n-1} \to \R^{n-1}$. The components are
-    #     \begin{align}
-    #       F_1(U)     & = \frac{U_2 - 2U_1}{h^2} - 80 \cos U_1,                                                 \\
-    #       F_i(U)     & = \frac{U_{i+1} - 2U_i+ U_{i-1}}{h^2} - 80 \cos U_i \qquad \text{for $i=2,\ldots,n-2$,} \\
-    #       F_{n-1}(U) & = \frac{10 - 2U_{n-1} + U_{n-2}}{h^2} - 80 \cos U_{n-1}.
-    #     \end{align}
-    #     \begin{enumerate}[a)]
-    #       \item Calculate the Jacobian $J_F \in \R^{(n-1)\times(n-1)}$ for the function $F$ and
-    #             describe its structure.
-    #       \item Use Newton's method to solve the BVP for $n=100$, using the Jacobian matrix from part (a). Write $U^k$ to indicate the $k$th Newton step, and start with the initial guess $U^0=0$. Terminate Newton's method when the relative step size $\|\Delta U^k\|_2 / \|U^k\|_2$ is less than $10^{-10}$. Plot the solution $U$ over the interval $[0,1]$, and report the value of $U_{50}$ to three significant figures.
-    #     \end{enumerate}
-    # the Jacobian J_F is a tridiagonal matrix 
-
-    # the Jacobian matrix $J_F$ has the following tridiagonal structure:
-    #     \begin{equation*}
-    #       J_F = \begin{pmatrix}
-    #         -\frac{2}{h^2} + 80 \sin U_1 & \frac{1}{h^2} & 0 & \cdots & 0 \\
-    #         \frac{1}{h^2} & -\frac{2}{h^2} + 80 \sin U_2 & \frac{1}{h^2} & \cdots & 0 \\
-    #         0 & \frac{1}{h^2} & -\frac{2}{h^2} + 80 \sin U_3 & \cdots & 0 \\
-    #         \vdots & \vdots & \vdots & \ddots & \vdots \\
-    #         0 & 0 & 0 & \cdots & -\frac{2}{h^2} + 80 \sin U_{n-1}
-    #       \end{pmatrix}.
-    #     \end{equation*}
-
     import numpy as np
     import matplotlib.pyplot as plt
     from scipy import stats
@@ -319,13 +248,149 @@ def problem3():
 
 
 def problem4():
-    # TODO: Implement solution for Homework Problem 4
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from scipy import stats
+
+
+    def problem4_part_c():
+        # Writing a program to solve the equation ∇²u = f on the triangular domain T with boundary conditions u(x) = 0 for x ∈ ∂T.
+
+        s = np.sqrt(3) / 2
+        def u_exact(x, y):
+            return ((2 * y - np.sqrt(3))**2 - 3 * (2 * x - 1)**2) * np.sin(y)
+        
+        ns = [10, 20, 40, 80, 160]
+        errors = []
+
+
+        # From my derivation in part (a):
+            #       \begin{equation*}
+            #     \nabla^2_3 u_{i,j} = -\frac{4}{h^2} u_{i,j} + \frac{4}{3h^2} (u_{i+1,j} + u_{i,j-1} + u_{i-1,j+1} + u_{i-1,j} + u_{i,j+1} + u_{i+1,j-1}).
+            #   \end{equation*}
+        
+        def finite_difference_approximation(u, i, j, h):
+            return (-4 / h**2) * u[i, j] + (4 / (3 * h**2)) * (u[i + 1, j] + u[i, j - 1] + u[i - 1, j + 1] + u[i - 1, j] + u[i, j + 1] + u[i + 1, j - 1])
+
+        def solve_system(n):
+            h = 1 / n
+            u = np.zeros((n, n))
+            for j in range(1, n):
+                for i in range(1, n - j):
+                    u[i, j] = finite_difference_approximation(u, i, j, h)
+            return u
+
+        def error_measure(u_num, u_ex, n):
+            h = 1 / n
+            s = np.sqrt(3) / 2
+            error_sum = 0
+            for j in range(1, n):
+                for i in range(1, n - j):
+                    error_sum += (u_num[i, j] - u_ex(i * h + 0.5 * j * h, j * h))**2
+            return np.sqrt((s / (2 * n**2)) * error_sum)
+
+        for n in ns:
+            u_num = np.zeros((n, n))
+            h = 1 / n
+            u_num = solve_system(n)
+            errors.append(error_measure(u_num, u_exact, n))
+
+
+
+        hs = [1 / n for n in ns]
+        plt.figure()
+        plt.loglog(hs, errors, marker='o')
+        plt.xlabel('h')
+        plt.ylabel('Error')
+        plt.title('Error Convergence')
+        plt.grid()
+        plt.show()
+
+        # Linear regression
+        log_h = np.log(hs)
+        log_errors = np.log(errors)
+        slope, intercept, r_value, p_value, std_err = stats.linregress(log_h, log_errors)
+        C = np.exp(intercept)
+        p = slope
+
+        # Print C and p
+        print(f"C: {C:.3}, p: {p:.3}")
+
+
+    def problem4_part_d():
+        # Writing a program to solve the equation ∇²u = f on the triangular domain T with boundary conditions u(x) = 0 for x ∈ ∂T.
+
+        s = np.sqrt(3) / 2
+        def u_exact(x, y):
+            return ((2 * y - np.sqrt(3))**2 - 3 * (2 * x - 1)**2) * np.sin(y)
+        
+        ns = [10, 20, 40, 80, 160]
+        errors = []
+
+
+        # From my derivation in part (a):
+            #       \[
+            #     c_0 = -\frac{4}{h^2}, \quad c_1 = c_2 = c_3 = c_4 = c_5 = c_6 = \frac{2}{3h^2}.
+            #   \]
+        
+        def finite_difference_approximation(u, i, j, h):
+            return (-4 / h**2) * u[i, j] + (2 / (3 * h**2)) * (u[i + 1, j] + u[i, j - 1] + u[i - 1, j + 1] + u[i - 1, j] + u[i, j + 1] + u[i + 1, j - 1])
+
+        def solve_system(n):
+            h = 1 / n
+            u = np.zeros((n, n))
+            for j in range(1, n):
+                for i in range(1, n - j):
+                    u[i, j] = finite_difference_approximation(u, i, j, h)
+            return u
+
+        def error_measure(u_num, u_ex, n):
+            h = 1 / n
+            s = np.sqrt(3) / 2
+            error_sum = 0
+            for j in range(1, n):
+                for i in range(1, n - j):
+                    error_sum += (u_num[i, j] - u_ex(i * h + 0.5 * j * h, j * h))**2
+            return np.sqrt((s / (2 * n**2)) * error_sum)
+
+        for n in ns:
+            u_num = np.zeros((n, n))
+            h = 1 / n
+            u_num = solve_system(n)
+            errors.append(error_measure(u_num, u_exact, n))
+
+
+
+        hs = [1 / n for n in ns]
+        plt.figure()
+        plt.loglog(hs, errors, marker='o')
+        plt.xlabel('h')
+        plt.ylabel('Error')
+        plt.title('Error Convergence')
+        plt.grid()
+        plt.show()
+
+        # Linear regression
+        log_h = np.log(hs)
+        log_errors = np.log(errors)
+        slope, intercept, r_value, p_value, std_err = stats.linregress(log_h, log_errors)
+        C = np.exp(intercept)
+        p = slope
+
+        # Print C and p
+        print(f"C: {C:.3}, p: {p:.3}")
+
+
+    problem4_part_c()
+    problem4_part_d()
+
     pass
 
 def main():
+    print("Uncomment the problem you want to run in the main function.")
     # problem1()
     # problem2()
-    problem3() # TODO: Look over this and veryify it is correct.
+    # problem3() 
     # problem4()
 
 if __name__ == "__main__":

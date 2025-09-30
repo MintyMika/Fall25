@@ -545,8 +545,24 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 
 
-  \item See the attached code file \texttt{714Hw1.py} for the implementation of the finite difference method and error calculation. The results for $n=10,20,40,80,160$ using the first finite difference approximation from part (a) are presented in the following table:
+  \item See the attached code file \texttt{714Hw1.py} for the implementation of the finite difference method and error calculation. Thhe figure below shows the log-log plot of $E_n$ versus $h$ for the first-order accurate method from part (a). Using linear regression, we find that $C = 0.088$ and $p = -0.000803$ of 3 significant figures.
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.7\textwidth]{Q4c.png}
+          \caption{Log-log plot of $E_n$ versus $h$ for the first-order accurate method.}
+          % \label{fig:Q4c_plot}
+        \end{figure}
+  \item For implementation of the second-order accurate method from part (b), see the attached code file \texttt{714Hw1.py}. (I basically used all of the same functions expect for the finite difference approximation function) The figure below shows the log-log plot of $E_n$ versus $h$ for the second-order accurate method. Using linear regression, we find that  $C = 0.088$ and $p = -0.000803$ of 3 significant figures.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Q4d.png}
+    \caption{Log-log plot of $E_n$ versus $h$ for the second-order accurate method.}
+    % \label{fig:Q4c_plot}
+  \end{figure}
+        
 \end{enumerate}
 
+
+\textit{Note:} I am not confident in my answers for problem 4 as I lost my notes for that problem and was in a rush to finish the write up so I just tried to re-derive everything from scratch. Sorry!
 
 \end{document}
