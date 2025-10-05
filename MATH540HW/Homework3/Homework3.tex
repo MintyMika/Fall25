@@ -129,8 +129,122 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \end{problem}
 
 
+% Problem 1 Answer
 
 
+\begin{enumerate}[(a)]
+    \item We say that $T$ is invertible if there exists a linear transformation $S: W \to V$ such that $S \circ T = I_V$ and $T \circ S = I_W$, where $I_V$ and $I_W$ are the identity transformations on $V$ and $W$, respectively.
+    \item \begin{proof}
+        (1 $\implies$ 2) Suppose $T$ is invertible. Then there exists a linear transformation $S: W \to V$ such that $S \circ T = I_V$ and $T \circ S = I_W$. Let $\mathscr{B} = \{ v_1, v_2, \ldots, v_n \}$ be a basis of $V$. We will show that $\mathscr{C} = \{ T(v_1), T(v_2), \ldots, T(v_n) \}$ is a basis for $W$. % we have that ST(v_i) = v_i and TS(w_j) = w_j for every i, j. We can use this to show that T maps a basis of V to a basis of W. 
+        First, we show that $\mathscr{C}$ spans $W$. Let $w \in W$. Since $S$ is a linear transformation from $W$ to $V$, we can write $S(w)$ as a linear combination of the basis vectors in $\mathscr{B}$:
+        \begin{equation*}
+            S(w) = a_1 v_1 + a_2 v_2 + \ldots + a_n v_n,
+        \end{equation*}
+        for some scalars $a_1, a_2, \ldots, a_n \in F$. Applying $T$ to both sides, we get:
+        \begin{equation*}
+            T(S(w)) = T(a_1 v_1 + a_2 v_2 + \ldots + a_n v_n) = a_1 T(v_1) + a_2 T(v_2) + \ldots + a_n T(v_n).
+        \end{equation*}
+        But since $T \circ S = I_W$, we have $T(S(w)) = w$. Therefore, $w$ can be expressed as a linear combination of the vectors in $\mathscr{C}$, showing that $\mathscr{C}$ spans $W$. \\
+        Next, we show that $\mathscr{C}$ is linearly independent. Suppose there exist scalars $b_1, b_2, \ldots, b_n \in F$ such that:
+        \begin{equation*}
+            b_1 T(v_1) + b_2 T(v_2) + \ldots + b_n T(v_n) = 0.
+        \end{equation*}
+        Applying $S$ to both sides, we get:
+        \begin{equation*}
+            S(b_1 T(v_1) + b_2 T(v_2) + \ldots + b_n T(v_n)) = b_1 S(T(v_1)) + b_2 S(T(v_2)) + \ldots + b_n S(T(v_n)) = 0.
+        \end{equation*}
+        But since $S \circ T = I_V$, we have $S(T(v_i)) = v_i$ for each $i$. Therefore, we have:
+        \begin{equation*}
+            b_1 v_1 + b_2 v_2 + \ldots + b_n v_n = 0.
+        \end{equation*}
+        Since $\mathscr{B}$ is a basis for $V$, the vectors $v_1, v_2, \ldots, v_n$ are linearly independent. Thus, the only solution to the above equation is $b_1 = b_2 = \ldots = b_n = 0$. This shows that $\mathscr{C}$ is linearly independent. \\
+        Since $\mathscr{C}$ spans $W$ and is linearly independent, it is a basis for $W$. \\
+        (2 $\implies$ 1) Suppose $T$ maps a basis $\mathscr{B} = \{ v_1, v_2, \ldots, v_n \}$ of $V$ to a basis $\mathscr{C} = \{ T(v_1), T(v_2), \ldots, T(v_n) \}$ for $W$. We will show that $T$ is invertible by constructing an inverse linear transformation $S: W \to V$. Since $\mathscr{C}$ is a basis for $W$, every vector $w \in W$ can be uniquely expressed as a linear combination of the vectors in $\mathscr{C}$: 
+        \begin{equation*}
+            w = c_1 T(v_1) + c_2 T(v_2) + \ldots + c_n T(v_n),
+        \end{equation*}
+        for some scalars $c_1, c_2, \ldots, c_n \in F$. We define the linear transformation $S: W \to V$ by:
+        \begin{equation*}
+            S(w) = c_1 v_1 + c_2 v_2 + \ldots + c_n v_n.
+        \end{equation*}
+        We need to show that $S \circ T = I_V$ and $T \circ S = I_W$. \\
+        First, we show that $S \circ T = I_V$. Let $v \in V$. Since $\mathscr{B}$ is a basis for $V$, we can express $v$ as a linear combination of the basis vectors:
+        \begin{equation*}
+            v = a_1 v_1 + a_2 v_2 + \ldots + a_n v_n,
+        \end{equation*}
+        for some scalars $a_1, a_2, \ldots, a_n \in F$. Applying $T$ to both sides, we get:
+        \begin{equation*}
+            T(v) = a_1 T(v_1) + a_2 T(v_2) + \ldots + a_n T(v_n).
+        \end{equation*}
+        Now, applying $S$ to both sides, we have:
+        \begin{equation*}
+            S(T(v)) = S(a_1 T(v_1) + a_2 T(v_2) + \ldots + a_n T(v_n)) = a_1 S(T(v_1)) + a_2 S(T(v_2)) + \ldots + a_n S(T(v_n)).
+        \end{equation*}
+        By the definition of $S$, we have $S(T(v_i)) = v_i$ for each $i$. Therefore, we get:
+        \begin{equation*}
+            S(T(v)) = a_1 v_1 + a_2 v_2 + \ldots + a_n v_n = v.
+        \end{equation*}
+        This shows that $S \circ T = I_V$. \\
+        Since inverses are unique, we conclude that $T$ is invertible.
+    \end{proof}
+    \item  
+    \begin{enumerate}[1.]
+        \item We show that $\mathscr{E}$ is a basis for $\mathscr{H}$. 
+        \begin{proof}
+            Since the dimension of $\mathscr{H}$ is $N$, it suffices to show that the elements of $\mathscr{E}$ are linearly independent. Suppose there exist scalars $a_w \in \cc$ for each $w \in \zz_N$ such that:
+            \begin{equation*}
+                \sum_{w \in \zz_N} a_w e_w = 0.
+            \end{equation*}
+            Taking the inner product of both sides with $e_{w'}$ for some fixed $w' \in \zz_N$, we get:
+            \begin{equation*}
+                \left\langle \sum_{w \in \zz_N} a_w e_w, e_{w'} \right\rangle = 0.
+            \end{equation*}
+            By linearity of the inner product, this becomes:
+            \begin{equation*}
+                \sum_{w \in \zz_N} a_w \langle e_w, e_{w'} \rangle = 0.
+            \end{equation*}
+            Using the fact that $\langle e_w, e_{w'} \rangle = 1$ if $w = w'$ and $0$ otherwise, we have:
+            \begin{equation*}
+                a_{w'} = 0.
+            \end{equation*}
+            Since this holds for every $w' \in \zz_N$, we conclude that all coefficients $a_w$ must be zero. Therefore, the elements of $\mathscr{E}$ are linearly independent, and hence $\mathscr{E}$ is a basis for $\mathscr{H}$.
+        \end{proof}
+        \item 
+        \begin{enumerate}[1.]
+            \item To show the formula for $\hat{f}(w)$, we start with the definition of the discrete Fourier transform:
+            \begin{equation*}
+                \hat{f} = F_N(f) = F_N\left( \sum_{t \in \zz_N} f(t) \delta_t \right) = \sum_{t \in \zz_N} f(t) F_N(\delta_t) = \sum_{t \in \zz_N} f(t) e_{-t}.
+            \end{equation*}
+            Evaluating $\hat{f}$ at $w \in \zz_N$, we have:
+            \begin{equation*}
+                \hat{f}(w) = \sum_{t \in \zz_N} f(t) e_{-t}(w) = \sum_{t \in \zz_N} f(t) \frac{1}{\sqrt{N}} e^{-\frac{2 \pi i}{N} w t} = \frac{1}{\sqrt{N}} \sum_{t \in \zz_N} f(t) e^{-\frac{2 \pi i}{N} w t}.
+            \end{equation*}
+            This proves the desired formula.
+            \item \begin{proof}
+                To show that $F_N$ is invertible, we will construct an inverse operator $F_N^{-1}: \mathscr{H} \to \mathscr{H}$. We define $F_N^{-1}$ on the basis elements $e_w$ as follows:
+                \begin{equation*}
+                    F_N^{-1}(e_w) = \delta_{-w}.
+                \end{equation*}
+                We extend $F_N^{-1}$ linearly to all of $\mathscr{H}$. Now, we need to verify that $F_N^{-1} \circ F_N = I_{\mathscr{H}}$ and $F_N \circ F_N^{-1} = I_{\mathscr{H}}$. \\
+                First, we show that $F_N^{-1} \circ F_N = I_{\mathscr{H}}$. Let $f \in \mathscr{H}$. Then:
+                \begin{equation*}
+                    F_N^{-1}(F_N(f)) = F_N^{-1}\left( \sum_{t \in \zz_N} f(t) e_{-t} \right) = \sum_{t \in \zz_N} f(t) F_N^{-1}(e_{-t}) = \sum_{t \in \zz_N} f(t) \delta_t = f.
+                \end{equation*}
+                Next, we show that $F_N \circ F_N^{-1} = I_{\mathscr{H}}$. Let $g \in \mathscr{H}$. Then:
+                \begin{equation*}
+                    F_N(F_N^{-1}(g)) = F_N\left( \sum_{w \in \zz_N} g(w) \delta_{-w} \right) = \sum_{w \in \zz_N} g(w) F_N(\delta_{-w}) = \sum_{w \in \zz_N} g(w) e_w = g.
+                \end{equation*}
+                Since both compositions yield the identity operator on $\mathscr{H}$, we conclude that $F_N$ is invertible.
+            \end{proof}
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+
+
+
+
+% Problem 2
 \begin{problem} \\ 
     \textbf{Diagonalization.} Let $T$ be an operator on a vector space $V$ over a field $\mathbb{F}$.
     \begin{enumerate}[(a)]
@@ -178,6 +292,60 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 
 
+% Problem 2 Answer
+\begin{enumerate}[(a)]
+    \item 
+    \begin{enumerate}[1.]
+        \item A scalar $\lambda \in \mathbb{F}$ is an eigenvalue of $T$ if there exists a non-zero vector $v \in V$ such that $T(v) = \lambda v$.
+        \item A vector $v \in V, v \neq 0$ is an eigenvector, with eigenvalue $\lambda \in \mathbb{F}$, if $T(v) = \lambda v$.
+    \end{enumerate}
+    \item \begin{proof}
+        Let $\mathscr{B} = \{ v_1, v_2, \ldots, v_n \}$ be an ordered basis of $V$, consisting of eigenvectors of $T$. By definition of eigenvectors, we have:
+        \begin{equation*}
+            T(v_i) = \lambda_i v_i,
+        \end{equation*}
+        for some scalars $\lambda_i \in \mathbb{F}$ and for each $i = 1, 2, \ldots, n$. To find the matrix representation of $T$ with respect to the basis $\mathscr{B}$, we compute the action of $T$ on each basis vector and express the result in terms of the basis vectors. The $j$-th column of the matrix $[T]_{\mathscr{B}}$ corresponds to the coefficients of $T(v_j)$ expressed in terms of the basis $\mathscr{B}$. Since $T(v_j) = \lambda_j v_j$, we have:
+        \begin{equation*}
+            [T]_{\mathscr{B}} = \begin{pmatrix}
+                \lambda_1 & 0 & \ldots & 0 \\
+                0 & \lambda_2 & \ldots & 0 \\
+                \vdots & \vdots & \ddots & \vdots \\
+                0 & 0 & \ldots & \lambda_n
+            \end{pmatrix}.
+        \end{equation*}
+        Thus, the matrix representation of $T$ with respect to the basis $\mathscr{B}$ is a diagonal matrix with the eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_n$ on the diagonal.
+    \end{proof}
+    \item  
+    \begin{enumerate}[1.]
+        \item To find a diagonalization of the time shift operator $L$, we first identify its eigenvalues and eigenvectors. The operator $L$ shifts the input function by one unit to the left. We can represent the action of $L$ on the standard basis functions $\delta_0, \delta_1, \delta_2$ of $\mathscr{H}$ as follows:
+        \begin{equation*}
+            L[\delta_0] = \delta_2, \quad L[\delta_1] = \delta_0, \quad L[\delta_2] = \delta_1.
+        \end{equation*}
+        To find the eigenvalues and eigenvectors, we look for solutions to the equation $L[f] = \lambda f$. By solving this equation, we find that the eigenvalues of $L$ are the cube roots of unity: $1, e^{\frac{2 \pi i}{3}}, e^{\frac{4 \pi i}{3}}$. The corresponding eigenvectors can be constructed as linear combinations of the basis functions. After finding the eigenvectors, we can form a basis $\mathscr{B}$ consisting of these eigenvectors. The diagonal matrix $D = [L]_{\mathscr{B}}$ will then have the eigenvalues on its diagonal:
+        \begin{equation*}
+            D = \begin{pmatrix}
+                1 & 0 & 0 \\
+                0 & e^{\frac{2 \pi i}{3}} & 0 \\
+                0 & 0 & e^{\frac{4 \pi i}{3}}
+            \end{pmatrix}.
+        \end{equation*}
+        \item Similarly, for the frequency shift operator $M$, we analyze its action on the standard basis functions:
+        \begin{equation*}
+            M[\delta_0] = \delta_0, \quad M[\delta_1] = e^{\frac{2 \pi i}{3}} \delta_1, \quad M[\delta_2] = e^{\frac{4 \pi i}{3}} \delta_2.
+        \end{equation*}
+        The eigenvalues of $M$ are also the cube roots of unity: $1, e^{\frac{2 \pi i}{3}}, e^{\frac{4 \pi i}{3}}$. The corresponding eigenvectors can be constructed similarly. After finding the eigenvectors, we can form a basis $\mathscr{B}$ consisting of these eigenvectors. The diagonal matrix $D = [M]_{\mathscr{B}}$ will then have the eigenvalues on its diagonal:
+        \begin{equation*}
+            D = \begin{pmatrix}
+                1 & 0 & 0 \\
+                0 & e^{\frac{2 \pi i}{3}} & 0 \\
+                0 & 0 & e^{\frac{4 \pi i}{3}}
+            \end{pmatrix}.
+        \end{equation*}
+    \end{enumerate}
+\end{enumerate}
+
+
+
 
 \begin{problem} \\ 
     \textbf{Heisenberg's commutation relations.} consider the vector space $\mathscr{H} = \cc(\zz_N)$.
@@ -198,6 +366,52 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         where $F_N$ is the discrete Fourier transform modulo $N$ described in Problem 1.
     \end{enumerate}
 \end{problem}
+
+
+% Problem 3 Answer
+
+\begin{enumerate}[(a)]
+    \item For every $\tau \in \zz_N$, we have an operator $L_\tau : \mathscr{H} \to \mathscr{H}$, called time shift, given by
+    \begin{equation*}
+        L_\tau[f](t) = f(t - \tau),
+    \end{equation*}
+    and, for every $\omega \in \zz_N$, we have an operator $M_\omega : \mathscr{H} \to \mathscr{H}$, called frequency shift, given by
+    \begin{equation*}
+        M_\omega[f](t) = e^{\frac{2 \pi i}{N} \omega t} f(t).
+    \end{equation*}
+
+    \item \begin{proof}
+        To show that $M_\omega \circ L_\tau = e^{-\frac{2 \pi i}{N} \omega \tau} L_\tau \circ M_\omega$, we compute both sides. Let $f \in \mathscr{H}$ and $t \in \zz_N$.
+        \begin{align*}
+            (M_\omega \circ L_\tau)[f](t) &= M_\omega[L_\tau[f]](t) = M_\omega[f(t - \tau)] = e^{\frac{2 \pi i}{N} \omega t} f(t - \tau), \\
+            (L_\tau \circ M_\omega)[f](t) &= L_\tau[M_\omega[f]](t) = L_\tau[e^{\frac{2 \pi i}{N} \omega t} f(t)] = e^{\frac{2 \pi i}{N} \omega (t - \tau)} f(t - \tau).
+        \end{align*}
+        Now, we can see that:
+        \begin{align*}
+            e^{-\frac{2 \pi i}{N} \omega \tau} (L_\tau \circ M_\omega)[f](t) &= e^{-\frac{2 \pi i}{N} \omega \tau} e^{\frac{2 \pi i}{N} \omega (t - \tau)} f(t - \tau) = e^{\frac{2 \pi i}{N} \omega t} f(t - \tau).
+        \end{align*}
+        Thus, we have shown that:
+        \begin{equation*}
+            M_\omega \circ L_\tau = e^{-\frac{2 \pi i}{N} \omega \tau} L_\tau \circ M_\omega.
+        \end{equation*}
+    \end{proof}
+    \item \begin{proof}
+        To show that $L_\tau \circ F_N = F_N \circ M_\tau$, we compute both sides. Let $f \in \mathscr{H}$ and $t \in \zz_N$.
+        \begin{align*}
+            (L_\tau \circ F_N)[f](t) &= L_\tau[F_N[f]](t) = L_\tau\left[\frac{1}{\sqrt{N}} \sum_{s \in \zz_N} f(s) e^{-\frac{2 \pi i}{N} s t}\right] = \frac{1}{\sqrt{N}} \sum_{s \in \zz_N} f(s) e^{-\frac{2 \pi i}{N} s (t - \tau)}, \\
+            (F_N \circ M_\tau)[f](t) &= F_N[M_\tau[f]](t) = F_N[e^{\frac{2 \pi i}{N} \tau t} f(t)] = \frac{1}{\sqrt{N}} \sum_{s \in \zz_N} e^{\frac{2 \pi i}{N} \tau s} f(s) e^{-\frac{2 \pi i}{N} s t}.
+        \end{align*}
+        Now, we can see that:
+        \begin{align*}
+            (F_N \circ M_\tau)[f](t) &= e^{\frac{2 \pi i}{N} \tau t} (L_\tau)[F_N[f]](t).
+        \end{align*}
+        Thus, we have shown that:
+        \begin{equation*}
+            L_\tau \circ F_N = F_N \circ M_\tau.
+        \end{equation*}
+    \end{proof}
+\end{enumerate}
+
 
 
 \end{document}
