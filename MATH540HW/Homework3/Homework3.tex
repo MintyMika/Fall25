@@ -1,0 +1,203 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+% Change enumerate labels to (a), (b), (c), ...
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 540
+    \hfill Homework 2
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+% \textbf{Remarks:} \\
+% \begin{enumerate}[A)]
+%     \item Definition is just a definition, there is no need to jjustify or explain it.
+%     \item Answers to questions with proofs should be written, as much as you can, in the following format: \\
+%     \begin{enumerate}[i)]
+%         \item Statement
+%         \item Main points that will appear in your proof
+%         \item The actual proof
+%     \end{enumerate}
+%     Answers to questions with computations should be written, as much as possible, in the following format:
+%     \begin{enumerate}[i)]
+%         \item Statement and Result
+%         \item Main points that will appear in your computation.
+%         \item The actual computation
+%     \end{enumerate}
+% \end{enumerate}
+
+
+
+% % Start of problems
+
+
+\begin{problem} \\ 
+    \textbf{The discrete Fourier transform.} Let $V$ and $W$ be two $n$-dimensional vector spaces over a field $F$, and $T: V \to W$ a linear transformation.
+    \begin{enumerate}[(a)]
+        \item Define when we say that $T$ is invertible.
+        \item Suppose $V$ and $W$ are finite dimensional. Show that TFAE:
+        \begin{enumerate}[1.]
+            \item $T$ is invertible.
+            \item $T$ maps a basis $\mathscr{B}$ of $V$ to a basis $\mathscr{C} = \{ T(v) ; v \in \mathscr{B} \}$ for $W$.
+        \end{enumerate}
+        \item Let $N > 1$, be an integer, and consider the set $\zz_N = \{ 0, 1, 2, \ldots, N-1 \}$, with the addition and multipication is defined modulo $N$. Inside the vector space $\mathscr{H} = \cc(\zz_N)$ of all functions from $\zz_N$ to $\cc$, consider the subset
+        \begin{equation*}
+            \mathscr{D} = \{ \delta_t : t \in \zz_N \}, 
+        \end{equation*}
+        where $\delta_t$ is the delta function at $t$, $\delta_t(s) = 1$ if $s = t$, and $0$ otherwise, and consider the subset 
+        \begin{equation*}
+            \mathscr{E} = \{e_w : w \in \zz_N \},
+        \end{equation*}
+        where $e_w$ is the function given by 
+        \[
+            e_w(s) = \frac{1}{\sqrt{N}}e^{\frac{2 \pi i}{ N} ws}, \quad s \in \zz_N.
+        \]
+        \begin{enumerate}[1.]
+            \item Show that $\mathscr{E}$ is a basis for $\mathscr{H}$. You can do it using the following facts.
+            \begin{itemize}
+                \item The dimenson of $\mathscr{H}$ is $N$.
+                \item The elements of $\mathscr{E}$ are linearly independent. To show this you can use the fact that on $\mathscr{H}$ we have the so called "inner product"
+                \begin{equation*}
+                    \langle , \rangle : \mathscr{H} \times \mathscr{H} \to \cc,
+                \end{equation*}
+                given by 
+                \begin{equation*}
+                    \langle f, g \rangle = \sum_{s \in \zz_N} f(s) \overline{g(s)},
+                \end{equation*}
+                where $\overline{g(s)}$ is the complex conjugate of $g(s)$. Then we have, \\
+                \textbf{Fact.} The collection $\mathscr{E}$ satisfies
+                \begin{equation*}
+                    \langle e_w, e_{w'} \rangle = \begin{cases}
+                        1, & w = w' \\
+                        0, & w \neq w'.
+                    \end{cases}
+                \end{equation*}
+                In particular, using the fact that $\langle , \rangle$ is linear in the first coordinate, i.e., $\langle f + f', g \rangle = \langle f, g \rangle + \langle f', g \rangle$ and $\langle a f, g \rangle = a \langle f, g \rangle$ for every $f,f' \in \mathscr{H}, a \in \cc$, it is easy to show the linear independency of $\mathscr{E}$.
+            \end{itemize}
+            \item The operator $F_N : \mathscr{H} \to \mathscr{H}$ that is given by 
+            \begin{equation*}
+                F_N[\delta_t] = e_{-t}
+            \end{equation*}
+            is called the discrete Fourier transform modulo $N$. For $f \in \mathscr{H}$, denote $\hat{f} = F_N(f)$. Show that 
+            \begin{enumerate}[1.]
+                \item we have the formula
+                \begin{equation*}
+                    \hat{f}(w) = \frac{1}{\sqrt{N}} \sum_{t \in \zz_N}f(t) e^{-\frac{2 \pi i}{N} w t},
+                \end{equation*}
+                for $w \in \zz_N$
+            \end{enumerate}
+            \item The operator $F_N$ is invertible.
+        \end{enumerate}
+    \end{enumerate}
+\end{problem}
+
+
+
+
+\begin{problem} \\ 
+    \textbf{Diagonalization.} Let $T$ be an operator on a vector space $V$ over a field $\mathbb{F}$.
+    \begin{enumerate}[(a)]
+        \item We say that 
+        \begin{enumerate}[1.]
+            \item a scalar $\lambda \in \mathbb{F}$ is an eigenvalue of $T$ if 
+            \item a vector $v \in V, v \neq 0$ is an eigenvector, with eigenvalue $\lambda \in \mathbb{F}$, if
+        \end{enumerate}
+        \item Show that if $\mathscr{B} = \{ v_1, v_2, \ldots, v_n \}$ is an ordered basis of $V$, consisting of eigenvectors of $T$, then there exists scalars $\lambda_1, \lambda_2, \ldots, \lambda_n \in \mathbb{F}$ such that 
+        \begin{equation*}
+            [T]_{\mathscr{B}} = \begin{pmatrix}
+                \lambda_1 && \\
+                & \ddots & \\
+                && \lambda_n
+            \end{pmatrix}.
+        \end{equation*}
+        \textbf{Remark.} The process (if possible) of finding a basis $\mathscr{B}$ of $V$ consisting of eigenvectors of $T$, and the corresponding eigenvalues $\lambda_1, \lambda_2, \ldots, \lambda_n$, is called a diagonalization of $T$.
+        \item Consider the space $\mathscr{H} = \cc(\zz_3)$.
+        \begin{enumerate}[1.]
+            \item we have an operator called time shift
+            \begin{equation*}
+                \begin{cases}
+                    L : \mathscr{H} \to \mathscr{H}, \\
+                    L[f](t) = f(t-1),
+                \end{cases}
+            \end{equation*}
+            for every $f \in \mathscr{H}, t \in \zz_3$. Find a diagonalization of $L$, and write the corresponding diagonal matrix 
+            \begin{equation*}
+                D = [L]_{\mathscr{B}}.
+            \end{equation*}
+            \item in addition, we have an operator called frequency shift
+            \begin{equation*}
+                \begin{cases}
+                    M : \mathscr{H} \to \mathscr{H}, \\
+                    M[f](t) = e^{\frac{2 \pi i}{3} t} f(t),
+                \end{cases}
+            \end{equation*}
+            for every $f \in \mathscr{H}, t \in \zz_3$. Find a diagonalization of $M$, and write the corresponding diagonal matrix
+            \begin{equation*}
+                D = [M]_{\mathscr{B}}.
+            \end{equation*}
+        \end{enumerate}
+    \end{enumerate}
+\end{problem}
+
+
+
+
+\begin{problem} \\ 
+    \textbf{Heisenberg's commutation relations.} consider the vector space $\mathscr{H} = \cc(\zz_N)$.
+    \begin{enumerate}[(a)]
+        \item For every $\tau \in \zz_N$, we have an operator $L_\tau : \mathscr{H} \to \mathscr{H}$, called time shift, given by
+        \begin{equation*}
+            L_\tau[f](t) = \_\_\_\_\_
+        \end{equation*}
+        and, for every $\omega \in \zz_N$, we have an operator $M_\omega : \mathscr{H} \to \mathscr{H}$, called frequency shift, given by
+        \begin{equation*}
+            M_\omega[f](t) = \_\_\_\_\_
+        \end{equation*}
+        \item Show that $M_\omega \circ L_\tau = e^{-\frac{2 \pi i}{N} \omega \tau} L_\tau \circ M_\omega$, for every $\tau, \omega \in \zz_N$.
+        \item Show that for every $\tau, \omega \in \zz_N$, 
+        \begin{equation*}
+            L_\tau \circ F_N = F_N \circ M_\tau,
+        \end{equation*}
+        where $F_N$ is the discrete Fourier transform modulo $N$ described in Problem 1.
+    \end{enumerate}
+\end{problem}
+
+
+\end{document}
