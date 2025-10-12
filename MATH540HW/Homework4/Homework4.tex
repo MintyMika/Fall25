@@ -1,0 +1,119 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+% Change enumerate labels to (a), (b), (c), ...
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 540
+    \hfill Homework 2
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+% \textbf{Remarks:} \\
+% \begin{enumerate}[A)]
+%     \item Definition is just a definition, there is no need to jjustify or explain it.
+%     \item Answers to questions with proofs should be written, as much as you can, in the following format: \\
+%     \begin{enumerate}[i)]
+%         \item Statement
+%         \item Main points that will appear in your proof
+%         \item The actual proof
+%     \end{enumerate}
+%     Answers to questions with computations should be written, as much as possible, in the following format:
+%     \begin{enumerate}[i)]
+%         \item Statement and Result
+%         \item Main points that will appear in your computation.
+%         \item The actual computation
+%     \end{enumerate}
+% \end{enumerate}
+
+
+
+% % Start of problems
+
+\begin{problem} \\
+    \textit{Diagonalizability - geometric definition.} \\
+    Let $V$ be an $n$-dimensional vector space over a field $\mathbb{F}$ and let $T: V \to V$ a transformation.
+    \begin{enumerate}[(a)]
+        \item Write down the geometric definition (that we gave in class interms of direct sum decomposition of $V$) for when $T$ is diagonalizable.
+        \item Define what does it mean for $\lambda \in \mathbb{F}$ to be an eigenvalue of $T$. Denote $\operatorname{Spec}(T)$ the set of eigenvalues of $T$ in $\mathbb{F}$. For each $\lambda \in \operatorname{Spec}(T)$, define the eigenspace $V_{\lambda}$. Show that the following are equivalent:
+        \begin{enumerate}[(i)]
+            \item $T$ is diagonalizable.
+            \item $V = \bigoplus_{\lambda \in \operatorname{Spec}(T)} V_{\lambda}$.
+        \end{enumerate}
+
+        \item A linear transformation $P: V \to V$ is called a projector of $P^2 = P$. Show that any projector is diagonalizable.
+    \end{enumerate}
+\end{problem}
+
+
+\begin{enumerate}
+    \item We say that $T$ is diagonalizable if there exists $\lambda_1, \ldots, \lambda_k \in \mathbb{F}$ distinct and subspaces $V_1, \ldots, V_k < V$ such that
+    \[
+    V = \bigoplus_{i=1}^k V_i,
+    \]
+    and $T$ preserves each $V_i$, and $T|_{V_i} = \lambda_i Id_{V_i}$ for all $i = 1, \ldots, k$.
+\end{enumerate}
+
+
+\begin{problem} \\
+    \textit{Diagonalizability - computational definition.} \\
+    \begin{enumerate}[(a)]
+        \item Let $V$ be an $n$-dimensional vector space over a field $\mathbb{F}$ and let $T: V \to V$ a linear transformation. Write down the computational definition (that we gave in class in terms of a basis $\mathscr{B}$ and the corresponding matrix $[T]_{\mathscr{B}}$) for when $T$ is diagonalizable.
+        \item For a matrix $A \in M_n(\mathbb{F})$, consider the linear transformation $T_A: \mathbb{F}^n \to \mathbb{F}^n$ given by $v \mapsto Av$. Show that the following are equivalent:
+        \begin{enumerate}[(i)]
+            \item $T_A$ is diagonalizable (in this case we also say that $A$ is diagonalizable).
+            \item There exists a diagonal matrix $D \in M_n(\mathbb{F})$ and an invertible matrix $C \in M_n(\mathbb{F})$ such that $C^{-1} A C = D$.
+        \end{enumerate}
+        \item Consider the operator $T_A: \mathbb{R}^2 \to \mathbb{R}^2$ where $A = \begin{pmatrix}
+            0 & 1 \\
+            1 & 0
+        \end{pmatrix}$. 
+        \begin{enumerate}
+            \item Show that $T_A$ is diagonalizable
+            \item find its eigenvalues
+            \item find the direct sum decomposition for eigenspaces
+            \item find a basis of eigenvectors
+            \item find $D,C \in M_2(\mathbb{R})$ with $D$ diagonal and $C$ invertible such that $D = C^{-1} A C$.
+        \end{enumerate}
+    \end{enumerate}
+\end{problem}
+
+
+\end{document}
