@@ -89,6 +89,53 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     V = \bigoplus_{i=1}^k V_i,
     \]
     and $T$ preserves each $V_i$, and $T|_{V_i} = \lambda_i Id_{V_i}$ for all $i = 1, \ldots, k$.
+    
+    \item If $V_{\lambda} \neq 0$ it is called the $\lambda$-eigenspace of $T$, and such $\lambda$ is called eigenvalue of $T$, $v \in V_{\lambda}$ is called an $\lambda$-eigenvector of $T$. \\
+    \begin{proof}
+        (i) $\Rightarrow$ (ii): \\
+        Suppose $T$ is diagonalizable. Then there exists $\lambda_1, \ldots, \lambda_k \in \mathbb{F}$ distinct and subspaces $V_1, \ldots, V_k < V$ such that
+        \[
+        V = \bigoplus_{i=1}^k V_i,
+        \]
+        and $T$ preserves each $V_i$, and $T|_{V_i} = \lambda_i Id_{V_i}$ for all $i = 1, \ldots, k$. \\
+        Then for each $i$, $V_i \subseteq V_{\lambda_i}$, since for any $v \in V_i$, $T(v) = \lambda_i v$. Thus, $V_i \leq V_{\lambda_i}$ for all $i$. \\
+        Now, let $\lambda \in \operatorname{Spec}(T)$. Then there exists $v \in V$ such that $T(v) = \lambda v$. Since $V = \bigoplus_{i=1}^k V_i$, we can write $v = v_1 + \ldots + v_k$ with $v_i \in V_i$. Then
+        \[
+        T(v) = T(v_1 + \ldots + v_k) = T(v_1) + \ldots + T(v_k) = \lambda_1 v_1 + \ldots + \lambda_k v_k.
+        \]
+        But also, $T(v) = \lambda v = \lambda (v_1 + \ldots + v_k) = \lambda v_1 + \ldots + \lambda v_k$. \\
+        Thus, we have
+        \[
+        \lambda_1 v_1 + \ldots + \lambda_k v_k = \lambda v_1 + \ldots + \lambda v_k.
+        \]
+        Since $\lambda_i$ are distinct, we must have $v_i = 0$ for all $i \neq j$, where $j$ is such that $\lambda_j = \lambda$. Thus, $v = v_j$, and $v_j \in V_{\lambda}$. \\
+        Therefore, $V = \bigoplus_{\lambda \in \operatorname{Spec}(T)} V_{\lambda}$. \\
+        (ii) $\Rightarrow$ (i): \\
+        Suppose $V = \bigoplus_{\lambda \in \operatorname{Spec}(T)} V_{\lambda}$. Let $\lambda_1, \ldots, \lambda_k$ be the distinct eigenvalues of $T$. Then
+        \[
+        V = \bigoplus_{i=1}^k V_{\lambda_i}.
+        \]
+        For each $i$, $T$ preserves $V_{\lambda_i}$, and $T|_{V_{\lambda_i}} = \lambda_i Id_{V_{\lambda_i}}$. \\
+        Thus, $T$ is diagonalizable.
+    \end{proof}
+    \item \begin{proof}
+        Let $P: V \to V$ be a projector, i.e., $P^2 = P$. Then for any $v \in V$, we have
+        \[
+        P(P(v)) = P(v).
+        \]
+        Thus, $P(v)$ is an eigenvector of $P$ with eigenvalue 1. \\
+        Now, consider the subspace $W = \ker(P)$. For any $w \in W$, we have
+        \[
+        P(w) = 0.
+        \]
+        Thus, $w$ is an eigenvector of $P$ with eigenvalue 0. \\
+        Therefore, we have two eigenspaces: $V_1 = \operatorname{Im}(P)$ with eigenvalue 1 and $V_0 = \ker(P)$ with eigenvalue 0. \\
+        Since $V = V_1 \oplus V_0$, we have
+        \[
+        V = V_1 \oplus V_0,
+        \]
+        and $P$ preserves each eigenspace. Thus, $P$ is diagonalizable.
+    \end{proof}
 \end{enumerate}
 
 
@@ -116,4 +163,111 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \end{problem}
 
 
+\begin{enumerate}[(a)]
+    \item We say that $T$ is diagonalizable if there exists a basis $\mathscr{B}$ of $V$ such that the matrix $[T]_{\mathscr{B}}$ is a diagonal matrix.
+    \item \begin{proof}
+        (i) $\Rightarrow$ (ii): \\
+        Suppose $T_A$ is diagonalizable. Then there exists a basis $\mathscr{B} = \{v_1, \ldots, v_n\}$ of $\mathbb{F}^n$ such that $[T_A]_{\mathscr{B}}$ is a diagonal matrix. Let $C$ be the matrix whose columns are the vectors of $\mathscr{B}$. Then $C$ is invertible, and we have
+        \[
+        [T_A]_{\mathscr{B}} = C^{-1} A C.
+        \]
+        Since $[T_A]_{\mathscr{B}}$ is diagonal, we can take $D = [T_A]_{\mathscr{B}}$, and we have $C^{-1} A C = D$. \\
+        (ii) $\Rightarrow$ (i): \\
+        Suppose there exists a diagonal matrix $D \in M_n(\mathbb{F})$ and an invertible matrix $C \in M_n(\mathbb{F})$ such that $C^{-1} A C = D$. Let $\mathscr{B}$ be the basis of $\mathbb{F}^n$ whose columns are the vectors of $C$. Then we have
+        \[
+        [T_A]_{\mathscr{B}} = C^{-1} A C = D,
+        \]
+        which is a diagonal matrix. Thus, $T_A$ is diagonalizable.
+    \end{proof}
+    \item 
+    \begin{enumerate}[(a)]
+        \item We will show that $T_A$ is diagonalizable by finding a basis of eigenvectors. 
+        \item To find the eigenvalues, we compute the characteristic polynomial:
+        \[
+        p(\lambda) = \det(A - \lambda I) = \det\begin{pmatrix}
+            -\lambda & 1 \\
+            1 & -\lambda
+        \end{pmatrix} = \lambda^2 - 1.
+        \]
+        The eigenvalues are the roots of the characteristic polynomial, so we have
+        \[
+        \lambda^2 - 1 = 0 \implies \lambda = \pm 1.
+        \]
+        \item Next we find the eigenspaces. For $\lambda = 1$, we solve
+        \[
+        (A - I)v = 0 \implies \begin{pmatrix}
+            -1 & 1 \\
+            1 & -1
+        \end{pmatrix} \begin{pmatrix}x_1 \\
+            x_2
+        \end{pmatrix} = \begin{pmatrix}0 \\
+            0
+        \end{pmatrix}.
+        \]
+        This gives us the system of equations:
+        \[
+        -x_1 + x_2 = 0,
+        \]
+        which simplifies to $x_1 = x_2$. Thus, the eigenspace for $\lambda = 1$ is
+        \[
+        V_1 = \operatorname{span}\left\{\begin{pmatrix}1 \\
+            1
+        \end{pmatrix}\right\}.
+        \]
+        For $\lambda = -1$, we solve
+        \[
+        (A + I)v = 0 \implies \begin{pmatrix}
+            1 & 1 \\
+            1 & 1
+        \end{pmatrix} \begin{pmatrix}x_1 \\
+            x_2
+        \end{pmatrix} = \begin{pmatrix}0 \\
+            0
+        \end{pmatrix}.
+        \]
+        This gives us the system of equations:
+        \[
+        x_1 + x_2 = 0,
+        \]
+        which simplifies to $x_1 = -x_2$. Thus, the eigenspace for $\lambda = -1$ is
+        \[
+        V_{-1} = \operatorname{span}\left\{\begin{pmatrix}1 \\
+            -1
+        \end{pmatrix}\right\}.
+        \]
+        \item A basis of eigenvectors is given by
+        \[
+        \left\{\begin{pmatrix}1 \\
+            1
+        \end{pmatrix}, \begin{pmatrix}1 \\
+            -1
+        \end{pmatrix}\right\}.
+        \]
+        \item We can take $C = 
+        \begin{pmatrix}V_1 & V_{-1} \\
+        \end{pmatrix} = 
+        \begin{pmatrix}
+            1 & 1 \\
+            1 & -1
+        \end{pmatrix}$, and $D = \begin{pmatrix}
+            \lambda_1 & 0 \\
+            0 & \lambda_2
+        \end{pmatrix}
+        = \begin{pmatrix}
+            1 & 0 \\
+            0 & -1
+        \end{pmatrix}$. Then we have
+        \[
+        C^{-1} A C = \begin{pmatrix}1 & 1 \\
+            1 & -1
+        \end{pmatrix}^{-1} \begin{pmatrix}
+            0 & 1 \\
+            1 & 0
+        \end{pmatrix} \begin{pmatrix}1 & 1 \\
+            1 & -1
+        \end{pmatrix} = D.
+        \]
+        Thus, we have found $D$ and $C$ such that $D = C^{-1} A C$.
+    \end{enumerate}
+    \end{enumerate}
 \end{document}
