@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{extarrows}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 741
+    \hfill Homework 5
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+
+
+
+\begin{problem} \\
+    In this problem, no explanation is required. All parts are worth 2 points.
+    \begin{enumerate}[(a)]
+        \item True or false: In a free abelian group of finite rank, every linearly independent set can be completed to a basis.
+        \item How many different (up to isomorphism) abelian groups of order $300$ are there?
+        \item True or false: For any action of a finite group $G$ on a set $X$, the cardinality $|X|$ divides $|G|$.
+        \item Give an example of an infinite group $G$ such that every element of $G$ has finite order.
+        \item Let $F_2$ be the free group on two generators. True or false: For every $n$, there exists a normal subgroup $H_n \subset F_2$ such that $F_2/H_n \cong S_n$?
+    \end{enumerate}
+\end{problem}
+
+
+\begin{problem} \\
+    Let $\qq^\times$ be the group of non-zero rational numbers under multiplication.
+    \begin{enumerate}
+        \item[(a)] Show that $\qq^\times$ is isomorphic to the product of $\zz/2\zz$ and a free abelian group. % , 4pts\\
+        \item[(b)] Describe all group homomorphisms $\zz/2\zz \to \qq^\times$. % , 2pts\\
+        \item[(c)] Describe all group homomorphisms $\qq^\times \to \zz/2\zz$. % , 2pts \\   
+    \end{enumerate}
+
+\end{problem}
+
+
+\begin{problem} \\
+    Let $G$ be a group of order $2017 \times 2027 \times 2029$ (these are all prime numbers). Show that $G$ is cyclic.
+\end{problem}
+
+
+\begin{problem} \\
+    Let $G$ be a finite group, and let $A = \operatorname{Aut}(G)$ be the group of automorphisms $\phi : G \to G$. Consider the natural action of $A$ on $G$, and take the quotient $G/A$.
+    \begin{enumerate}
+        \item[(a)] What is $|G/A|$ if $G = \zz/6\zz$? % , 3pts \\
+        \item[(b)] Show that if $|G/A| = 2$, then $G \cong (\zz/p\zz)^n$ for a prime $p$ and $n > 0$. % , 7pts \\
+    \end{enumerate}
+\end{problem}
+
+
+
+
+\begin{problem} \\
+    A finite group $G$ acts transitively (that is, with a single orbit) on a finite set $X$ such that $|X| > 1$. Show that there exists an element $g \in G$ which does not fix any element of $X$.
+\end{problem}
+
+
+
+\begin{problem} \\
+    A map $\phi : \rr \to \rr$ is said to be an \textit{affine-linear bijection} if it is of the form 
+    \[
+        \phi(x) = ax + b \quad (a,b \in \rr : a \neq 0).
+    \]
+    \begin{enumerate}
+        \item[(a)] Show that the set of affine-linear bijections forms a group $G$ under composition. % , 3pts \\
+        \item[(b)] Show that $G$ is isomorphic to semidirect product of \textit{abelian} groups $A$ and $B$. Make sure to identify the groups $A$ and $B$, as well as the action of one on the other used in the semidirect product. % , 7pts \\
+    \end{enumerate}
+\end{problem}
+
+
+\end{document}
