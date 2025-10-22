@@ -1,0 +1,400 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+% Change enumerate labels to (a), (b), (c), ...
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 540
+    \hfill Homework 2
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+% \textbf{Remarks:} \\
+% \begin{enumerate}[A)]
+%     \item Definition is just a definition, there is no need to jjustify or explain it.
+%     \item Answers to questions with proofs should be written, as much as you can, in the following format: \\
+%     \begin{enumerate}[i)]
+%         \item Statement
+%         \item Main points that will appear in your proof
+%         \item The actual proof
+%     \end{enumerate}
+%     Answers to questions with computations should be written, as much as possible, in the following format:
+%     \begin{enumerate}[i)]
+%         \item Statement and Result
+%         \item Main points that will appear in your computation.
+%         \item The actual computation
+%     \end{enumerate}
+% \end{enumerate}
+
+
+
+% % Start of problems
+
+\begin{problem} \\ 
+    \textit{How you might use a computational solution for diagonalization?} Let $V$ be an $n$-dimensional vector space over a field $\mathbb{F}$, and $\mathscr{B} = \{ v_1, \ldots, v_n \}$ be an ordered basis of $V$. 
+    \begin{enumerate}[(a)]
+        \item Show that there is a unique matrix $[T]_{\mathscr{B}} \in M_{n}(\mathbb{F})$ such that
+        \[
+            [T(v)]_{\mathscr{B}} = [T]_{\mathscr{B}} [v]_{\mathscr{B}}.
+        \]
+        The matrix $[T]_{\mathscr{B}}$ is called the matrix representation of $T$ with respect to the basis $\mathscr{B}$.
+        \item Do the following:
+        \begin{enumerate}[1.]
+            \item Show that if $[v]_{\mathscr{B}}$ is an eigenvector of $[T]_{\mathscr{B}}$ with eigenvalue $\lambda$, then $v$ is an eigenvector of $T$ with eigenvalue $\lambda$.
+            \item Explain how from eigenbasis of $[T]_{\mathscr{B}}$ you can get an eigenbasis of $T$.
+        \end{enumerate}
+        \item Consider the space $V$, of complex valued functions on $\zz_4 = \{0, 1, 2, 3\}$, 
+        \[
+            V = \cc(\zz_4),
+        \]
+        and subspace 
+        \[
+            U = \operatorname{Span}(\{\delta_1, \delta_2 \}),
+        \]
+        where $\delta_1, \delta_2$ are the delta functions on 1, and 2, respectively. \\
+        We define the operator $T: V \to V$, given by 
+        \[
+           T[f](x) =  \begin{cases}
+                f(0) + f(3), & x = 0; \\
+                f(0) + f(2) + f(3), & x = 1; \\
+                f(0) + f(1) + f(3), & x = 2; \\
+                f(0) - f(3), & x = 3.
+            \end{cases}
+        \]
+        \begin{enumerate}[1.]
+            \item Show that $T$ takes the vector space $U$ to itself, \textit{i.e.,} $T(u) \in U$ for every $u \in U$. \\
+            Consider the operator
+            \[
+                \begin{cases}
+                    \overline{T} : V/U \to V/U, \\
+                    \overline{T}(f + U) = T(f) + U.
+                \end{cases}
+            \]
+            \item Compute the matrix $A \in M_2(\cc)$
+            \[
+                A = [\overline{T}]_{\mathscr{B}},
+            \]
+            where $\mathscr{B}$ is the basis $\mathscr{B} = \{ \delta_0 + U, \delta_3 + U \} \subset V/U$.
+            \item Find eigenvalues and corresponding eigenvectors of $A$.
+            \item Using the spectral (i.e., eigenvalues and eigenvectors) results you obtained in 3 above, compute eigenvalues and eigenvectors of $\overline{T}$.
+        \end{enumerate}
+    \end{enumerate}
+\end{problem}
+
+
+
+% Answer 1
+\begin{enumerate}[(a)]
+    \item \textbf{Statement:} There exists a unique matrix $[T]_{\mathscr{B}} \in M_{n}(\mathbb{F})$ such that $[T(v)]_{\mathscr{B}} = [T]_{\mathscr{B}} [v]_{\mathscr{B}}$ for all $v \in V$.
+
+    \begin{proof} Let $\mathscr{B} = \{v_1, \ldots, v_n\}$ be an ordered basis of $V$. For each basis vector $v_j$, we can write
+    \[
+        T(v_j) = \sum_{i=1}^{n} a_{ij} v_i
+    \]
+    for some unique scalars $a_{ij} \in \mathbb{F}$. Define the matrix $[T]_{\mathscr{B}} = (a_{ij})_{i,j=1}^{n}$, where $a_{ij}$ is the $i$-th coordinate of $T(v_j)$ in the basis $\mathscr{B}$.
+
+    Now let $v \in V$ be arbitrary. Write $v = \sum_{j=1}^{n} c_j v_j$, so $[v]_{\mathscr{B}} = (c_1, \ldots, c_n)^t$. Then
+    \[
+        T(v) = T\left(\sum_{j=1}^{n} c_j v_j\right) = \sum_{j=1}^{n} c_j T(v_j) = \sum_{j=1}^{n} c_j \sum_{i=1}^{n} a_{ij} v_i = \sum_{i=1}^{n} \left(\sum_{j=1}^{n} a_{ij} c_j\right) v_i.
+    \]
+    Thus $[T(v)]_{\mathscr{B}} = \left(\sum_{j=1}^{n} a_{ij} c_j\right)_{i=1}^{n} = [T]_{\mathscr{B}} [v]_{\mathscr{B}}$.
+
+    For uniqueness, suppose $A \in M_n(\mathbb{F})$ also satisfies $[T(v)]_{\mathscr{B}} = A[v]_{\mathscr{B}}$ for all $v \in V$. In particular, for each basis vector $v_j$, we have $[T(v_j)]_{\mathscr{B}} = A[v_j]_{\mathscr{B}} = Ae_j$, where $e_j$ is the $j$-th standard basis vector. This means the $j$-th column of $A$ equals the $j$-th column of $[T]_{\mathscr{B}}$. Thus $A = [T]_{\mathscr{B}}$.
+    \end{proof}
+    \item 
+    \begin{enumerate}[1.]
+        \item If $[v]_{\mathscr{B}}$ is an eigenvector of $[T]_{\mathscr{B}}$ with eigenvalue $\lambda$, then
+        \[
+            [T(v)]_{\mathscr{B}} = [T]_{\mathscr{B}}[v]_{\mathscr{B}} = \lambda [v]_{\mathscr{B}} = [\lambda v]_{\mathscr{B}}.
+        \]
+        Since the coordinate map $v \mapsto [v]_{\mathscr{B}}$ is an isomorphism, it follows that $T(v) = \lambda v$ with $v \neq 0$. Thus $v$ is an eigenvector of $T$ with eigenvalue $\lambda$.
+        \item Let $\{w_1,\dots,w_n\}$ be an eigenbasis of $[T]_{\mathscr{B}}$ with $[T]_{\mathscr{B}} w_i = \lambda_i w_i$. Define $v_i \in V$ by $[v_i]_{\mathscr{B}} = w_i$ (equivalently $v_i = C_{\mathscr{B}}^{-1}(w_i)$ where $C_{\mathscr{B}}$ is the coordinate isomorphism). By part 1, $T(v_i) = \lambda_i v_i$. Because $C_{\mathscr{B}}$ is an isomorphism, $\{v_1,\dots,v_n\}$ is a basis of $V$. Hence $\{v_i\}$ is an eigenbasis of $T$.
+    \end{enumerate}
+
+    \item 
+    \begin{enumerate}[1.]
+        \item For $u=a\,\delta_1+b\,\delta_2\in U$,
+        \[
+        T[u](0)=u(0)+u(3)=0,\quad
+        T[u](1)=u(0)+u(2)+u(3)=b,\quad
+        T[u](2)=u(0)+u(1)+u(3)=a,\quad
+        T[u](3)=u(0)-u(3)=0.
+        \]
+        Hence $T[u]=b\,\delta_1+a\,\delta_2\in U$. Thus $U$ is $T$-invariant and $\overline{T}:V/U\to V/U$ is well defined by $\overline{T}(f+U)=T(f)+U$.
+        \item In $V/U$ use the basis $\mathscr{B}=\{\delta_0+U,\ \delta_3+U\}$. Compute
+        \[
+        T[\delta_0]=\delta_0+\delta_1+\delta_2+\delta_3\ \implies\ \overline{T}(\delta_0+U)=(\delta_0+\delta_3)+U,
+        \]
+        \[
+        T[\delta_3]=\delta_0+\delta_1+\delta_2-\delta_3\ \implies\ \overline{T}(\delta_3+U)=(\delta_0-\delta_3)+U.
+        \]
+        Therefore, relative to $\mathscr{B}$,
+        \[
+        A=[\overline{T}]_{\mathscr{B}}
+        =\begin{pmatrix}
+            1 & 1\\
+            1 & -1
+        \end{pmatrix}.
+        \]
+        \item The characteristic polynomial is $\chi_A(\lambda)=\lambda^2-2$, so the eigenvalues are $\lambda_\pm=\pm\sqrt{2}$. Corresponding eigenvectors can be taken as
+        \[
+        \lambda=\sqrt{2}:\ v_+=\begin{pmatrix}1\\ \sqrt{2}-1\end{pmatrix},\qquad
+        \lambda=-\sqrt{2}:\ v_-=\begin{pmatrix}1\\ -1-\sqrt{2}\end{pmatrix}.
+        \]
+        \item Using that $A=[\overline{T}]_{\mathscr{B}}$, the eigenvalues of $\overline{T}$ are the eigenvalues of $A$, namely $\lambda_\pm=\pm\sqrt{2}$. To find eigenvectors in $V/U$, let
+        \[
+            w_\alpha := (\delta_0+\alpha\,\delta_3)+U \in V/U.
+        \]
+        From the computations in (2),
+        \[
+            \overline{T}(w_\alpha)
+            =\overline{T}(\delta_0+U)+\alpha\,\overline{T}(\delta_3+U)
+            =( \delta_0+\delta_3 )+ \alpha( \delta_0-\delta_3 ) + U
+            =\big((1+\alpha)\delta_0+(1-\alpha)\delta_3\big)+U.
+        \]
+        The eigenvector equation $\overline{T}(w_\alpha)=\lambda\,w_\alpha$ is
+        \[
+            (1+\alpha)\delta_0+(1-\alpha)\delta_3
+            = \lambda(\delta_0+\alpha\,\delta_3),
+        \]
+        which gives the system
+        \[
+            1+\alpha=\lambda,\qquad 1-\alpha=\lambda\alpha.
+        \]
+        Eliminating $\lambda$ using $\lambda=1+\alpha$ yields
+        \[
+            1-\alpha=\alpha(1+\alpha)\ \Longrightarrow\ \alpha^2+2\alpha-1=0
+            \ \Longrightarrow\ \alpha=\sqrt{2}-1\ \text{ or }\ \alpha=-1-\sqrt{2}.
+        \]
+        The corresponding eigenvalues are $\lambda=1+\alpha=\sqrt{2}$ and $\lambda=1+\alpha=-\sqrt{2}$, respectively. Hence eigenvectors (cosets) of $\overline{T}$ are
+        \[
+            w_+ = (\delta_0 + (\sqrt{2}-1)\delta_3)+U \quad (\lambda=\sqrt{2}),\qquad
+            w_- = (\delta_0 - (1+\sqrt{2})\delta_3)+U \quad (\lambda=-\sqrt{2}).
+        \]
+        Any nonzero scalar multiples in $V/U$ of these representatives are also eigenvectors.
+    \end{enumerate}
+\end{enumerate}
+
+
+
+\begin{problem} \\ 
+    \textit{Conjugacy relation.} \\
+    Let $V$ be a finite-dimensional vector space over a field $\mathbb{F}$.
+    \begin{enumerate}[(a)]
+        \item Two operators (i.e., linear transformations) $S,T : V \to V$ are called \underline{conjugates} if there is an invertible operator $R : V \to V$, such that $RSR^{-1} = T$. In this case we write $S \sim T$. Show that $\sim$ is an equivalence relation on the space $\operatorname{End}(V)$ of all operators from $V$ to itself. For a given operator the collection of all linear transformation which equivalen to him, is called its \underline{conjugacy class}.
+        \item Suppose $S,T$ are operators on $V$.
+        \begin{enumerate}[1.]
+            \item Show that if $S$ and $T$ are conjugate and $T$ is diagonalizable then also $S$ is diagonalizable. \\
+            \textbf{Definition.} For $\lambda \in \operatorname{Spect}(T)$, eigenvalue, the dimension $m_\lambda = \dim(V_\lambda)$ is called the \underline{multiplicity of $\lambda$}.
+            \item Suppose $S, T$, are diagonalizable. show that the following are equivalent:
+            \begin{enumerate}[i)]
+                \item $S$ and $T$ have the same eigenvalues and multiplicity of each eigenvalue (i.e., the dimensions of the corresponding eigenspaces are the same for both operators).
+                \item $S$ and $T$ are conjugate.
+            \end{enumerate}
+            \textbf{Remark.} The meaning of the result obtained in 2 above is that, the equivalence class of a diagonalizable operator is completely described by its eigenvalues and their multiplicities.
+            \item Suppose $A \in M_n(\mathbb{F})$ is diagonalizable. Show that $A$ is conjugate to its transpose $A^t$ (this true in fact for every matrix $A$, but we do not yet know how to show this).
+        \end{enumerate}
+    \end{enumerate}
+\end{problem}
+
+
+\begin{enumerate}[(a)]
+    \item \textbf{Statement:} The relation $\sim$ is an equivalence relation on $\operatorname{End}(V)$.
+
+        \begin{proof}
+            We verify the three properties of an equivalence relation:
+            
+            \textbf{Reflexivity:} For any $T \in \operatorname{End}(V)$, take $R = I_V$ (the identity operator). Then $R$ is invertible and $R T R^{-1} = I_V \circ T \circ I_V = T$. Thus $T \sim T$.
+            
+            \textbf{Symmetry:} Suppose $S \sim T$. Then there exists an invertible operator $R$ such that $R S R^{-1} = T$. Multiplying on the left by $R^{-1}$ and on the right by $R$, we get $S = R^{-1} T R = R^{-1} T (R^{-1})^{-1}$. Since $R^{-1}$ is invertible, we have $T \sim S$.
+            
+            \textbf{Transitivity:} Suppose $S \sim T$ and $T \sim U$. Then there exist invertible operators $R_1$ and $R_2$ such that $R_1 S R_1^{-1} = T$ and $R_2 T R_2^{-1} = U$. Then
+            \[
+                U = R_2 T R_2^{-1} = R_2 (R_1 S R_1^{-1}) R_2^{-1} = (R_2 R_1) S (R_2 R_1)^{-1}.
+            \]
+            Since $R_2 R_1$ is invertible, we have $S \sim U$.
+            
+            Therefore, $\sim$ is an equivalence relation.
+        \end{proof}
+
+        \item 
+        \begin{enumerate}[1.]
+            \item \textbf{Statement:} If $S$ and $T$ are conjugate and $T$ is diagonalizable, then $S$ is diagonalizable.
+            
+            \begin{proof}
+                Since $S \sim T$, there exists an invertible operator $R$ such that $T = R S R^{-1}$, or equivalently, $S = R^{-1} T R$.
+                
+                Since $T$ is diagonalizable, there exists a basis $\mathscr{B} = \{v_1, \ldots, v_n\}$ of $V$ consisting of eigenvectors of $T$ with eigenvalues $\lambda_1, \ldots, \lambda_n$.
+                
+                For each $i$, let $w_i = R^{-1}(v_i)$. Since $R^{-1}$ is invertible, $\{w_1, \ldots, w_n\}$ is a basis of $V$. We claim that each $w_i$ is an eigenvector of $S$:
+                \[
+                    S(w_i) = S(R^{-1}(v_i)) = R^{-1} T R (R^{-1}(v_i)) = R^{-1} T (v_i) = R^{-1}(\lambda_i v_i) = \lambda_i R^{-1}(v_i) = \lambda_i w_i.
+                \]
+                Thus $\{w_1, \ldots, w_n\}$ is a basis of eigenvectors of $S$, so $S$ is diagonalizable.
+            \end{proof}
+            
+            \item \textbf{Statement:} For diagonalizable operators $S, T$, the following are equivalent:
+            \begin{enumerate}[i)]
+                \item $S$ and $T$ have the same eigenvalues with the same multiplicities.
+                \item $S$ and $T$ are conjugate.
+            \end{enumerate}
+            
+            \begin{proof}
+                $(ii) \implies (i)$: Suppose $S$ and $T$ are conjugate via $T = R S R^{-1}$ for some invertible $R$. If $v$ is an eigenvector of $S$ with eigenvalue $\lambda$, then
+                \[
+                    T(R(v)) = R S R^{-1}(R(v)) = R S(v) = R(\lambda v) = \lambda R(v).
+                \]
+                So $R(v)$ is an eigenvector of $T$ with the same eigenvalue $\lambda$. Moreover, $R$ restricts to an isomorphism from the eigenspace $V_\lambda(S)$ to $V_\lambda(T)$, so $\dim V_\lambda(S) = \dim V_\lambda(T)$. Thus the eigenvalues and multiplicities agree.
+                
+                $(i) \implies (ii)$: Suppose $S$ and $T$ have the same eigenvalues $\lambda_1, \ldots, \lambda_k$ with the same multiplicities $m_1, \ldots, m_k$. Since both are diagonalizable, we can choose eigenbases $\{v_1, \ldots, v_n\}$ of $S$ and $\{w_1, \ldots, w_n\}$ of $T$, where both bases are ordered so that the first $m_1$ vectors correspond to $\lambda_1$, the next $m_2$ to $\lambda_2$, etc.
+                
+                Define $R: V \to V$ by $R(v_i) = w_i$ for each $i$, and extend linearly. Since $R$ maps a basis to a basis, $R$ is invertible. For each $i$, if $v_i$ is an eigenvector of $S$ with eigenvalue $\lambda_j$ (for some $j$), then $w_i$ is an eigenvector of $T$ with the same eigenvalue $\lambda_j$. Thus
+                \[
+                    R S R^{-1}(w_i) = R S(v_i) = R(\lambda_j v_i) = \lambda_j R(v_i) = \lambda_j w_i = T(w_i).
+                \]
+                Since $R S R^{-1}$ and $T$ agree on a basis, $R S R^{-1} = T$, so $S \sim T$.
+            \end{proof}
+            
+            \item \textbf{Statement:} If $A \in M_n(\mathbb{F})$ is diagonalizable, then $A$ is conjugate to $A^t$.
+            
+            \begin{proof}
+                Since $A$ is diagonalizable, there exists an invertible matrix $P$ such that $P A P^{-1} = D$, where $D$ is diagonal. Taking transposes,
+                \[
+                    (P A P^{-1})^t = D^t \quad \implies \quad (P^{-1})^t A^t P^t = D^t = D.
+                \]
+                Thus $A^t = P^t D (P^{-1})^t = P^t D (P^t)^{-1}$. 
+                
+                Also, $A = P^{-1} D P$. Since both $A$ and $A^t$ are conjugate to the same diagonal matrix $D$, and conjugacy is an equivalence relation (by part (a)), we have $A \sim A^t$.
+                
+                Explicitly, we can write $A^t = (P^t P^{-1}) A (P^t P^{-1})^{-1}$, so $R = P^t P^{-1}$ gives the conjugacy.
+            \end{proof}
+        \end{enumerate}
+\end{enumerate}
+
+
+
+\begin{problem} \\ 
+    \textit{Projectors.} Let $V$ be a vector space over a field $\mathbb{F}$, and $P : V \to V$ an operator.
+    \begin{enumerate}[(a)]
+        \item Recall that:
+        \begin{enumerate}[1.]
+            \item We say that $P$ is a \underline{projector} if $P^2 = P$.
+            \item We say that $P$ is a \underline{projector onto a subspace $W \subset V$}, if $\operatorname{image}(P) = W$, and for every $w \in W$, $P(w) = w$.
+        \end{enumerate}
+        \item Show that TFAE:
+        \begin{enumerate}[1.]
+            \item $P$ is a projector.
+            \item there is a subspace $W \subset V$, such that $P$ is a projector onto $W$.
+            \item there are subspaces $U,W \subset V$, such that $V = U \oplus W$, and $P = Pr_W$, the standard projection $Pr_W(u + w) = w$, for every $u \in U, w \in W$.
+            \item $V = \ker(P) \oplus \operatorname{image}(P)$, and on $\operatorname{image}(P)$, $P$ acts as the identity operator.
+        \end{enumerate}
+        \item Consider the operator $T_A : \rr^2 \to \rr^2$, given by the multiplication by matrix
+        \[
+            A = \begin{pmatrix}
+                1 & 1 \\
+                0 & 0
+            \end{pmatrix}.
+        \]
+        Show that $T_A$ is a projector, and onto what subspace.
+    \end{enumerate}
+\end{problem}
+
+
+
+\begin{problem} \\ 
+\textit{Direct sum and projectors.} Let $V$ be a vector spac, and $U,W \subset V$.
+\begin{enumerate}[(a)]
+    \item Define when $V$ is a \underline{direct sum} of $U$ and $W$, denoted $V = U \oplus W$.
+    \item Show that TFAE:
+    \begin{enumerate}[1.]
+        \item $V = U \oplus W$.
+        \item there exists a projector $P_U, P_W,$ onto $U$ and $W$, respectively, such that
+        \begin{enumerate}[i.)]
+            \item $P_U \circ P_W = 0 = P_W \circ P_U$,
+            \item $Id_V = P_U + P_W$.
+        \end{enumerate}
+    \end{enumerate}
+    \item Suppose $T : V \to V$, linear transformation. Show that TFAE:
+    \begin{enumerate}[1.]
+        \item $V = V_\lambda \oplus V_\mu$, direct-sum of two eigenspaces, $\lambda \neq \mu$.
+        \item There are projectors $P_\lambda, P_\mu: V \to V$, such that,
+        \begin{enumerate}[i.)]
+            \item $P_\lambda \circ P_\mu = 0 = P_\mu \circ P_\lambda$,
+            \item $Id_V = P_\lambda + P_\mu$,
+            \item $T = \lambda P_\lambda + \mu P_\mu$.
+        \end{enumerate}
+        Moreover, show that in this case
+        \[
+            P_\lambda = \frac{1}{\lambda - \mu}(T - \mu Id_V), \quad P_\mu = \frac{1}{\mu - \lambda}(T - \lambda Id_V).
+        \]
+    \end{enumerate}    
+\end{enumerate}    
+\end{problem}
+
+
+\begin{enumerate}[(a)]
+    \item \textbf{Definition:} $V$ is a direct sum of $U$ and $W$, written $V=U\oplus W$, if $V=U+W$ and $U\cap W=\{0\}$. Equivalently, every $v\in V$ can be written uniquely as $v=u+w$ with $u\in U$, $w\in W$.
+    \item (1) $\implies$ (2): If $V=U\oplus W$, define $P_U(v)$ and $P_W(v)$ by the unique decomposition $v=u+w$ with $u\in U$, $w\in W$, setting $P_U(v)=u$, $P_W(v)=w$. Then $P_U,P_W$ are projectors onto $U,W$, $Id_V=P_U+P_W$, and $P_U\circ P_W=0=P_W\circ P_U$.
+
+    (2) $\implies$ (1): If $Id_V=P_U+P_W$, then for any $v$, $v=P_Uv+P_Wv\in U+W$. If $v\in U\cap W$, then $v=P_Uv=P_U(P_Wv)=0$, so $U\cap W=\{0\}$. Hence $V=U\oplus W$.
+    \item (1) $\implies$ (2): If $V=V_\lambda\oplus V_\mu$ with $\lambda\neq\mu$, define $P_\lambda, P_\mu$ as the projections along the complementary eigenspace. Then $P_\lambda,P_\mu$ are projectors with $Id_V=P_\lambda+P_\mu$, $P_\lambda P_\mu=0=P_\mu P_\lambda$, and since $T$ acts as $\lambda$ on $V_\lambda$ and as $\mu$ on $V_\mu$, we have
+    \[T=\lambda P_\lambda+\mu P_\mu.\]
+    Moreover, the polynomial formulas
+    \[
+    P_\lambda=\frac{1}{\lambda-\mu}(T-\mu\,Id_V),\qquad
+    P_\mu=\frac{1}{\mu-\lambda}(T-\lambda\,Id_V)
+    \]
+    satisfy $P_\lambda^2=P_\lambda$, $P_\mu^2=P_\mu$, $P_\lambda P_\mu=P_\mu P_\lambda=0$, $P_\lambda+P_\mu=Id_V$, and agree with the geometric projections because on $V_\lambda$ they act as $1,0$ and on $V_\mu$ as $0,1$.
+
+    (2) $\implies$ (1): From $Id_V=P_\lambda+P_\mu$ and $P_\lambda P_\mu=0=P_\mu P_\lambda$, by part (b) we get $V=\operatorname{image}(P_\lambda)\oplus \operatorname{image}(P_\mu)$. Also
+    \[
+    T P_\lambda=(\lambda P_\lambda+\mu P_\mu)P_\lambda=\lambda P_\lambda,\qquad
+    T P_\mu=(\lambda P_\lambda+\mu P_\mu)P_\mu=\mu P_\mu,
+    \]
+    so $\operatorname{image}(P_\lambda)\subseteq V_\lambda$ and $\operatorname{image}(P_\mu)\subseteq V_\mu$. If $v\in V_\lambda$, then
+    \[
+    \lambda v=T v=(\lambda P_\lambda+\mu P_\mu)v=\lambda P_\lambda v+\mu P_\mu v
+    \]
+    and since $v=P_\lambda v+P_\mu v$, we get $(\lambda-\mu)P_\mu v=0$, hence $P_\mu v=0$ and $v=P_\lambda v\in\operatorname{image}(P_\lambda)$. Thus $\operatorname{image}(P_\lambda)=V_\lambda$ and similarly $\operatorname{image}(P_\mu)=V_\mu$, proving $V=V_\lambda\oplus V_\mu$.
+\end{enumerate}
+
+
+
+\end{document}
