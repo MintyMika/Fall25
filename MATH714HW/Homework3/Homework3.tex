@@ -114,6 +114,99 @@ Below is the plot of the stability region, with both branches of $z(\theta)$ plo
 \end{problem}
 
 
+\begin{enumerate}[(a)]
+  \item We prove that the TR-BDF2 method is second-order accurate by analyzing the local truncation error using Taylor series expansions. \\
+    
+    Let $u(t)$ be the exact solution of $u' = f(u)$. We expand $u(t)$ around $t_n$:
+    \begin{align*}
+    u(t_n + k/2) &= u(t_n) + \frac{k}{2}u'(t_n) + \frac{k^2}{8}u''(t_n) + \frac{k^3}{48}u'''(t_n) + O(k^4), \\
+    u(t_{n+1}) &= u(t_n) + ku'(t_n) + \frac{k^2}{2}u''(t_n) + \frac{k^3}{6}u'''(t_n) + O(k^4).
+    \end{align*}
+    
+    For the first stage (trapezoidal rule half-step), we substitute the exact solution into
+    \begin{equation}
+      U^{*} = U^n + \frac{k}{4}(f(U^n) + f(U^{*})). \label{eq:Q2Step1}
+    \end{equation}
+    Using $f(u) = u'$, we have
+    \[
+    u(t_n + k/2) = u(t_n) + \frac{k}{4}(u'(t_n) + u'(t_n + k/2)) + \tau_1,
+    \]
+    where $\tau_1$ is the local truncation error. Expanding $u'(t_n + k/2) = u'(t_n) + \frac{k}{2}u''(t_n) + O(k^2)$:
+    \begin{align*}
+    u(t_n + k/2) &= u(t_n) + \frac{k}{4}\left(2u'(t_n) + \frac{k}{2}u''(t_n)\right) + O(k^3) + \tau_1 \\
+                 &= u(t_n) + \frac{k}{2}u'(t_n) + \frac{k^2}{8}u''(t_n) + O(k^3) + \tau_1.
+    \end{align*}
+    Comparing with the Taylor expansion shows $\tau_1 = O(k^3)$.
+    
+    For the second stage (BDF2-type half-step), we substitute the exact solution into
+    \begin{equation}
+      3U^{n+1} - 4U^{*} + U^n = k f(U^{n+1}). \label{eq:Q2Step2}
+    \end{equation}
+    This gives
+    \[
+    3u(t_{n+1}) - 4u(t_n + k/2) + u(t_n) = ku'(t_{n+1}) + \tau_2.
+    \]
+    Substituting the Taylor expansions:
+    \begin{align*}
+    &3\left(u(t_n) + ku'(t_n) + \frac{k^2}{2}u''(t_n) + \frac{k^3}{6}u'''(t_n)\right) \\
+    &\quad - 4\left(u(t_n) + \frac{k}{2}u'(t_n) + \frac{k^2}{8}u''(t_n) + \frac{k^3}{48}u'''(t_n)\right) + u(t_n) \\
+    &= k\left(u'(t_n) + ku''(t_n) + \frac{k^2}{2}u'''(t_n)\right) + \tau_2 + O(k^4).
+    \end{align*}
+    Collecting terms on the left-hand side:
+    \begin{align*}
+    &0 \cdot u(t_n) + ku'(t_n) + k^2u''(t_n) + \frac{5k^3}{12}u'''(t_n) \\
+    &= ku'(t_n) + k^2u''(t_n) + \frac{k^3}{2}u'''(t_n) + \tau_2 + O(k^4).
+    \end{align*}
+    Therefore,
+    \[
+    \tau_2 = \left(\frac{5}{12} - \frac{1}{2}\right)k^3u'''(t_n) + O(k^4) = -\frac{k^3}{12}u'''(t_n) + O(k^4) = O(k^3).
+    \]
+    
+    Since the local truncation error is $O(k^3)$, the TR-BDF2 method is second-order accurate.
+
+
+
+
+
+    \item To determine the region of absolute stability for the TR-BDF2 method, we apply it to the linear test equation $u' = \lambda u$. Letting $z = k\lambda$, we substitute into the TR-BDF2 method. First we substitute into the first stage \eqref{eq:Q2Step1}:
+    \begin{align*}
+        U^{*} &= U^n + \frac{k}{4}(\lambda U^n + \lambda U^{*}) \\
+        \implies U^{*} - \frac{z}{4}U^{*} &= U^n + \frac{z}{4}U^n \\
+        \implies U^{*}\left(1 - \frac{z}{4}\right) &= U^n\left(1 + \frac{z}{4}\right) \\
+        \implies U^{*} &= U^n \frac{1 + \frac{z}{4}}{1 - \frac{z}{4}}.
+    \end{align*}
+    Next, we substitute $U^{*}$ into the second stage \eqref{eq:Q2Step2}:
+    \begin{align*}
+        3U^{n+1} - 4U^{*} + U^n &= k\lambda U^{n+1} \\
+        \implies 3U^{n+1} - 4\left(U^n \frac{1 + \frac{z}{4}}{1 - \frac{z}{4}}\right) + U^n &= z U^{n+1} \\
+        \implies (3 - z)U^{n+1} &= U^n\left(4\frac{1 + \frac{z}{4}}{1 - \frac{z}{4}} - 1\right) \\
+        \implies U^{n+1} &= U^n \frac{4\frac{1 + \frac{z}{4}}{1 - \frac{z}{4}} - 1}{3 - z} \\
+                        &= U^n \frac{5z + 12}{(4-z)(3 - z)}. \\
+    \end{align*}
+    Thus, we have that the stability function is
+    \begin{equation}
+        R(z) = \frac{5z + 12}{(4-z)(3 - z)}. \label{eq:Q2StabilFunc}
+    \end{equation}
+    Using the boundary-locus method we let $R(z) = e^{i\theta}$ for $\theta \in [0, 2\pi)$, and solve for $z$:
+    \begin{align*}
+        \frac{5z + 12}{(4-z)(3 - z)} &= e^{i\theta} \\
+        \implies 5z + 12 &= e^{i\theta}(12 - 7z + z^2) \\
+        \implies e^{i\theta} z^2 - (7e^{i\theta} + 5)z + 12(e^{i\theta} - 1) &= 0 \\
+        \implies z(\theta) &= \frac{7e^{i\theta} + 5 \pm \sqrt{(7e^{i\theta} + 5)^2 - 48(e^{i\theta} - 1)}}{2e^{i\theta}}.
+    \end{align*}
+    Below is the plot of the stability region, with both branches of $z(\theta)$ plotted as $\theta$ varies from $0$ to $2\pi$. The stability region is the interior where $|R(z)| \leq 1$.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{Q2b.png}
+        %\caption{Region of absolute stability for the TR-BDF2 method.}
+    \end{figure}
+    \noindent From the plot, we see that the region of absolute stability includes the entire left half-plane. Therefore, the method is A-stable. Additionally, we examine the limit of $R(z)$ as $z \to -\infty$:
+    \[
+        \lim_{z \to -\infty} R(z) = \lim_{z \to -\infty} \frac{5z + 12}{(4-z)(3 - z)} = \lim_{z \to -\infty} \frac{5 + \frac{12}{z}}{\frac{(4-z)(3 - z)}{z}} = 0.
+    \]
+    Since $\lim_{z \to -\infty} R(z) = 0$, the TR-BDF2 method is L-stable.
+
+  \end{enumerate}
 
 
 
@@ -141,6 +234,112 @@ Below is the plot of the stability region, with both branches of $z(\theta)$ plo
     \end{enumerate}
 \end{problem}
 
+
+
+
+\begin{enumerate}[(a)]
+  \item We prove that the midpoint method is second-order accurate by analyzing the local truncation error using Taylor series expansions.
+
+  Let $u(t)$ be the exact solution of $u' = f(u,t)$. We expand $u(t)$ around $t_n$:
+  \begin{align*}
+  u(t_{n+1}) &= u(t_n) + ku'(t_n) + \frac{k^2}{2}u''(t_n) + \frac{k^3}{6}u'''(t_n) + O(k^4), \\
+  u(t_n + k/2) &= u(t_n) + \frac{k}{2}u'(t_n) + \frac{k^2}{8}u''(t_n) + \frac{k^3}{48}u'''(t_n) + O(k^4).
+  \end{align*}
+
+  Substituting the exact solution into the midpoint method
+  \[
+  U^{n+1} = U^n + k f\left( \frac{U^n + U^{n+1}}{2}, t_n + \frac{k}{2} \right),
+  \]
+  we get
+  \[
+  u(t_{n+1}) = u(t_n) + k f\left( \frac{u(t_n) + u(t_{n+1})}{2}, t_n + \frac{k}{2} \right) + \tau,
+  \]
+  where $\tau$ is the local truncation error. 
+
+  From the Taylor expansion, we have
+  \[
+  \frac{u(t_n) + u(t_{n+1})}{2} = u(t_n) + \frac{k}{2}u'(t_n) + \frac{k^2}{4}u''(t_n) + \frac{k^3}{12}u'''(t_n) + O(k^4).
+  \]
+
+  Using the chain rule and expanding $f$ around $(u(t_n + k/2), t_n + k/2)$:
+  \begin{align*}
+  f\left( \frac{u(t_n) + u(t_{n+1})}{2}, t_n + \frac{k}{2} \right) &= f(u(t_n + k/2), t_n + k/2) \\
+  &\quad + \frac{\partial f}{\partial u}\left(\frac{k^2}{4}u''(t_n) + \frac{k^3}{12}u'''(t_n)\right) + O(k^4).
+  \end{align*}
+
+  Since $u' = f(u,t)$, we have $f(u(t_n + k/2), t_n + k/2) = u'(t_n + k/2)$. Therefore:
+  \begin{align*}
+  u(t_{n+1}) &= u(t_n) + k u'(t_n + k/2) + O(k^3) + \tau \\
+  &= u(t_n) + k\left(u'(t_n) + \frac{k}{2}u''(t_n) + \frac{k^2}{8}u'''(t_n)\right) + O(k^4) + \tau \\
+  &= u(t_n) + ku'(t_n) + \frac{k^2}{2}u''(t_n) + \frac{k^3}{8}u'''(t_n) + O(k^4) + \tau.
+  \end{align*}
+
+  Comparing with the Taylor expansion of $u(t_{n+1})$:
+  \[
+  \tau = \left(\frac{1}{6} - \frac{1}{8}\right)k^3u'''(t_n) + O(k^4) = \frac{k^3}{24}u'''(t_n) + O(k^4) = O(k^3).
+  \]
+
+  Since the local truncation error is $O(k^3)$, the midpoint method is second-order accurate.
+
+  \item To show the midpoint method is A-stable, we apply it to the linear test equation $u' = \lambda u$. Letting $z = k\lambda$:
+  \begin{align*}
+  U^{n+1} &= U^n + k\lambda\left(\frac{U^n + U^{n+1}}{2}\right) \\
+  \implies U^{n+1} &= U^n + \frac{z}{2}(U^n + U^{n+1}) \\
+  \implies U^{n+1} - \frac{z}{2}U^{n+1} &= U^n + \frac{z}{2}U^n \\
+  \implies U^{n+1}\left(1 - \frac{z}{2}\right) &= U^n\left(1 + \frac{z}{2}\right) \\
+  \implies U^{n+1} &= U^n \frac{1 + \frac{z}{2}}{1 - \frac{z}{2}}.
+  \end{align*}
+
+  Thus, the stability function is
+  \[
+  R(z) = \frac{1 + \frac{z}{2}}{1 - \frac{z}{2}} = \frac{2 + z}{2 - z}.
+  \]
+
+  For A-stability, we need $|R(z)| \leq 1$ for all $z$ with $\text{Re}(z) \leq 0$. Let $z = x + iy$ with $x \leq 0$:
+  \begin{align*}
+  |R(z)|^2 &= \frac{|2 + z|^2}{|2 - z|^2} = \frac{(2+x)^2 + y^2}{(2-x)^2 + y^2}.
+  \end{align*}
+
+  For $x \leq 0$: $(2+x)^2 + y^2 \leq (2-x)^2 + y^2$ since $(2+x)^2 \leq (2-x)^2$ when $x \leq 0$. Therefore $|R(z)| \leq 1$, and the midpoint method is A-stable.
+
+  \item Consider $u' = \lambda(t) u$ with $\text{Re}(\lambda(t)) \leq 0$ for all $t$. The midpoint method gives:
+  \[
+  U^{n+1} = U^n + k\lambda(t_n + k/2)\left(\frac{U^n + U^{n+1}}{2}\right).
+  \]
+
+  Let $\mu = k\lambda(t_n + k/2)$. Then:
+  \[
+  U^{n+1} = U^n \frac{1 + \frac{\mu}{2}}{1 - \frac{\mu}{2}}.
+  \]
+
+  Taking the magnitude:
+  \[
+  |U^{n+1}|^2 = |U^n|^2 \frac{|1 + \frac{\mu}{2}|^2}{|1 - \frac{\mu}{2}|^2}.
+  \]
+
+  Since $\text{Re}(\lambda(t_n + k/2)) \leq 0$, we have $\text{Re}(\mu) \leq 0$. By the same argument as in part (b), $|1 + \frac{\mu}{2}|^2 \leq |1 - \frac{\mu}{2}|^2$. Therefore $|U^{n+1}| \leq |U^n|$, proving AN-stability.
+
+  \item For the trapezoidal method, $U^{n+1} = U^n + \frac{k}{2}(f(U^n, t_n) + f(U^{n+1}, t_{n+1}))$. Applying to $u' = \lambda(t)u$: %TODO: Look over this part. 
+  \[
+  U^{n+1} = U^n + \frac{k}{2}(\lambda(t_n)U^n + \lambda(t_{n+1})U^{n+1}).
+  \]
+
+  Solving for $U^{n+1}$:
+  \[
+  U^{n+1} = U^n \frac{1 + \frac{k\lambda(t_n)}{2}}{1 - \frac{k\lambda(t_{n+1})}{2}}.
+  \]
+
+  Consider $\lambda(t) = -1 + i\omega(t)$ where $\omega(t)$ varies. Let $\omega(t_n) = -\omega_0$ and $\omega(t_{n+1}) = \omega_0$ for some $\omega_0 > 0$ and appropriate $k$. Then:
+  \[
+  |U^{n+1}|^2 = |U^n|^2 \frac{|1 + \frac{k(-1-i\omega_0)}{2}|^2}{|1 - \frac{k(-1+i\omega_0)}{2}|^2} = |U^n|^2 \frac{(1-k/2)^2 + (k\omega_0/2)^2}{(1+k/2)^2 + (k\omega_0/2)^2}.
+  \]
+
+  For sufficiently large $\omega_0$ or appropriate $k$, we can have $(1-k/2)^2 > (1+k/2)^2$ is impossible, but the imaginary parts can cause $|U^{n+1}| > |U^n|$. For example, with $k = 1$, $\omega_0 = 2$:
+  \[
+  \frac{(1/2)^2 + 1^2}{(3/2)^2 + 1^2} = \frac{1.25}{3.25} < 1,
+  \]
+  but this doesn't give a counterexample. However, consider $\lambda(t) = i\omega(t)$ (purely imaginary). Then the trapezoidal method can amplify, showing it is not AN-stable.
+\end{enumerate}
 
 
 
