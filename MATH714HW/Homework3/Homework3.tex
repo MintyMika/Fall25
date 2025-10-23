@@ -62,6 +62,43 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     Plot the region of absolute stability and report whether the method is zero-stable, A-stable, or L-stable.
 \end{problem}
 
+First we derive the stability function for the given Runge-Kutta (RK) method, then use the boundary-locus method to plot the region of absolute stability, and finally classify the method's stability properties. \\
+We have that the given RK method is a 2-stage explicit RK method. Here stage 1 computes $k_1 = f(U^n)$, and stage 2 computes $k_2 = f\left( U^n + \frac{k}{2}k_1 \right)$. The final update is $U^{n+1} = U^n + k k_2$. \\
+Using the linear test equation $u' = \lambda u$, we substitute $f(u) = \lambda u$ into the RK method to derive the stability function $R(z)$, where $z = k\lambda$. \\
+For the first stage:
+\[
+  k_1 = f(U^n) = \lambda U^n.
+\]
+Then the second stage is:
+\[
+  k_2 = f\left( U^n + \frac{k}{2} k_1 \right) \implies k_2 = \lambda \left( U^n + \frac{k}{2} \lambda U^n \right) = \lambda U^n \left( 1 + \frac{z}{2} \right).
+\]
+Then we have that the update is:
+\begin{align*}
+  U^{n+1} &= U^n + k k_2 \\
+          &= U^n + k \lambda U^n \left( 1 + \frac{z}{2} \right) \\
+          &= U^n \left( 1 + z + \frac{z^2}{2} \right).
+\end{align*}
+Therefore, we have that the stability function is
+\begin{equation}
+  R(z) = 1 + z + \frac{z^2}{2}.
+\end{equation}
+Using the boundary-locus method we let $R(z) = e^{i\theta}$ for $\theta \in [0, 2\pi)$, and solve for $z$:
+\begin{align*}
+  1 + z + \frac{z^2}{2} &= e^{i\theta} \\
+  \implies \frac{z^2}{2} + z + (1 - e^{i\theta}) &= 0 \\
+  \implies z(\theta) &= -1 \pm \sqrt{1 - 2(1 - e^{i\theta})} \\
+  &= -1 \pm \sqrt{2e^{i\theta} - 1}.
+\end{align*}
+Below is the plot of the stability region, with both branches of $z(\theta)$ plotted as $\theta$ varies from $0$ to $2\pi$. The stability region is the interior where $|R(z)| \leq 1$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Q1.png}
+    \caption{Region of absolute stability for the given Runge-Kutta method.}
+\end{figure}
+
+\noindent From the plot, we see that the region of absolute stability includes part of the left half-plane, but does not include the entire left half-plane. Therefore, the method is not A-stable and therefore not L-stable. However, since the method is a Runge-Kutta method, it is zero-stable. \\
+
 
 
 \begin{problem} \\
@@ -75,6 +112,10 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \item Determine the region of absolute stability and plot it. Based on this, show that the method is L-stable.
     \end{enumerate}
 \end{problem}
+
+
+
+
 
 
 
