@@ -151,13 +151,16 @@ def question_4():
         # Check for distraction times
         if distraction_times['T'] is None and u[prof_T] > distraction_threshold:
             distraction_times['T'] = t
-            print(f"Professor T distracted at t = {t:.1f} s")
+            # Make sure code is running
+            # print(f"Professor T distracted at t = {t:.1f} s")
         if distraction_times['Q'] is None and u[prof_Q] > distraction_threshold:
             distraction_times['Q'] = t
-            print(f"Professor Q distracted at t = {t:.1f} s")
+            # Make sure code is running
+            # print(f"Professor Q distracted at t = {t:.1f} s")
         if distraction_times['C'] is None and u[prof_C] > distraction_threshold:
             distraction_times['C'] = t
-            print(f"Professor C distracted at t = {t:.1f} s")
+            # Make sure code is running
+            # print(f"Professor C distracted at t = {t:.1f} s")
         
         # Store fields at target times
         for target_t in plot_times:
