@@ -187,14 +187,7 @@ Below is the plot of the stability region, with both branches of $z(\theta)$ plo
     \begin{equation}
         R(z) = \frac{5z + 12}{(4-z)(3 - z)}. \label{eq:Q2StabilFunc}
     \end{equation}
-    Using the boundary-locus method we let $R(z) = e^{i\theta}$ for $\theta \in [0, 2\pi)$, and solve for $z$:
-    \begin{align*}
-        \frac{5z + 12}{(4-z)(3 - z)} &= e^{i\theta} \\
-        \implies 5z + 12 &= e^{i\theta}(12 - 7z + z^2) \\
-        \implies e^{i\theta} z^2 - (7e^{i\theta} + 5)z + 12(e^{i\theta} - 1) &= 0 \\
-        \implies z(\theta) &= \frac{7e^{i\theta} + 5 \pm \sqrt{(7e^{i\theta} + 5)^2 - 48(e^{i\theta} - 1)}}{2e^{i\theta}}.
-    \end{align*}
-    Below is the plot of the stability region, with both branches of $z(\theta)$ plotted as $\theta$ varies from $0$ to $2\pi$. The stability region is the interior where $|R(z)| \leq 1$.
+    Below is the plot of the stability region $|R(z)| \leq 1$ by direct computation of $|R(z)|$ over a grid in the complex plane.
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.6\textwidth]{Q2b.png}
@@ -424,6 +417,46 @@ Below is the plot of the stability region, with both branches of $z(\theta)$ plo
     \end{enumerate}
 \end{problem}
 
+\begin{enumerate}[(a)]
+  \item See the code file \texttt{Homework3.py} for the implementation of the finite difference method to solve the pizza smell diffusion problem.
+  \item See the plots below for the smell concentration field $[u(x,y)]^{1/4}$ at the specified times.
+  \begin{figure}[H]
+      \centering
+      \begin{minipage}{.5\textwidth}
+          \centering
+          \includegraphics[width=0.8\linewidth]{Q4ts1.png}        
+      \end{minipage}
+      \begin{minipage}{.5\textwidth}
+          \centering
+          \includegraphics[width=0.8\linewidth]{Q4ts5.png}
+      \end{minipage}     
+      \begin{minipage}{.5\textwidth}
+          \centering
+          \includegraphics[width=0.8\linewidth]{Q4ts25.png}
+      \end{minipage}
+      \begin{minipage}{.5\textwidth}
+          \centering
+          \includegraphics[width=0.8\linewidth]{Q4ts100.png}
+      \end{minipage}
+  \end{figure}
 
+  \newpage
+  \item From the output of the program, the times when each professor is first distracted by the pizza smell (when $u$ first exceeds $10^{-4}$) are: \\
+  \begin{center}
+    \begin{tabular}{l | c}
+      Professor & Time (s) \\ \hline
+      T & $4.2$ \\
+      Q & $19.5$ \\
+      C & $73.5$ \\
+    \end{tabular}
+  \end{center}
+
+  \item The semilog plot showing the smell concentration at the three professors' locations is shown below.
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{Q4d.png}
+      \caption{Semilog plot of smell concentration at professors T, Q, and C's locations over time.}
+  \end{figure}
+\end{enumerate}
 
 \end{document}
