@@ -1,0 +1,122 @@
+\documentclass[11pt]{article}
+\input{preamble.tex}
+
+% Graphics path
+\graphicspath{{./}{gr/}}
+
+\begin{document}
+\section*{Math/CS 714: Assignment 4}
+
+\begin{problem} \\ 
+    \textbf{Beam--Warming method (4 points).}
+        The Beam--Warming method for the linear advection equation $u_t + au_x =0$
+        is given by
+        \begin{equation}
+          U^{n+1}_j = U^n_j - \frac{ak}{2h} (3 U^n_j - 4U^n_{j-1} + U^n_{j-2} ) +
+          \frac{a^2 k^2}{2h^2} (U^n_j - 2U^n_{j-1} + U^n_{j-2}),
+          \label{eq:beam_warming}
+        \end{equation}
+        where $U^n_j$ is the approximation of $u(jh,nk)$.
+        \begin{enumerate}
+          \item Use Taylor series to show that this method is second-order accurate.
+          \item For a given plane wave solution $U^0_j = e^{ij h \xi}$, compute the
+                amplification factor $g(\xi)$, and hence determine the stability
+                restriction for this method.
+        \end{enumerate}
+\end{problem}
+
+
+\begin{problem} \\ 
+    \textbf{(9 points).}
+        Dropping the last term in the Beam--Warming method from Eq.~\eqref{eq:beam_warming}
+        gives
+        \begin{equation}
+          U^{n+1}_j = U^n_j - \frac{ak}{2h} (3 U^n_j - 4U^n_{j-1} + U^n_{j-2} ), \label{eq:sec_ord}
+        \end{equation}
+        which corresponds to forward Euler method in time, and a second-order
+        one-sided derivative in space. Define $\nu = ak/h$.
+        \begin{enumerate}
+          \item Calculate the amplification factor $g(\xi)$ for a plane wave solution
+                $U^0_j = e^{ijh\xi}$.
+          \item Define $A(\xi)= |g(\xi)|^2$ and calculate a Taylor series for $A$ at
+                $\xi=0$ up to second order. Using the Taylor series, explain why we
+                consider the numerical scheme of Eq.~\eqref{eq:sec_ord} to be unstable
+                regardless of the choice of timestep.
+          \item Make two plots of $A(\xi)$ for $\nu = \nicefrac1{100}$ using two different
+                axis ranges:
+                \begin{itemize}
+                  \item $0\le h\xi \le 2\pi$ and $0.91 \le A \le 1.01$,
+                  \item $0\le h\xi \le 0.17$ and $1-10^{-6} \le A \le 1+10^{-6}$.
+                \end{itemize}
+          \item Write a program to simulate Eq.~\eqref{eq:sec_ord} on a periodic interval $[0,2\pi)$ using $N=40$ grid points
+                and a grid spacing of $h = 2\pi/N$. Use the initial condition $u= \exp (2\sin x)$
+                and $\nu =\nicefrac1{100}$. Plot the solution for $n=0,1000,2000,4000$. Define
+                the root mean squared value of the solution,
+                \begin{equation}
+                  R(n) = \sqrt{\frac{1}{N} \sum_{j=0}^{N-1} (U^n_j)^2}.
+                \end{equation}
+                Make a plot of $R$ over the range from $n=0$ to $n=10000$. You should find that $R$
+                does not grow over time, indicating that the method is stable.
+          \item Using the discrete Fourier transform, it can be shown that an arbitrary initial
+                condition on the periodic interval can be written as
+                \begin{equation}
+                  U^0_j = \sum_{l=0}^{N-1} \alpha_l e^{ijlh}
+                \end{equation}
+                for some constants $\alpha_l$. Write down an expression for the general
+                solution $U^n_j$. Using your answer, explain why your result in part (d)
+                does not contradict the result in part (b).
+        \end{enumerate}
+\end{problem}
+
+\begin{problem} \\ 
+    \textbf{Lax--Wendroff method (7 points).}
+        Consider the hyperbolic conservation equation
+        \begin{equation}
+          q_t + [A(x) q]_x =0 \label{eq:cons}
+        \end{equation}
+        for a function on $q(x,t)$ on the periodic interval $[0,2\pi)$. Let
+        \smash{$A(x)=2+\tfrac{4}{3}\sin x$}. Following the finite volume approach,
+        divide the intervals into $m$ domains $\calC_i$ of length
+        $h=\tfrac{2\pi}{m}$, for $i=\{0,1,\ldots,m-1\}$. Let $Q_i^n \approx q(
+          (i+\nicefrac12)h, n\Delta t)$ be the discretized solution at the center of
+        each $\calC_i$. The generalized Lax--Wendroff scheme for this equation is
+        given by
+        \begin{equation}
+          Q^{n+1}_i = Q_i - \frac{\Delta t}{h} \left[ \calF_{i+1/2}^n - \calF_{i-1/2}^n\right]
+        \end{equation}
+        where the fluxes are
+        \begin{equation}
+          \calF_{i-1/2}^n = \frac{A_{i-1} Q_{i-1}^n + A_i Q_i^n}{2} - \frac{A_{i-1/2}\Delta t}{2h} \left[A_iQ^n_i - A_{i-1}Q_{i-1}^n\right]. \label{eq:lw}
+        \end{equation}
+        Here, $A_i = A( (i+\nicefrac12)h)$ and $A_{i-1/2}=A(ih)$. It can be shown
+        that the solution to Eq.~\eqref{eq:cons} is time-periodic so that
+        $q(x,t+T)=q(x,t)$ where $T=3\pi/\sqrt{5}$.
+        \begin{enumerate}
+          \item The CFL condition requires that \smash{$\Delta t \le \tfrac{h}{c}$}
+                for stability. What is $c$ in this case?
+          \item Implement Eq.~\eqref{eq:lw} and set $\Delta t = \tfrac{h}{3c}$. Use
+                the initial condition
+                \begin{equation}
+                  q(x,0) = \exp\left(\sin x + \tfrac{1}{2}\sin 4x\right). \label{eq:lwic}
+                \end{equation}
+                For $m=512$, plot snapshots of the solution for
+                $t=0,\tfrac{T}{4},\tfrac{T}{2},\tfrac{3T}{4},T$.\footnote{Since
+                  multiples of $\Delta t$ do not exactly match these snapshot times, you
+                  may need to make a small adjustment to the timestep.}
+          \item By considering a range of $m$ (\textit{e.g.}~256 and upward) with
+                the initial condition in Eq.~\eqref{eq:lwic}, calculate the $L_2$ norm
+                between the numerical solution at $t=T$ and the exact answer. Determine
+                the order of convergence.\footnote{When determining the order of
+                  convergence, you are interested in the asymptotic properites of error
+                  as $m$ gets large. You can ignore initial transients in error.}
+          \item Repeat parts (b) and (c) for the initial condition
+                \begin{equation}
+                  q(x,0) = \max\{ \tfrac{\pi}{2}-|x-\pi|,0\}.
+                \end{equation}
+          \item \textbf{Optional.} By the considering the characteristics, or otherwise,
+                derive the result that $q$ is time-periodic with period $T$.
+        \end{enumerate}
+\end{problem}
+
+
+\end{document}
