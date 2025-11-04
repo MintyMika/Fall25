@@ -1,0 +1,267 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{extarrows}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 741
+    \hfill Homework 5
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+
+
+% Start of Problems
+
+\begin{problem} \\ 
+    Verify that the following construction is a contravariant functor $F$ from the category of sets to itself: for a set $A, F(A)$ is the power set of $A$ (that is, the set of all the subsets of $A$), while for a map $f : A \to B$, the induced map $F(f) : F(B) \to F(A)$ sends $X \subset B$ to $f^{-1}(X) \subset A$.
+\end{problem}
+
+\begin{proof}
+    % We need to verify two properties of a contravariant functor:
+    % \begin{enumerate}
+    %     \item For any sets $A$ and $B$ and any functions $f : A \to B$ and $g : B \to C$, we have 
+    %     \[
+    %         F(g \circ f) = F(f) \circ F(g).
+    %     \]
+    %     \item For any set $A$, we have 
+    %     \[
+    %         F(\operatorname{id}_A) = \operatorname{id}_{F(A)}.
+    %     \]
+    % \end{enumerate}
+
+    Let $X \subset C$. Then 
+    \[
+        F(g \circ f)(X) = (g \circ f)^{-1}(X) = f^{-1}(g^{-1}(X)) = F(f)(F(g)(X)).
+    \]
+    Thus, $F(g \circ f) = F(f) \circ F(g)$. \\
+    Finally, we check the identity property. Let $X \subset A$. Then 
+    \[
+        F(\operatorname{id}_A)(X) = (\operatorname{id}_A)^{-1}(X) = X.
+    \]
+    Thus, $F(\operatorname{id}_A) = \operatorname{id}_{F(A)}$. \\
+    Since both properties of \textbf{Definition X.1.2} are satisfied, $F$ is indeed a contravariant functor from the category of sets to itself.
+\end{proof}
+
+
+
+\begin{problem} \\ 
+    Let $\mathcal{C}$ be any category. Fix an object $a \in \mathcal{C}$ and suppose that for any object $x \in \mathcal{C}$, the product $a \times x$ exists. Show that the correspondence
+    \[
+        x \mapsto a \times x
+    \]
+    is a functor. (Technically, there is a subtlety here: we  know that if a product exists, it is unique up to isomorphism, however, in order to construct a functor, we need to make a specific choice of $a \times x$ for all $x$. It would be better to say that the functor is defined up to a cononical isomorphism, but this detail is usually ignored.)
+\end{problem}
+
+\begin{proof}
+    We need to verify two properties of a functor:
+    \begin{enumerate}
+        \item For any objects $x, y, z \in \mathcal{C}$ and any morphisms $f : x \to y$ and $g : y \to z$, we have 
+        \[
+            F(g \circ f) = F(g) \circ F(f).
+        \]
+        \item For any object $x \in \mathcal{C}$, we have 
+        \[
+            F(\operatorname{id}_x) = \operatorname{id}_{F(x)}.
+        \]
+    \end{enumerate}
+
+    Let $f : x \to y$ and $g : y \to z$ be morphisms in $\mathcal{C}$. By the universal property of products, there exist unique morphisms $F(f) : a \times x \to a \times y$ and $F(g) : a \times y \to a \times z$ such that the following diagrams commute:
+    \[
+        \begin{array}{ccc}
+            a \times x & \xrightarrow{F(f)} & a \times y \\
+            \downarrow{\pi_a} & & \downarrow{\pi_a} \\
+            a & = & a
+        \end{array}
+    \quad
+        \begin{array}{ccc}
+            a \times y & \xrightarrow{F(g)} & a \times z \\
+            \downarrow{\pi_a} & & \downarrow{\pi_a} \\
+            a & = & a
+        \end{array}
+    \]
+    Now, consider the composition $g \circ f : x \to z$. By the universal property of products again, there exists a unique morphism $F(g \circ f) : a \times x \to a \times z$ such that the following diagram commutes:
+    \[
+        \begin{array}{ccc}
+            a \times x & \xrightarrow{F(g \circ f)} & a \times z \\
+            \downarrow{\pi_a} & & \downarrow{\pi_a} \\ 
+            a & = & a
+        \end{array}
+    \]
+    Since both $F(g) \circ F(f)$ and $F(g \circ f)$ satisfy the same universal property, by the uniqueness part of the universal property of products, we have 
+    \[
+        F(g \circ f) = F(g) \circ F(f).
+    \] \\
+    Finally, we check the identity property. For any object $x \in \mathcal{C}$, by the universal property of products, there exists a unique morphism $F(\operatorname{id}_x) : a \times x \to a \times x$ such that the following diagram commutes:
+    \[
+        \begin{array}{ccc}
+            a \times x & \xrightarrow{F(\operatorname{id}_x)} & a \times x \\
+            \downarrow{\pi_a} & & \downarrow{\pi_a} \\ 
+            a & = & a
+        \end{array}
+    \]
+    Since both $\operatorname{id}_{a \times x}$ and $F(\operatorname{id}_x)$ satisfy the same universal property, by the uniqueness part of the universal property of products, we have 
+    \[
+        F(\operatorname{id}_x) = \operatorname{id}_{a \times x}.
+    \]
+    Therefore we have that $x \mapsto a \times x$ is indeed a functor.
+\end{proof}
+
+
+
+\begin{problem} \\
+    Let $V$ be a linear space and $P : V \to V$ be a linear operator such that $P^2 = P$. (Operators having this property are called \textit{projectors}.) Show that $V$ is the internal direct sum of subspaces $\mathrm{Im}(P)$ and $\mathrm{Ker}(P)$.
+\end{problem}
+
+\begin{proof}
+    Notice that for any $x \in V$ we have that $x = x - P(x) + P(x)$. Then $P(x - P(x)) = P(x) - P^2(x) = 0$. So we have that $x - P(x) \in \operatorname{ker} (P)$ and clearly $P(x) \in \operatorname{im} (P)$. Now suppose $x \in \operatorname{ker} (P) \cap \operatorname{im} (P)$. Fix $y$ with $P(x) = y$ then we have that $0 = P(x) =P^2(x) = P(y)$. So $0 = P(x) =P(y) \iff x = y = 0$. Therefore we have that $V = \operatorname{ker} (P) \oplus \operatorname{im} (P)$.
+\end{proof}
+
+
+
+\begin{problem} \\ 
+    Continuing with the previous problem, suppose that $\dim (V) = n$ Prove that there exists a basis of $V$ such that the matrix of $P$ is of the form $\operatorname{diag}(1,1, \dots, 1,0,0, \dots, 0)$. ($\operatorname{diag}$ denotes the diagonal matrix with given entries.)
+\end{problem}
+
+
+\begin{proof}
+    If we fix bases $\mathscr{B}$ and $\mathscr{C}$ for $\operatorname{im} (P)$ and $\operatorname{ker} (P)$ respectively, then from question 3 we have that $\mathscr{B} \cup \mathscr{C}$ is a basis for $V$. Then for any $x \in \mathscr{B}$, fix $y_x \in V$ such that $x = P(y_x)$ so we have $P(x) = P^2(y_x) = P(y_x) = x$. Then for any $y \in \mathscr{C}$, we have $P(y) = 0$ by definition. Therefore the matrix representation of $P$ with respect to the basis $\mathscr{B} \cup \mathscr{C}$ is of the form $\operatorname{diag}(1,1, \dots, 1,0,0, \dots, 0)$.
+\end{proof}
+
+
+\begin{problem} \\ 
+    Fix $n$, and consider the vector space: 
+    \[
+        V = \{ p(t) \in \rr[t] : \deg (p) \leq n \}
+    \]
+    over $\rr$. Fix $n + 1$ numbers $a_0, \dots, a_n \in \rr$ and consider the map
+    \[
+        \phi : V \to \rr^{n + 1} ; \quad \phi (p) = (p(a_0), \dots, p(a_n)).
+    \]
+    Show that $\phi$ is invertible (and therefore an isomorphism of vector spaces) if and only if $a_i$'s are all distinct.
+\end{problem}
+
+
+\begin{proof}
+    ($\Leftarrow$) Suppose the $a_i$'s are all distinct. We first show that $\phi$ is injective. Suppose $\phi(p) = \phi(q)$ for some $p, q \in V$. Then we have that $p(a_i) = q(a_i)$ for all $0 \leq i \leq n$. Thus, the polynomial $r(t) = p(t) - q(t)$ has $n + 1$ distinct roots $a_0, a_1, \dots, a_n$. Since $\deg(r) \leq n$, we must have $r(t) \equiv 0$, which implies that $p(t) = q(t)$. Therefore, $\phi$ is injective. \\
+    To show that $\phi$ is surjective, let $(b_0, b_1, \dots, b_n) \in \rr^{n + 1}$ be any vector. We need to find a polynomial $p(t) \in V$ such that $\phi(p) = (b_0, b_1, \dots, b_n)$. This is equivalent to solving the system of equations:
+    \[
+        p(a_i) = b_i \quad \text{for } i = 0, 1, \dots, n.
+    \]
+    Since the $a_i$'s are distinct, we have:
+    \[
+        p(t) = \sum_{i=0}^{n} b_i \prod_{\substack{0 \leq j \leq n \\ j \neq i}} \frac{t - a_j}{a_i - a_j}
+    \]
+    is a polynomial of degree at most $n$ that satisfies the above equations. Thus, $\phi$ is surjective. Since $\phi$ is both injective and surjective, it is invertible. \\
+
+    ($\Rightarrow$) Now suppose that the $a_i$'s are not all distinct. Without loss of generality, assume that $a_0 = a_1$. We will show that $\phi$ is not injective. Consider the polynomial $p(t) = t - a_0$. Then we have:
+    \[
+        \phi(p) = (p(a_0), p(a_1), \dots, p(a_n)) = (0, 0, p(a_2), \dots, p(a_n)).
+    \]
+    Now consider the zero polynomial $q(t) = 0$. We have:
+    \[
+        \phi(q) = (q(a_0), q(a_1), \dots, q(a_n)) = (0, 0, 0, \dots, 0).
+    \]
+    Since $\phi(p) \neq \phi(q)$, we have found two distinct polynomials $p$ and $q$ such that $\phi(p) = \phi(q)$. Therefore, $\phi$ is not injective, and hence not invertible.
+    
+\end{proof}
+
+
+
+
+\begin{problem} \\ 
+    Let $V$ be a vector space over a field $K$. A (linear) functional on $V$ is a linear operator $\phi : V \to K$. Show that if two functionals $\phi, \psi : V \to K$ satisfy $\operatorname{ker}(\phi) = \operatorname{ker}(\psi)$, then there exists $a \in K$ such that $\psi = a \phi$. (If you need to, you can assume that $V$ is finite-dimensional, but it should not be necessary.)
+\end{problem}
+
+
+
+\begin{problem} \\ 
+    Let $K$ be a field and $L \subset K$ be a smaller field (e.g., $L = \rr$ and $K = \cc$). Given a $K$-vector space $V$, we can also consider it as a $L$-vector space, so we get two notions of dimension: as a vector space over $K$ and as a vector space over $L$. Denote them by $\dim_K V$ and $\dim_L V$, respectively. Show that 
+    \[
+        \dim_L V = (\dim_K V) \cdot (\dim_L K).
+    \]
+\end{problem}
+
+
+% \begin{proof}
+%     Let $\{v_1, v_2, \dots, v_n\}$ be a basis for $V$ over $K$ and let $\{k_1, k_2, \dots, k_m\}$ be a basis for $K$ over $L$. We claim that the set 
+%     \[
+%         \{k_i v_j : 1 \leq i \leq m, 1 \leq j \leq n\}
+%     \]
+%     is a basis for $V$ over $L$. 
+
+%     First we show that this set spans $V$ over $L$. Take any $v \in V$. Since $\{v_1, v_2, \dots, v_n\}$ is a basis for $V$ over $K$, we can write 
+%     \[
+%         v = a_1 v_1 + a_2 v_2 + \dots + a_n v_n
+%     \]
+%     for some $a_i \in K$. Each $a_i$ can be expressed as a linear combination of the basis elements of $K$ over $L$, i.e., 
+%     \[
+%         a_i = b_{i1} k_1 + b_{i2} k_2 + \dots + b_{im} k_m
+%     \]
+%     for some $b_{ij} \in L$. Substituting this back into the expression for $v$, we get 
+%     \[
+%         v = \sum_{j=1}^n \left( \sum_{i=1}^m b_{ij} k_i \right) v_j = \sum_{i=1}^m \sum_{j=1}^n b_{ij} (k_i v_j),
+%     \]
+%     which shows that $v$ can be expressed as an $L$-linear combination of the elements in our set.
+
+%     Next, we show that the set is linearly independent over $L$. Suppose we have 
+%     \[
+%         \sum_{i=1}^m \sum_{j=1}^n c_{ij} (k_i v_j) = 0
+%     \]
+%     for some $c_{ij} \in L$. Rearranging gives 
+%     \[
+%         \sum_{j=1}^n \left( \sum_{i=1}^m c_{ij} k_i \right) v_j = 0.
+%     \]
+%     Since $\{v_1, v_2, \dots, v_n\}$ is a basis for $V$ over $K$, the coefficients must all be zero, i.e., 
+%     \[
+%         \sum_{i=1}^m c_{ij} k_i = 0 \quad \forall j.
+%     \]
+%     But since $\{k_1, k_2, \dots, k_m\}$ is a basis for $K$ over $L$, we have that $c_{ij} = 0$ for all $i,j$. This shows that our set is linearly independent over $L$.
+
+%     Since we have shown that the set spans $V$ over $L$ and is linearly independent over $L$, we conclude that it is a basis for $V$ over $L$. Therefore we have 
+%     \[
+%         \dim_L V = m \cdot n = (\dim_K V) \cdot (\dim_L K).
+%     \]
+% \end{proof}
+
+
+
+\end{document}
