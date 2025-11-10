@@ -73,46 +73,26 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 
 \begin{enumerate}[a)]
-  \item
-  Expand the exact solution in time at $(x_j,t_n)$:
-  \[
-  u^{n+1}_j = u + k u_t + \frac{k^2}{2}u_{tt} + \frac{k^3}{6}u_{ttt}+O(k^4),
-  \]
-  with $u_t=-au_x,\;u_{tt}=a^2u_{xx},\;u_{ttt}=-a^3u_{xxx}$, so
-  \[
-  u^{n+1}_j = u - ak\,u_x + \frac{a^2k^2}{2}u_{xx} -\frac{a^3k^3}{6}u_{xxx}+O(k^4).
-  \]
-
-  Expand spatial shifts about $x_j$:
-  \begin{align*}
-  U_{j-1} &= u - h u_x + \tfrac{h^2}{2}u_{xx} -\tfrac{h^3}{6}u_{xxx} + \tfrac{h^4}{24}u_{xxxx}+O(h^5),\\
-  U_{j-2} &= u -2h u_x +2h^2 u_{xx} -\tfrac{4}{3}h^3 u_{xxx} + \tfrac{2}{3}h^4 u_{xxxx}+O(h^5).
-  \end{align*}
-  Form the combinations occurring in the scheme:
-  \begin{align*}
-  3U_j-4U_{j-1}+U_{j-2} &= 2h\,u_x -\tfrac{2}{3}h^3 u_{xxx} + \tfrac{1}{2}h^4 u_{xxxx} + O(h^5),\\
-  U_j-2U_{j-1}+U_{j-2} &= h^2 u_{xx} - h^3 u_{xxx} + \tfrac{7}{12}h^4 u_{xxxx} + O(h^5).
-  \end{align*}
-
-  Substitute into the Beam--Warming update
-  \[
-  U^{n+1}_j = U^n_j -\frac{ak}{2h}(3U_j-4U_{j-1}+U_{j-2})
-  +\frac{a^2k^2}{2h^2}(U_j-2U_{j-1}+U_{j-2})
-  \]
-  to obtain
-  \[
-  U^{n+1}_j = u - ak\,u_x + \frac{a^2k^2}{2}u_{xx}
-  + \Big(\tfrac{1}{3}a k h^2 - \tfrac{1}{2}a^2k^2 h\Big)u_{xxx} + O(kh^3,k^2h^2,k^3).
-  \]
-
-  Comparing with the exact time–Taylor expansion shows the leading matching terms
-  are $u- ak u_x + \tfrac{a^2k^2}{2}u_{xx}$; the local truncation error is
-  \[
-  \tau = u^{\text{exact}}(t+k)-U^{n+1}_j = O(k^3) + O(k h^2).
-  \]
-  Thus if the time step scales with the mesh, e.g. $k=O(h)$ (fixed Courant number),
-  the local error is $O(h^3)$ and the global error is $O(h^2)$ — the scheme is
-  second order accurate in space and time.
+  \item Taking the Taylor series expansion of $U^{n+1}_j$, $U^n_{j-1}$, and $U^n_{j-2}$ about
+        the point $(jh,nk)$ gives
+        \begin{align*}
+          U^{n+1}_j &= U^n_j + k U_t + \frac{k^2}{2} U_{tt} + O(k^3), \\
+          U^n_{j-1} &= U^n_j - h U_x + \frac{h^2}{2} U_{xx} - \frac{h^3}{6} U_{xxx} +
+          O(h^4), \\
+          U^n_{j-2} &= U^n_j - 2h U_x + 2h^2 U_{xx} - \frac{4h^3}{3} U_{xxx} +
+          O(h^4).
+        \end{align*}
+        Substituting these into Eq.~\eqref{eq:beam_warming} and simplifying gives
+        \begin{equation*}
+          U_t + aU_x = \frac{k}{2} U_{tt} - \frac{a h^2}{3} U_{xxx} + O(k^2,h^3).
+        \end{equation*}
+        Using the PDE to substitute for $U_{tt}$ gives
+        \begin{equation*}
+          U_t + aU_x = -\frac{a^2 k}{2} U_{xx} - \frac{a h^2}{3} U_{xxx} +
+          O(k^2,h^3),
+        \end{equation*}
+        which shows that the method is second-order accurate in both space and time.
+  
 \end{enumerate}
 
 
