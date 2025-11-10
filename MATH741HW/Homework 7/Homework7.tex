@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{extarrows}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 741
+    \hfill Homework 5
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+
+
+% Start of Problems
+\begin{problem} \\
+    Let $V$ be an $n$-dimensional vector space, and let $\phi : V \to V$ be a linear map. Show that, for any $n$-linear antisymmetric form $\beta(v_1, \dots, v_n)$ on $n$, we have 
+    \[
+        \beta(\phi(v_1), \dots, \phi(v_n)) = \det(\phi) \beta(v_1, \dots, v_n).
+    \]
+    (This formalizes the following idea: any "unit of volume" on $V$, given by $\beta$, gets scaled by $\det(\phi)$ when we apply $\phi$. In fact, this can be used as a definition of $\det(\phi)$: this way, some of its properties, such as independence of basis and multiplicativity become clear.)
+\end{problem}
+
+
+\begin{problem} \\
+    Let $V$ be the space of polynomials of degree at most $n$ (over some field $K$; if you want, you can assume $K = \rr$). Fix $a,b \in \rr$ and consider the linear map
+    \[
+        \phi : V \to V, \quad p(t) \mapsto p(at + b).
+    \]
+    Compute $\det(\phi)$.
+\end{problem}
+
+
+
+
+\begin{problem} \\ 
+    Let $M$ be an $n \times n$ matrix (over some field). Let $V$ be the space of $n \times n$ matrices. Consider the linear map $m_M : V \to V$ given by left multiplication by $M$:
+    \[
+        A \mapsto MA.
+    \]
+    Find $\det(m_M)$. (Of course, the answer depends on $M$.)
+\end{problem}
+
+
+
+\begin{problem} \\ 
+    Let $K$ be a field and $V$ be a finite-dimensional vector space. Let 
+    \[
+        \gamma : V \times V \to K
+    \]
+    be an antisymmetric bilinear form. Show that there exists $k \leq \frac{n}{2}$ and a basis
+    \[
+        \{ a1, \dots, a_k, b_1, \dots, b_k, c_1, \dots, c_{n - 2k} \}
+    \]
+    of $V$ such that 
+    \[
+        \gamma(a_i, b_i) = 1, \quad \gamma(b_i, a_i) = -1, \quad (i = 1, \dots, k),
+    \]
+    and $\gamma$ vanishes on all other pairs of basis vectors. (When $n = 2k$, this is called a symplectic basis.)
+\end{problem}
+
+
+\begin{problem} \\ 
+    Consider $\det(A)$ as a multivariable function of the entries of a real matrix $A$. Compute the directional lderivative of this function at the point $A = I$ in the direction of some matrix $B$. (Equivalently, find the linear approximation for $f(t) = \det(I + tB)$ at $t = 0$.)
+\end{problem}
+
+
+\begin{problem} \\ 
+    Let $A$ be a square $n \times n$ matrix whose characteristic polynomial has $n$ roots in $K$, counting with multiplicity. Consider the Jordan form of $A$: suppose that it consists of blocks $J_{\lambda_i, n_i}$, where $\lambda_i$ is the eigenvalue and $n_i$ is the size of the block. \\
+    Express the following invariants of $A$ in terms of $n_i$ and $\lambda_i$: its characteristic polynomial, its minimal polynomial, the dimension of eigenspace for each $\lambda$ (this is called "the geometric multiplicity of an eigenvalue") and rank. (No explanation is required.)
+\end{problem}
+
+
+
+
+\begin{problem} \\ 
+    Following up on the previous problem, let us go in the opposite direction: explain how to find $\lambda_i$ and $n_i$ from the data of $\operatorname{rk}(A - \lambda I)^k$ for all $\lambda \in K$ and $k > 0$. In particular, this implies that the Jordan form is unique.
+\end{problem}
+
+\end{document}
