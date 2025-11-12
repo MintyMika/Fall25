@@ -59,6 +59,40 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \end{problem}
 
 
+
+\begin{proof}
+    Let $\{ e_1, \dots, e_n \}$ be a basis of $V$. Then we can write 
+    \[
+        v_i = \sum_{j=1}^n a_{ij} e_j, \quad i = 1, \dots, n,
+    \]
+    for some scalars $a_{ij}$. Then we have 
+    \begin{align*}
+        \beta(\phi(v_1), \dots, \phi(v_n)) &= \beta\left( \phi\left( \sum_{j=1}^n a_{1j} e_j \right), \dots, \phi\left( \sum_{j=1}^n a_{nj} e_j \right) \right) \\
+        &= \beta\left( \sum_{j=1}^n a_{1j} \phi(e_j), \dots, \sum_{j=1}^n a_{nj} \phi(e_j) \right) \\
+        &= \sum_{j_1, j_2, \dots, j_n = 1}^n a_{1 j_1} a_{2 j_2} \cdots a_{n j_n} \beta(\phi(e_{j_1}), \phi(e_{j_2}), \dots, \phi(e_{j_n})) \\
+        &= \sum_{\sigma \in S_n} a_{1 \sigma(1)} a_{2 \sigma(2)} \cdots a_{n \sigma(n)} \beta(\phi(e_{\sigma(1)}), \phi(e_{\sigma(2)}), \dots, \phi(e_{\sigma(n)})) \\
+        &= \sum_{\sigma \in S_n} a_{1 \sigma(1)} a_{2 \sigma(2)} \cdots a_{n \sigma(n)} \operatorname{sgn}(\sigma) \beta(\phi(e_1), \phi(e_2), \dots, \phi(e_n)) \\
+        &= \det(A) \beta(\phi(e_1), \phi(e_2), \dots, \phi(e_n)),
+    \end{align*}
+    where $A = (a_{ij})$ is the matrix whose columns are the coordinates of $v_i$ in the basis $\{ e_1, \dots, e_n \}$. Now, note that $\beta(\phi(e_1), \phi(e_2), \dots, \phi(e_n))$ is an $n$-linear antisymmetric form evaluated at the basis vectors $\{ e_1, \dots, e_n \}$ after applying $\phi$. By the definition of determinant, we have
+    \[
+        \beta(\phi(e_1), \phi(e_2), \dots, \phi(e_n)) = \det(\phi) \beta(e_1, e_2, \dots, e_n).
+    \]
+    Therefore, we conclude that
+    \[
+        \beta(\phi(v_1), \dots, \phi(v_n)) = \det(A) \det(\phi) \beta(e_1, e_2, \dots, e_n).
+    \]
+    Finally, since $\beta$ is multilinear, we have
+    \[
+        \beta(v_1, \dots, v_n) = \det(A) \beta(e_1, e_2, \dots, e_n).
+    \]
+    Combining these results, we obtain
+    \[
+        \beta(\phi(v_1), \dots, \phi(v_n)) = \det(\phi) \beta(v_1, \dots, v_n).
+    \]
+\end{proof}
+
+\newpage
 \begin{problem} \\
     Let $V$ be the space of polynomials of degree at most $n$ (over some field $K$; if you want, you can assume $K = \rr$). Fix $a,b \in \rr$ and consider the linear map
     \[
@@ -66,6 +100,32 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \]
     Compute $\det(\phi)$.
 \end{problem}
+
+
+\begin{proof}
+    Let $\{ 1, t, t^2, \dots, t^n \}$ be the standard basis of $V$. Then we have 
+    \[
+        \phi(t^k) = (at + b)^k = \sum_{j=0}^k \binom{k}{j} a^j b^{k-j} t^j.
+    \]
+    Thus, the matrix representation of $\phi$ with respect to this basis is given by
+    \[
+        [\phi] = \begin{pmatrix}
+            1 & b & b^2 & \cdots & b^n \\
+            0 & a & 2ab & \cdots & n a b^{n-1} \\
+            0 & 0 & a^2 & \cdots & \binom{n}{2} a^2 b^{n-2} \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & 0 & \cdots & a^n
+        \end{pmatrix}.
+    \]
+    This is an upper triangular matrix, and the determinant of an upper triangular matrix is the product of its diagonal entries. Therefore, we have
+    \[
+        \det(\phi) = 1 \cdot a \cdot a^2 \cdot a^3 \cdots a^n = a^{\frac{n(n+1)}{2}}.
+    \]
+    Hence, the determinant of the linear map $\phi$ is 
+    \[
+        \det(\phi) = a^{\frac{n(n+1)}{2}}.
+    \]
+\end{proof}
 
 
 
@@ -77,6 +137,30 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \]
     Find $\det(m_M)$. (Of course, the answer depends on $M$.)
 \end{problem}
+
+
+\begin{proof}
+    Let $\{ E_{ij} \mid 1 \leq i, j \leq n \}$ be the standard basis of $V$, where $E_{ij}$ is the matrix with a $1$ in the $(i,j)$-th position and $0$ elsewhere. Then we have 
+    \[
+        m_M(E_{ij}) = M E_{ij} = \text{the } j\text{-th column of } M \text{ placed in the } i\text{-th column of a zero matrix}.
+    \]
+    Thus, the action of $m_M$ on the basis elements can be described as follows:
+    \[
+        m_M(E_{ij}) = \sum_{k=1}^n M_{ki} E_{kj}.
+    \]
+    Therefore, the matrix representation of $m_M$ with respect to this basis is given by a block matrix where each block corresponds to the multiplication by the columns of $M$. Specifically, the matrix representation can be viewed as an $n^2 \times n^2$ matrix where each block is an $n \times n$ matrix formed by the columns of $M$. 
+
+    The determinant of this block matrix can be computed as follows:
+    \[
+        \det(m_M) = (\det(M))^n,
+    \]
+    since each of the $n$ blocks contributes a factor of $\det(M)$ to the overall determinant.
+
+    Hence, we conclude that 
+    \[
+        \det(m_M) = (\det(M))^n.
+    \]
+\end{proof}
 
 
 
@@ -96,10 +180,26 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     and $\gamma$ vanishes on all other pairs of basis vectors. (When $n = 2k$, this is called a symplectic basis.)
 \end{problem}
 
+\begin{proof}
+    We proceed by induction on the dimension $n$ of the vector space $V$. \\
+    \textbf{Base Case:} If $n = 0$, the statement is trivially true with $k = 0$ and an empty basis. If $n = 1$, since $\gamma$ is antisymmetric, we have $\gamma(v, v) = 0$ for any $v \in V$. Thus, we can take $k = 0$ and any basis $\{ c_1 \}$ of $V$. \\
+    \textbf{Inductive Step:} Assume the statement holds for all vector spaces of dimension less than $n$. We consider two cases: \\
+    \begin{enumerate}[i.)]
+        \item If $\gamma$ is the zero form, then we can take $k = 0$ and any basis $\{ c_1, \dots, c_n \}$ of $V$. \\
+        \item If $\gamma$ is not the zero form, there exist vectors $u, v \in V$ such that $\gamma(u, v) \neq 0$. We can scale $u$ and $v$ such that $\gamma(u, v) = 1$. Now, we can extend $\{ u, v \}$ to a basis of $V$, say $\{ u, v, w_1, \dots, w_{n-2} \}$. Consider the subspace $W = \text{span}\{ w_1, \dots, w_{n-2} \}$. The restriction of $\gamma$ to $W$ is still an antisymmetric bilinear form. By the inductive hypothesis, there exists a basis of $W$ of the desired form with some $k' \leq \frac{n-2}{2}$. Adding $u$ and $v$ to this basis, we obtain a basis of $V$ of the desired form with $k = k' + 1 \leq \frac{n}{2}$. \\
+    \end{enumerate}
+    Thus, by induction, the statement holds for all finite-dimensional vector spaces $V$ over the field $K$.
+\end{proof}
+
+
 
 \begin{problem} \\ 
-    Consider $\det(A)$ as a multivariable function of the entries of a real matrix $A$. Compute the directional lderivative of this function at the point $A = I$ in the direction of some matrix $B$. (Equivalently, find the linear approximation for $f(t) = \det(I + tB)$ at $t = 0$.)
+    Consider $\det(A)$ as a multivariable function of the entries of a real matrix $A$. Compute the directional derivative of this function at the point $A = I$ in the direction of some matrix $B$. (Equivalently, find the linear approximation for $f(t) = \det(I + tB)$ at $t = 0$.)
 \end{problem}
+
+\begin{proof}
+    
+\end{proof}
 
 
 \begin{problem} \\ 
