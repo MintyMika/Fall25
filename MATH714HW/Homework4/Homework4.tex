@@ -61,7 +61,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
           \label{eq:beam_warming}
         \end{equation}
         where $U^n_j$ is the approximation of $u(jh,nk)$.
-        \begin{enumerate}
+        \begin{enumerate}[a)]
           \item Use Taylor series to show that this method is second-order accurate.
           \item For a given plane wave solution $U^0_j = e^{ij h \xi}$, compute the
                 amplification factor $g(\xi)$, and hence determine the stability
@@ -69,30 +69,73 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \end{enumerate}
 \end{problem}
 
-%TODO: Look over this problem
-
 
 \begin{enumerate}[a)]
-  \item Taking the Taylor series expansion of $U^{n+1}_j$, $U^n_{j-1}$, and $U^n_{j-2}$ about
-        the point $(jh,nk)$ gives
-        \begin{align*}
-          U^{n+1}_j &= U^n_j + k U_t + \frac{k^2}{2} U_{tt} + O(k^3), \\
-          U^n_{j-1} &= U^n_j - h U_x + \frac{h^2}{2} U_{xx} - \frac{h^3}{6} U_{xxx} +
-          O(h^4), \\
-          U^n_{j-2} &= U^n_j - 2h U_x + 2h^2 U_{xx} - \frac{4h^3}{3} U_{xxx} +
-          O(h^4).
-        \end{align*}
-        Substituting these into Eq.~\eqref{eq:beam_warming} and simplifying gives
-        \begin{equation*}
-          U_t + aU_x = \frac{k}{2} U_{tt} - \frac{a h^2}{3} U_{xxx} + O(k^2,h^3).
-        \end{equation*}
-        Using the PDE to substitute for $U_{tt}$ gives
-        \begin{equation*}
-          U_t + aU_x = -\frac{a^2 k}{2} U_{xx} - \frac{a h^2}{3} U_{xxx} +
-          O(k^2,h^3),
-        \end{equation*}
-        which shows that the method is second-order accurate in both space and time.
-  
+  \item For brevity, define $U^n_j := U$. Then we can Taylor expand $U$ about $(j,n)$ and we have
+  \begin{align*}
+    U^n_{j - 1} &= U  -h U_x + \frac{h^2}{2} U_{xx}\\
+    U^n_{j - 2} &= U - 2h U_x + 2h^2 U_{xx}\\
+    U^{n+1}_j &= U + k U_t + \frac{k^2}{2} U_{tt} + O(k^3)
+  \end{align*}
+  Substituting these into the Beam-Warming method gives
+  \begin{align*}
+    U + k U_t + \frac{k^2}{2} U_{tt} + O(k^3) &= U - \frac{ak}{2h} \left( 3U - 4\left( U - h U_x + \frac{h^2}{2} U_{xx}\right) + \left( U - 2h U_x + 2h^2 U_{xx}\right) \right) \\
+    &+ \frac{a^2 k^2}{2h^2} \left( U - 2\left( U - h U_x + \frac{h^2}{2} U_{xx}\right) + \left( U - 2h U_x + 2h^2 U_{xx}\right) \right)  + O(h^3)\\
+    &= U - \frac{ak}{2h} \left( 3U - 4U + 4h U_x - 2h^2 U_{xx} + U - 2h U_x + 2h^2 U_{xx} \right) \\
+    &+ \frac{a^2 k^2}{2h^2} \left( U - 2U + 2h U_x - h^2 U_{xx} + U - 2h U_x + 2h^2 U_{xx} \right) + O(h^3)\\
+    &= U - \frac{ak}{2h} (2h U_x) + \frac{a^2 k^2}{2h^2} (h^2 U_{xx}) + O(h^3)\\
+    &= U - ak U_x + \frac{a^2 k^2}{2} U_{xx} + O(h^3)
+  \end{align*}
+  To reiterate, we have
+  \[
+    k U_t + \frac{k^2}{2} U_{tt} + O(k^3) = - ak U_x + \frac{a^2 k^2}{2} U_{xx} + O(h^3)
+  \]
+  Dividing by $k$ gives
+  \[
+    U_t + \frac{k}{2} U_{tt} + O(k^2) = - a U_x + \frac{a^2 k}{2} U_{xx} + O(h^2)
+  \]
+  Then we can use the fact that $u_t = -au_x$ and $u_{tt} = a^2 u_{xx}$, and substitue for $U_{tt} = a^2 U_{xx}$ which gives
+  \[
+    U_t + a U_x = O(k^2) + O(h^2)
+  \]
+  Thus the Beam-Warming method is second-order accurate in both space and time.
+
+  \item Given that $U^0_j = e^{ij h \xi}$, we can calculate the amplification factor with $g(\xi) e^{ijh\xi} = U^{n+1}_j = U^n_j - \frac{ak}{2h} (3 U^n_j - 4U^n_{j-1} + U^n_{j-2} ) + \frac{a^2 k^2}{2h^2} (U^n_j - 2U^n_{j-1} + U^n_{j-2})$. Plugging in the plane wave solution and letting $\nu = \frac{ak}{h}$ we have:
+  \begin{align*}
+    g(\xi)e^{ijh\xi} &= e^{ijh\xi} - \frac{\nu}{2}\left( 3e^{ijh\xi} - 4e^{i(j-1)h\xi} + e^{i(j-2)h\xi}  \right) + \frac{\nu^2}{2} \left( 
+      e^{ijh\xi} - 2e^{i(j-1)h\xi} + e^{i(j-1)h\xi}
+    \right) \\
+    \implies g(\xi) &= \frac{e^{ijh\xi} - \frac{\nu}{2}\left( 3e^{ijh\xi} - 4e^{i(j-1)h\xi} + e^{i(j-2)h\xi}  \right) + \frac{\nu^2}{2} \left( 
+      e^{ijh\xi} - 2e^{i(j-1)h\xi} + e^{i(j-1)h\xi}
+    \right)}{e^{ijh\xi}} \\
+    &= 1 - \frac{\nu}{2} \left(
+      3 - 4e^{-ih\xi} + e^{-2ih\xi}
+    \right) + \frac{\nu^2}{2} \left(
+      1 -2e^{-ih\xi} + e^{-2ih\xi}
+    \right)
+  \end{align*}
+  Then, noticing that $e^x = 1 + x + \frac{x^2}{2} + \cdots$ we have: 
+  \begin{align*}
+    g(\xi) &= 1 - \frac{\nu}{2} \left(
+      3 - 4\left( 1 - ih\xi + \frac{(ih\xi)^2}{2} \right) + \left( 1 - 2ih\xi + 2(ih\xi)^2 \right)
+    \right) + \frac{\nu^2}{2} \left(
+      1 - 2\left( 1 - ih\xi + \frac{(ih\xi)^2}{2} \right) + \left( 1 - 2ih\xi + 2(ih\xi)^2 \right)
+    \right) \\
+    &= 1 - \frac{\nu}{2} \left(
+      0 + 2ih\xi - (ih\xi)^2
+    \right) + \frac{\nu^2}{2} \left(
+      0 + 0 + (ih\xi)^2
+    \right) + O((h\xi)^3)\\
+    &= 1 - i\nu h\xi + \frac{\nu}{2}(h\xi)^2 + \frac{\nu^2}{2}(h\xi)^2 + O((h\xi)^3)\\
+    &= 1 - i\nu h\xi + \frac{\nu(1+\nu)}{2}(h\xi)^2 + O((h\xi)^3)
+  \end{align*}
+  Then we can compute $|g(\xi)|^2$:
+  \begin{align*}
+    |g(\xi)|^2 &= \left( 1 + \frac{\nu(1+\nu)}{2}(h\xi)^2 + O((h\xi)^3) \right)^2 + \left( -\nu h\xi + O((h\xi)^3) \right)^2 \\
+    &= 1 + \nu(1+\nu)(h\xi)^2 + \nu^2 (h\xi)^2 + O((h\xi)^3)\\
+    &= 1 + \nu(1+2\nu)(h\xi)^2 + O((h\xi)^3)
+  \end{align*}
+  For stability, we require that $|g(\xi)|^2 \leq 1$ for all $\xi$. Therefore we need $\nu(1+2\nu) \leq 0$. This gives the stability restriction of $- \frac{1}{2} \leq \nu \leq 0$.
 \end{enumerate}
 
 
@@ -105,7 +148,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \end{equation}
         which corresponds to forward Euler method in time, and a second-order
         one-sided derivative in space. Define $\nu = ak/h$.
-        \begin{enumerate}
+        \begin{enumerate}[a)]
           \item Calculate the amplification factor $g(\xi)$ for a plane wave solution
                 $U^0_j = e^{ijh\xi}$.
           \item Define $A(\xi)= |g(\xi)|^2$ and calculate a Taylor series for $A$ at
@@ -138,6 +181,61 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \end{enumerate}
 \end{problem}
 
+
+
+\begin{enumerate}[a)]
+  \item We can calculate the amplification factor with $g(\xi) e^{ijh\xi} = U^{n+1}_j = U^n_j - \frac{ak}{2h} (3 U^n_j - 4U^n_{j-1} + U^n_{j-2} )$. Plugging in the plane wave solution and simplifying as in the previous problem gives $g(\xi) = 1 - \frac{\nu}{2} (3 - 4e^{-ih\xi} + e^{-2ih\xi})$.
+  \item Taking $A(\xi) = |g(\xi)|^2$ and expanding in a Taylor series about $\xi=0$, we can use the fact that $e^{x} = 1 + x + \frac{x^2}{2} + \dots$ to find that 
+  \begin{align*}
+    A(\xi) &= \left| 1 - \frac{\nu}{2} (3 - 4(1 - ih\xi + \frac{(ih\xi)^2}{2}) + (1 - 2ih\xi + 2(ih\xi)^2)) \right|^2 \\
+    &= \left| 1 - \frac{\nu}{2} (0 + 2ih\xi - (ih\xi)^2) \right|^2 \\
+  \end{align*}
+  Thus we have
+  \begin{align*}
+    A(\xi) &= \left( 1 + \frac{\nu}{2}(h\xi)^2 \right)^2 + \left( -\nu h\xi \right)^2 \\
+    &= 1 + \nu (h\xi)^2 + \frac{\nu^2}{4} (h\xi)^4 + \nu^2 (h\xi)^2 \\
+    &= 1 + \nu(1+\nu)(h\xi)^2 + O((h\xi)^4)
+  \end{align*}
+  Since $\nu(1+\nu) > 0$ for all $\nu > 0$, we have that $A(\xi) > 1$ for sufficiently small but nonzero $\xi$. This indicates that the method is unstable regardless of the choice of timestep.
+  
+
+
+  \item In Figure \ref{fig:Q2C1} and Firgure \ref{fig:Q2C2} we have the two plots of $A(\xi)$ for $\nu = \frac{1}{100}$.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{gr/HW4Q2C1.png}
+    \caption{$A(\xi)$ for $0\le h\xi \le 2\pi$ and $0.91 \le A \le 1.01$.}
+    \label{fig:Q2C1}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{gr/HW4Q2C2.png}
+    \caption{$A(\xi)$ for $0\le h\xi \le 0.17$ and $1-10^{-6} \le A \le 1+10^{-6}$.}
+    \label{fig:Q2C2}
+  \end{figure}
+
+  \newpage
+  \item See Figure \ref{fig:Q2D1} for the plots of the solution at $n=0,1000,2000,4000$ and Figure \ref{fig:Q2D2} for the plot of $R$ over the range from $n=0$ to $n=10000$.
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{gr/HW4Q2D1.png}
+    \caption{Plots of the solution at $n=0,1000,2000,4000$.}
+    \label{fig:Q2D1}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{gr/HW4Q2D2.png}
+    \caption{Plot of $R$ over the range from $n=0$ to $n=10000$.}
+    \label{fig:Q2D2}
+  \end{figure}
+
+
+\end{enumerate}
+
+
+
+
 \begin{problem} \\ 
     \textbf{Lax--Wendroff method (7 points).}
         Consider the hyperbolic conservation equation
@@ -161,7 +259,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         Here, $A_i = A( (i+\nicefrac12)h)$ and $A_{i-1/2}=A(ih)$. It can be shown
         that the solution to Eq.~\eqref{eq:cons} is time-periodic so that
         $q(x,t+T)=q(x,t)$ where $T=3\pi/\sqrt{5}$.
-        \begin{enumerate}
+        \begin{enumerate}[a)]
           \item The CFL condition requires that \smash{$\Delta t \le \tfrac{h}{c}$}
                 for stability. What is $c$ in this case?
           \item Implement Eq.~\eqref{eq:lw} and set $\Delta t = \tfrac{h}{3c}$. Use
@@ -187,6 +285,18 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
                 derive the result that $q$ is time-periodic with period $T$.
         \end{enumerate}
 \end{problem}
+
+\begin{enumerate}[a)]
+  \item The wave (characteristic) speed is $A(x)$, so 
+  \[
+  c=\max_{x\in[0,2\pi)}|A(x)|=\max_{x}\Big(2+\tfrac{4}{3}\sin x\Big)=2+\tfrac{4}{3}=\tfrac{10}{3}.
+  \]
+  (Here $A(x)\ge2-\tfrac{4}{3}=\tfrac{2}{3}>0$, hence the maximum absolute value is $10/3$.) 
+  Thus the CFL condition is $\Delta t\le h/c= \tfrac{3h}{10}$.
+
+
+\end{enumerate}
+
 
 
 \end{document}
