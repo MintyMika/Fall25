@@ -44,7 +44,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 \begin{center}
     Math 741
-    \hfill Homework 5
+    \hfill Homework 7
     \hfill \textit{Stephen Cornelius}
 \end{center}
 
@@ -74,7 +74,11 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         &= \sum_{\sigma \in S_n} a_{1 \sigma(1)} a_{2 \sigma(2)} \cdots a_{n \sigma(n)} \operatorname{sgn}(\sigma) \beta(\phi(e_1), \phi(e_2), \dots, \phi(e_n)) \\
         &= \det(A) \beta(\phi(e_1), \phi(e_2), \dots, \phi(e_n)),
     \end{align*}
-    where $A = (a_{ij})$ is the matrix whose columns are the coordinates of $v_i$ in the basis $\{ e_1, \dots, e_n \}$. Now, note that $\beta(\phi(e_1), \phi(e_2), \dots, \phi(e_n))$ is an $n$-linear antisymmetric form evaluated at the basis vectors $\{ e_1, \dots, e_n \}$ after applying $\phi$. By the definition of determinant, we have
+    where $A = (a_{ij})$ is the matrix whose columns are the coordinates of $v_i$ in the basis $\{ e_1, \dots, e_n \}$. Now, note that 
+    \[
+        \beta(\phi(e_1), \phi(e_2), \dots, \phi(e_n))
+    \]
+     is an $n$-linear antisymmetric form evaluated at the basis vectors $\{ e_1, \dots, e_n \}$ after applying $\phi$. By the definition of determinant, we have
     \[
         \beta(\phi(e_1), \phi(e_2), \dots, \phi(e_n)) = \det(\phi) \beta(e_1, e_2, \dots, e_n).
     \]
@@ -131,7 +135,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 
 \begin{problem} \\ 
-    Let $M$ be an $n \times n$ matrix (over some field). Let $V$ be the space of $n \times n$ matrices. Consider the linear map $m_M : V \to V$ given by left multiplication by $M$:
+    Let $M$ be an $n \times n$ matrix (over some field). Let $V$ be the space of $n \times m$ matrices. Consider the linear map $m_M : V \to V$ given by left multiplication by $M$:
     \[
         A \mapsto MA.
     \]
@@ -140,26 +144,25 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 
 \begin{proof}
-    Let $\{ E_{ij} \mid 1 \leq i, j \leq n \}$ be the standard basis of $V$, where $E_{ij}$ is the matrix with a $1$ in the $(i,j)$-th position and $0$ elsewhere. Then we have 
+    Let $\{ E_{ij} \mid 1 \leq i \leq n, 1 \leq j \leq m \}$ be the standard basis of $V$, where $E_{ij}$ is the matrix with a $1$ in the $(i,j)$-th position and $0$ elsewhere. Then we have 
     \[
         m_M(E_{ij}) = M E_{ij} = \text{the } j\text{-th column of } M \text{ placed in the } i\text{-th column of a zero matrix}.
     \]
-    Thus, the action of $m_M$ on the basis elements can be described as follows:
+    Thus, the matrix representation of $m_M$ with respect to this basis is given by a block matrix where each block corresponds to the action of $M$ on the respective basis element. Specifically, the matrix representation of $m_M$ can be viewed as an $nm \times nm$ matrix composed of $m$ blocks of size $n \times n$, each block being the matrix $M$. Therefore, the matrix representation of $m_M$ is given by
     \[
-        m_M(E_{ij}) = \sum_{k=1}^n M_{ki} E_{kj}.
+        [m_M] = \begin{pmatrix}
+            M & 0 & 0 & \cdots & 0 \\
+            0 & M & 0 & \cdots & 0 \\
+            0 & 0 & M & \cdots & 0 \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & 0 & \cdots & M
+        \end{pmatrix}.
     \]
-    Therefore, the matrix representation of $m_M$ with respect to this basis is given by a block matrix where each block corresponds to the multiplication by the columns of $M$. Specifically, the matrix representation can be viewed as an $n^2 \times n^2$ matrix where each block is an $n \times n$ matrix formed by the columns of $M$. 
-
-    The determinant of this block matrix can be computed as follows:
+    This is a block diagonal matrix with $m$ blocks of $M$. The determinant of a block diagonal matrix is the product of the determinants of its blocks. Therefore, we have
     \[
-        \det(m_M) = (\det(M))^n,
+        \det(m_M) = (\det(M))^m.
     \]
-    since each of the $n$ blocks contributes a factor of $\det(M)$ to the overall determinant.
-
-    Hence, we conclude that 
-    \[
-        \det(m_M) = (\det(M))^n.
-    \]
+    Hence, the determinant of the linear map $m_M$ is $\det(m_M) = (\det(M))^m$.
 \end{proof}
 
 
@@ -186,7 +189,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \textbf{Inductive Step:} Assume the statement holds for all vector spaces of dimension less than $n$. We consider two cases: \\
     \begin{enumerate}[i.)]
         \item If $\gamma$ is the zero form, then we can take $k = 0$ and any basis $\{ c_1, \dots, c_n \}$ of $V$. \\
-        \item If $\gamma$ is not the zero form, there exist vectors $u, v \in V$ such that $\gamma(u, v) \neq 0$. We can scale $u$ and $v$ such that $\gamma(u, v) = 1$. Now, we can extend $\{ u, v \}$ to a basis of $V$, say $\{ u, v, w_1, \dots, w_{n-2} \}$. Consider the subspace $W = \text{span}\{ w_1, \dots, w_{n-2} \}$. The restriction of $\gamma$ to $W$ is still an antisymmetric bilinear form. By the inductive hypothesis, there exists a basis of $W$ of the desired form with some $k' \leq \frac{n-2}{2}$. Adding $u$ and $v$ to this basis, we obtain a basis of $V$ of the desired form with $k = k' + 1 \leq \frac{n}{2}$. \\
+        \item If $\gamma$ is not the zero form, there exist vectors $u, v \in V$ such that $\gamma(u, v) \neq 0$. We can scale $u$ and $v$ such that $\gamma(u, v) = 1$. Since $\gamma(u,v) \neq 0$, we have that $u, v$ are linearly independent so by the building-up lemma we can extend $\{ u, v \}$ to a basis of $V$, say $\{ u, v, w_1, \dots, w_{n-2} \}$. Consider the subspace $W = \text{span}\{ w_1, \dots, w_{n-2} \}$. The restriction of $\gamma$ to $W$ is still an antisymmetric bilinear form. By the inductive hypothesis, there exists a basis of $W$ of the desired form with some $k' \leq \frac{n-2}{2}$. Adding $u$ and $v$ to this basis, we obtain a basis of $V$ of the desired form with $k = k' + 1 \leq \frac{n}{2}$. \\
     \end{enumerate}
     Thus, by induction, the statement holds for all finite-dimensional vector spaces $V$ over the field $K$.
 \end{proof}
@@ -198,7 +201,30 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \end{problem}
 
 \begin{proof}
-    
+    We want to compute the directional derivative of the determinant function at the identity matrix $I$ in the direction of a matrix $B$. The directional derivative can be expressed as
+    \[
+        D_B \det(I) = \lim_{t \to 0} \frac{\det(I + tB) - \det(I)}{t}.
+    \]
+    Since $\det(I) = 1$, we have
+    \[
+        D_B \det(I) = \lim_{t \to 0} \frac{\det(I + tB) - 1}{t}.
+    \]
+    To evaluate this limit, we can use the fact that for small $t$, the determinant can be approximated using the first-order term in its Taylor expansion. Specifically, we have
+    \[
+        \det(I + tB) = 1 + t \operatorname{tr}(B) + O(t^2),
+    \]
+    where $\operatorname{tr}(B)$ is the trace of the matrix $B$. Therefore, we have
+    \[
+        D_B \det(I) = \lim_{t \to 0} \frac{(1 + t \operatorname{tr}(B) + O(t^2)) - 1}{t} = \lim_{t \to 0} \frac{t \operatorname{tr}(B) + O(t^2)}{t}.
+    \]
+    Simplifying this expression, we get
+    \[
+        D_B \det(I) = \operatorname{tr}(B).
+    \]
+    Thus, the directional derivative of the determinant function at the identity matrix in the direction of the matrix $B$ is given by the trace of $B$:
+    \[
+        D_B \det(I) = \operatorname{tr}(B).
+    \]
 \end{proof}
 
 
@@ -207,11 +233,47 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     Express the following invariants of $A$ in terms of $n_i$ and $\lambda_i$: its characteristic polynomial, its minimal polynomial, the dimension of eigenspace for each $\lambda$ (this is called "the geometric multiplicity of an eigenvalue") and rank. (No explanation is required.)
 \end{problem}
 
+\begin{enumerate}[(a)]
+    \item \textbf{Characteristic Polynomial:} The characteristic polynomial of $A$ is given by 
+    \[
+        p_A(x) = \prod_{i} (x - \lambda_i)^{n_i}.
+    \]
+    \item \textbf{Minimal Polynomial:} The minimal polynomial of $A$ is given by
+    \[
+        m_A(x) = \prod_{i} (x - \lambda_i)^{m_i},
+    \]
+    where $m_i$ is the size of the largest Jordan block corresponding to the eigenvalue $\lambda_i$.
+    \item \textbf{Geometric Multiplicity:} The dimension of the eigenspace for each eigenvalue $\lambda_i$ is equal to the number of Jordan blocks associated with $\lambda_i$. If there are $k_i$ blocks for eigenvalue $\lambda_i$, then the geometric multiplicity is
+    \[
+        \text{geom. mult.}(\lambda_i) = k_i.
+    \]
+    \item \textbf{Rank:} The rank of the matrix $A$ can be computed as 
+    \[
+        \operatorname{rk}(A) = n - \sum_{i} (n_i - 1) = n - \left( \sum_{i} n_i - \text{number of blocks} \right).
+    \]
+\end{enumerate}
+
 
 
 
 \begin{problem} \\ 
     Following up on the previous problem, let us go in the opposite direction: explain how to find $\lambda_i$ and $n_i$ from the data of $\operatorname{rk}(A - \lambda I)^k$ for all $\lambda \in K$ and $k > 0$. In particular, this implies that the Jordan form is unique.
 \end{problem}
+
+To find the eigenvalues $\lambda_i$ from the data of $\operatorname{rk}(A - \lambda I)^k$, we can use the fact that the eigenvalues of $A$ are precisely the values of $\lambda$ for which the matrix $A - \lambda I$ is not invertible. This occurs when $\det(A - \lambda I) = 0$. Thus, by examining the ranks of $(A - \lambda I)^k$ for various $\lambda$, we can identify the eigenvalues as those values of $\lambda$ for which the rank drops below $n$. \\
+To determine the sizes of the Jordan blocks $n_i$, we can analyze the ranks of the powers of $(A - \lambda I)$. Specifically, for each eigenvalue $\lambda_i$, we consider the sequence of ranks:
+\[
+    \operatorname{rk}(A - \lambda_i I), \operatorname{rk}((A - \lambda_i I)^2), \operatorname{rk}((A - \lambda_i I)^3), \dots
+\]
+The size of the largest Jordan block corresponding to the eigenvalue $\lambda_i$ can be determined by finding the smallest integer $k$ such that
+\[
+    \operatorname{rk}((A - \lambda_i I)^k) = \operatorname{rk}((A - \lambda_i I)^{k+1}).
+\]
+This integer $k$ gives us the size of the largest Jordan block $n_i$ for the eigenvalue $\lambda_i$. By repeating this process for each eigenvalue, we can reconstruct the entire Jordan form of the matrix $A$. This method also shows that the Jordan form is unique, as the sizes of the Jordan blocks are determined solely by the ranks of the powers of $(A - \lambda I)$. \\
+To find the other sizes of Jordan blocks corresponding to the same eigenvalue $\lambda_i$, we can use the differences in ranks:
+\[
+    \text{number of blocks of size } \geq k = \operatorname{rk}((A - \lambda_i I)^{k-1}) - \operatorname{rk}((A - \lambda_i I)^k).
+\]
+
 
 \end{document}
