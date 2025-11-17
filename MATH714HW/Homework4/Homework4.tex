@@ -2,7 +2,10 @@
 \usepackage{amsmath}
 \usepackage{tcolorbox}
 \usepackage[margin=0.5in]{geometry} 
-\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ, nicefrac}
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, environ, nicefrac}
+\usepackage{graphicx}
+% \usepackage{caption}
+% \usepackage{subcaption}
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{mdframed}
@@ -230,6 +233,33 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \label{fig:Q2D2}
   \end{figure}
 
+  \item The discrete Fourier representation gives the general solution. If the initial data has Fourier coefficients \(\{\alpha_l\}_{l=0}^{N-1}\) then for the allowed discrete wave-numbers
+  \[
+  h\xi_l=\frac{2\pi l}{N}\qquad(l=0,\dots,N-1)
+  \]
+  we have the mode-wise evolution
+  \[
+  U^n_j=\sum_{l=0}^{N-1}\alpha_l\bigl(g(\xi_l)\bigr)^n e^{ijh\xi_l}.
+  \]
+  Thus each Fourier mode evolves independently:
+  \[
+  U^n_j=\sum_{l=0}^{N-1}\alpha_l\bigl(g(\xi_l)\bigr)^n e^{ijh\xi_l},
+  \]
+  so mode \(l\) is multiplied by \(g(\xi_l)\) at every time step.
+
+  The calculation in part (b) gives the local expansion near \(\xi=0\)
+  \[
+  A(\xi)=|g(\xi)|^2=1+C(h\xi)^2+\cdots\qquad(C>0),
+  \]
+  so for the continuous problem there are arbitrarily small nonzero wavenumbers \(\xi\) with \(A(\xi)>1\). That is the von Neumann instability: some very long wavelengths are amplified.
+
+  A discrete periodic grid, however, only admits the wavenumbers
+  \[
+  h\xi_l=\frac{2\pi l}{N},\qquad l=0,\dots,N-1,
+  \]
+  so the smallest nonzero wavenumber is \(h\xi_1=2\pi/N\). If \(N\) is not large (or for the chosen \(\nu\)), none of the sampled \(\xi_l\) lie in the asymptotically unstable region, and all sampled modes satisfy \(|g(\xi_l)|\le1\); the numerical solution then remains bounded. Even when a sampled mode has \(A(\xi_l)>1\), the excess \(A-1\) can be extremely small, so growth per step is tiny and may be imperceptible over the finite number of time steps used in the simulation (since a mode grows like \(A^{n/2}\approx\exp\big(\tfrac{n}{2}(A-1)\big)\) for small \(A-1\)). 
+
+  So we have that in part (b) we showed the instability in the continuous/von Neumann sense (existence of arbitrarily long unstable wavelengths), whereas the finite discrete simulation can appear stable because only a discrete set of wavenumbers is present and those sampled may not include the unstable, very-small-\(\xi\) modes or may grow too slowly to be observed.
 
 \end{enumerate}
 
@@ -294,6 +324,41 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
   (Here $A(x)\ge2-\tfrac{4}{3}=\tfrac{2}{3}>0$, hence the maximum absolute value is $10/3$.) 
   Thus the CFL condition is $\Delta t\le h/c= \tfrac{3h}{10}$.
 
+  \item See Figure \ref{fig:Q3B} for the plots of the solution at $t=0,\tfrac{T}{4},\tfrac{T}{2},\tfrac{3T}{4},T$ with $m=512$.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{gr/HW4Q3B.png}
+    \caption{Plots of the solution at $t=0,\tfrac{T}{4},\tfrac{T}{2},\tfrac{3T}{4},T$ with $m=512$.}
+    \label{fig:Q3B}
+  \end{figure}
+
+  \item See Figure \ref{fig:Q3C} for the log-log plot of the $L_2$ norm between the numerical solution at $t=T$ and the exact answer for various $m$. The slope of the line of best fit is approximately $1$ indicating first-order convergence.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{gr/HW4Q3C.png}
+    \caption{Log-log plot of the $L_2$ norm between the numerical solution at $t=T$ and the exact answer for various $m$.}
+    \label{fig:Q3C}
+  \end{figure}
+
+  \item See Figure \ref{fig:Q3D1} for the plots of the solution at $t=0,\tfrac{T}{4},\tfrac{T}{2},\tfrac{3T}{4},T$ with $m=512$ and Figure \ref{fig:Q3D2} for the log-log plot of the $L_2$ norm between the numerical solution at $t=T$ and the exact answer for various $m$. The slope of the line of best fit is approximately $1$ indicating first-order convergence.
+  % Side by side figures
+  \begin{figure}[H]
+    \centering
+    \begin{minipage}{0.5\textwidth}
+      \centering
+      \includegraphics[width=.9\textwidth]{gr/HW4Q3D1.png}
+      \caption{Plots of the solutions with $m=512$.}
+      \label{fig:Q3D1}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.9\textwidth]{gr/HW4Q3D2.png}
+      \caption{Log-log plot of the $L_2$ norm between the numerical solution at $t=T$ and the exact answer for various $m$.}
+      \label{fig:Q3D2}
+    \end{minipage}
+  \end{figure}
+
+    
 
 \end{enumerate}
 

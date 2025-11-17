@@ -3,54 +3,10 @@ import matplotlib.pyplot as plt
 from alive_progress import alive_bar
 
 def HW4_Q2():
-    # """
-    # Dropping the last term in the Beam--Warming method from Eq.~\eqref{eq:beam_warming}
-    #     gives
-    #     \ begin{equation}
-    #       U^{n+1}_j = U^n_j - \ frac{ak}{2h} (3 U^n_j - 4U^n_{j-1} + U^n_{j-2} ), \label{eq:sec_ord}
-    #     \end{equation}
-    #     which corresponds to forward Euler method in time, and a second-order
-    #     one-sided derivative in space. Define $\ nu = ak/h$.
-    #     \ begin{enumerate}[a)]
-    #       \item Calculate the amplification factor $g(\xi)$ for a plane wave solution
-    #             $U^0_j = e^{ijh\xi}$.
-    #       \item Define $A(\xi)= |g(\xi)|^2$ and calculate a Taylor series for $A$ at
-    #             $\xi=0$ up to second order. Using the Taylor series, explain why we
-    #             consider the numerical scheme of Eq.~\eqref{eq:sec_ord} to be unstable
-    #             regardless of the choice of timestep.
-    #       \item Make two plots of $A(\xi)$ for $\nu = \ nicefrac1{100}$ using two different
-    #             axis ranges:
-    #             \ begin{itemize}
-    #               \item $0\le h\xi \le 2\pi$ and $0.91 \le A \le 1.01$,
-    #               \item $0\le h\xi \le 0.17$ and $1-10^{-6} \le A \le 1+10^{-6}$.
-    #             \end{itemize}
-    #       \item Write a program to simulate Eq.~\eqref{eq:sec_ord} on a periodic interval $[0,2\pi)$ using $N=40$ grid points
-    #             and a grid spacing of $h = 2\pi/N$. Use the initial condition $u= \exp (2\sin x)$
-    #             and $\ nu =\ nicefrac1{100}$. Plot the solution for $n=0,1000,2000,4000$. Define
-    #             the root mean squared value of the solution,
-    #             \ begin{equation}
-    #               R(n) = \sqrt{\ frac{1}{N} \sum_{j=0}^{N-1} (U^n_j)^2}.
-    #             \end{equation}
-    #             Make a plot of $R$ over the range from $n=0$ to $n=10000$. You should find that $R$
-    #             does not grow over time, indicating that the method is stable.
-    #       \item Using the discrete Fourier transform, it can be shown that an arbitrary initial
-    #             condition on the periodic interval can be written as
-    #             \ begin{equation}
-    #               U^0_j = \sum_{l=0}^{N-1} \ alpha_l e^{ijlh}
-    #             \end{equation}
-    #             for some constants $\ alpha_l$. Write down an expression for the general
-    #             solution $U^n_j$. Using your answer, explain why your result in part (d)
-    #             does not contradict the result in part (b).
-    #     \end{enumerate}
-    # """
-
-    # The amplification factor is given by $g(\xi) = 1 - \frac{\nu}{2} (3 - 4e^{-ih\xi} + e^{-2ih\xi})$. 
-    # The Taylor series expansion of $A(\xi) = |g(\xi)|^2$ about $\xi=0$ up to second order is $A(\xi) = 1 + \nu(1+\nu)(h\xi)^2 + O((h\xi)^4)$. Since the coefficient of the $(h\xi)^2$ term is positive for all $\nu > 0$, $A(\xi) > 1$ for small but nonzero $\xi$, indicating instability.
-
-    # Now we can make the plots for part (c)
+    # Part (c)
     nu = 1/100
 
-    # Full range plot 0 <= hξ <= 2π
+    # Full range plot 0 <= h xi <= 2 pi
     theta = np.linspace(0, 2*np.pi, 4000)
     g = 1 - (nu/2) * (3 - 4*np.exp(-1j*theta) + np.exp(-2j*theta))
     A = np.abs(g)**2
@@ -64,7 +20,7 @@ def HW4_Q2():
     plt.title('A(hxi) for ν = 1/100 (0 ≤ hxi ≤ 2 pi)')
     plt.grid(True)
 
-    # Zoomed-in plot near 0: 0 <= hξ <= 0.17
+    # Zoomed-in plot near 0: 0 <= h xi <= 0.17
     theta_zoom = np.linspace(0, 0.17, 2000)
     g_zoom = 1 - (nu/2) * (3 - 4*np.exp(-1j*theta_zoom) + np.exp(-2j*theta_zoom))
     A_zoom = np.abs(g_zoom)**2
@@ -134,14 +90,138 @@ def HW4_Q2():
 
 
 
-def HW4_Q3b():
+def HW4_Q3():
+    # We first note that the maximum value of A(x) occurs at x = pi/2, giving A_max = 2 + 4/3 = 10/3. Thus, c = 10/3.
+
+    # Now we can implement the Lax-Wendroff scheme
+    # Define A(x) and CFL speed
+    def A_of(x):
+        return 2.0 + (4.0/3.0) * np.sin(x)
+
+    c = np.max(np.abs(A_of(np.linspace(0, 2*np.pi, 1000))))
+
+    # Parameters for part (b)
+    T = 3.0 * np.pi / np.sqrt(5.0)
+
+    def run_lax_wendroff(m, q0, dt_factor=1/3):
+        h = 2*np.pi / m
+        x_centers = np.linspace(h/2, 2*np.pi - h/2, m)
+        A_centers = A_of(x_centers)             # A_i = A((i+1/2)h)
+        x_edges = np.linspace(0, 2*np.pi, m, endpoint=False)
+        A_edges = A_of(x_edges)                 # A_{i-1/2} = A(i h)
+
+        dt = h / (dt_factor * c)                # note dt_factor=3 => dt = h/(3c) when dt_factor=3
+        # To hit t=T exactly, adjust number of steps
+        nsteps = int(round(T / dt))
+        dt = T / nsteps
+
+        Q = q0.copy()
+        snapshot_indices = [0, int(round(nsteps/4)), int(round(nsteps/2)), int(round(3*nsteps/4)), nsteps]
+        snapshots = {}
+
+        for n in range(nsteps+1):
+            if n in snapshot_indices:
+                snapshots[n] = Q.copy()
+            if n == nsteps:
+                break
+
+            Q_im1 = np.roll(Q, 1)
+            A_im1 = np.roll(A_centers, 1)
+
+            F_imhalf = 0.5 * (A_im1 * Q_im1 + A_centers * Q) - (A_edges * dt) / (2*h) * (A_centers * Q - A_im1 * Q_im1)
+            F_iphalf = np.roll(F_imhalf, -1)
+
+            Q = Q - (dt / h) * (F_iphalf - F_imhalf)
+
+        return x_centers, snapshots, Q
+
+    # Part (b): m = 512
+    m = 512
+    h = 2*np.pi / m
+    x_centers = np.linspace(h/2, 2*np.pi - h/2, m)
+    q0_smooth = np.exp(np.sin(x_centers) + 0.5 * np.sin(4*x_centers))
+
+    # Note: dt_factor used here as 3 to get dt = h/(3c)
+    _, snaps_smooth, Q_T_smooth = run_lax_wendroff(m, q0_smooth, dt_factor=3)
+
+    plt.figure(figsize=(8,5))
+    for n in sorted(snaps_smooth):
+        plt.plot(x_centers, snaps_smooth[n], label=f"n={n}")
+    plt.xlabel("x")
+    plt.ylabel("q")
+    plt.title("Lax--Wendroff snapshots, m=512")
+    plt.legend()
+    plt.grid(True)
+
+    # Part (c)
+    m_list = [256, 512, 1024, 2048]
+    errors = []
+    h_list = []
+    for mtest in m_list:
+        h_test = 2*np.pi / mtest
+        x_ct, _, Q_T = run_lax_wendroff(mtest, np.exp(np.sin(np.linspace(h_test/2, 2*np.pi-h_test/2, mtest)) + 0.5*np.sin(4*np.linspace(h_test/2, 2*np.pi-h_test/2, mtest))), dt_factor=3)
+        q0_test = np.exp(np.sin(x_ct) + 0.5*np.sin(4*x_ct))   # exact at T equals initial
+        err = np.sqrt(h_test * np.sum((Q_T - q0_test)**2))
+        errors.append(err)
+        h_list.append(h_test)
+
+    # Estimate convergence order
+    rate = np.polyfit(np.log(h_list), np.log(errors), 1)[0]
+
+    plt.figure(figsize=(6,4))
+    plt.loglog(h_list, errors, '-o')
+    plt.xlabel('h')
+    plt.ylabel('L2 error at T')
+    plt.title(f'Convergence, estimated order ≈ {abs(rate):.2f}')
+    plt.grid(True, which="both")
+
+    # Part (d)
+    def alternate_ic(x):
+        return np.maximum(np.pi/2 - np.abs(x - np.pi), 0.0)
+
+    # m=512 snapshots
+    m = 512
+    h = 2*np.pi / m
+    x_centers = np.linspace(h/2, 2*np.pi - h/2, m)
+    q0_alternate = alternate_ic(x_centers)
+    _, snaps_alternate, Q_T_alternate = run_lax_wendroff(m, q0_alternate, dt_factor=3)
+
+    plt.figure(figsize=(8,5))
+    for n in sorted(snaps_alternate):
+        plt.plot(x_centers, snaps_alternate[n], label=f"n={n}")
+    plt.xlabel("x")
+    plt.ylabel("q")
+    plt.title("Lax--Wendroff snapshots Alternative initial condition, m=512")
+    plt.legend()
+    plt.grid(True)
+
+    # Convergence
+    errors_alternate = []
+    h_list_alternate = []
+    for mtest in m_list:
+        h_test = 2*np.pi / mtest
+        x_ct = np.linspace(h_test/2, 2*np.pi - h_test/2, mtest)
+        q0_test = alternate_ic(x_ct)
+        _, _, Q_T = run_lax_wendroff(mtest, q0_test, dt_factor=3)
+        err = np.sqrt(h_test * np.sum((Q_T - q0_test)**2))
+        errors_alternate.append(err)
+        h_list_alternate.append(h_test)
+
+    rate_alternate = np.polyfit(np.log(h_list_alternate), np.log(errors_alternate), 1)[0]
+
+    plt.figure(figsize=(6,4))
+    plt.loglog(h_list_alternate, errors_alternate, '-o')
+    plt.xlabel('h')
+    plt.ylabel('L2 error at T')
+    plt.title(f'Convergence Alternative initial condition, estimated order ≈ {abs(rate_alternate):.3f}')
+    plt.grid(True, which="both")
+
+    plt.show()
+
     pass
 
-
-def HW4_Q3c():
-    pass
 
 if __name__ == "__main__":
-    HW4_Q2()
-
+    # HW4_Q2() # Uncomment to run Q2
+    HW4_Q3() # Uncomment to run Q3
     pass
