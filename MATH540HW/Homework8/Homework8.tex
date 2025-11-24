@@ -201,7 +201,12 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
             \]
             where $q(x) = (x - \alpha)(x - \overline{\alpha})$ is a quadratic polynomial with real coefficients. Since $g(x)$ has degree at least 1, this means that $f(x)$ can be factored into the product of two non-constant polynomials in $\rr[x]$, contradicting the assumption that $f(x)$ is irreducible. Therefore, the degree of $f(x)$ must be either 1 or 2.
         \end{proof}
-        \item TODO: Finish this
+        \item \begin{enumerate}[1.]
+            \item $x^3 - 1 = (x - 1)(x^2 + x + 1)$, where $x - 1$ is linear and $x^2 + x + 1$ is irreducible over $\rr$.
+            \item $x^4 + 1 = (x^2 + \sqrt{2}x + 1)(x^2 - \sqrt{2}x + 1)$, where both quadratics are irreducible over $\rr$.
+            \item $x^6 - 1 = (x - 1)(x + 1)(x^2 - x + 1)(x^2 + x + 1)$, where $x - 1$ and $x + 1$ are linear, and both quadratics are irreducible over $\rr$.
+        \end{enumerate}
+    \end{enumerate}
 \end{enumerate}
 
 
@@ -220,6 +225,59 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \item Give an example of a commutative unital ring $R$, and prime element in $R$ which is not irreducible.
     \end{enumerate}
 \end{problem}
+
+
+\begin{enumerate}[(a)]
+    \item \begin{proof}
+        Let $\rr$ be an integral domain, and let $q \in \rr$ be a prime element. We need to show that $q$ is irreducible. Suppose, for the sake of contradiction, that $q$ is not irreducible. Then, we can write $q = ab$ for some non-unit elements $a, b \in \rr$. Since $q$ is prime, it follows that if $q | ab$, then either $q | a$ or $q | b$. However, since $q = ab$, we have that $q | ab$ trivially. Therefore, either $q | a$ or $q | b$. Without loss of generality, assume that $q | a$. This means there exists some element $c \in \rr$ such that $a = qc$. Substituting this back into the equation for $q$, we have:
+        \[
+            q = ab = (qc)b = q(cb).
+        \]
+        Since $\rr$ is an integral domain and $q \neq 0$, we can cancel $q$ from both sides to obtain:
+        \[
+            1 = cb.
+        \]
+        This implies that $b$ is a unit in $\rr$, which contradicts our assumption that both $a$ and $b$ are non-units. Therefore, our initial assumption that $q$ is not irreducible must be false. Hence, every prime element in an integral domain is irreducible.
+    \end{proof}
+
+    \item \begin{proof}
+        Let $S = \{a + b \sqrt{-3} | a,b \in \zz \}$ be the subring of $\cc$. We will show that $2 \in S$ is irreducible but not prime. \\
+        First, we show that $2$ is irreducible. Suppose that $2 = ab$ for some $a, b \in S$. We can express $a$ and $b$ as:
+        \[
+            a = x + y\sqrt{-3}, \quad b = u + v\sqrt{-3},
+        \]
+        where $x, y, u, v \in \zz$. Then, we have:
+        \[
+            2 = (x + y\sqrt{-3})(u + v\sqrt{-3}) = (xu - 3yv) + (xv + yu)\sqrt{-3}.
+        \]
+        Equating the real and imaginary parts, we get the system of equations:
+        \[
+            xu - 3yv = 2,
+        \]
+        \[
+            xv + yu = 0.
+        \]
+        From the second equation, we can express $yu$ in terms of $xv$:
+        \[
+            yu = -xv.
+        \]
+        Substituting this into the first equation, we have:
+        \[
+            xu + 3xv^2/y = 2.
+        \]
+        Since $x, y, u, v$ are integers, it follows that either $x$ or $y$ must be a unit in $\zz$, which means either $a$ or $b$ is a unit in $S$. Therefore, $2$ is irreducible in $S$. \\
+        Next, we show that $2$ is not prime. Consider the elements $1 + \sqrt{-3}$ and $1 - \sqrt{-3}$ in $S$. We have:
+        \[
+            (1 + \sqrt{-3})(1 - \sqrt{-3}) = 1 - (-3) = 4.
+        \]
+        Since $4 = 2 \cdot 2$, it follows that $2 | 4$. However, neither $2 | (1 + \sqrt{-3})$ nor $2 | (1 - \sqrt{-3})$, since dividing either by $2$ does not yield an element in $S$. Therefore, $2$ is not prime in $S$. \\
+    \end{proof}
+    \item Consider the ring $R = \zz/6\zz$. In this ring, the element $2 + 6\zz$ is prime because if $2 + 6\zz | ab + 6\zz$, then either $2 + 6\zz | a + 6\zz$ or $2 + 6\zz | b + 6\zz$. However, $2 + 6\zz$ is not irreducible because we can write:
+    \[
+        2 + 6\zz = (2 + 6\zz)(1 + 6\zz),
+    \]
+    where neither $2 + 6\zz$ nor $1 + 6\zz$ is a unit in $R$. Thus, we have found a prime element in $R$ that is not irreducible.
+\end{enumerate}
 
 
 
@@ -241,6 +299,45 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         \]
     \end{enumerate}
 \end{problem}
+
+\begin{enumerate}[(a)]
+\item
+Matrix of \(T\) (standard basis): \(A=\begin{pmatrix}1&1&0\\0&1&1\\1&0&1\end{pmatrix}\).
+Characteristic polynomial:
+\[
+\det(A-\lambda I)=(1-\lambda)^3+1=0.
+\]
+Over \(\mathbb{R}\) the only real root is \(\lambda=2\). Solving \((A-2I)v=0\) gives
+\[
+v=(1,1,1)^T,
+\]
+so eigenspace for \(\lambda=2\) is \(\operatorname{span}\{(1,1,1)\}\).
+
+Over \(\mathbb{C}\) the other two eigenvalues are
+\(\lambda=\tfrac12\pm \tfrac{i\sqrt3}{2}\). Let \(r=1-\lambda\) (so \(r^3=-1\)). For each such \(\lambda\) an eigenvector is
+\[
+v=(1,-r,r^2)^T,
+\]
+and the conjugate eigenvalue has the conjugate eigenvector. Thus the three eigenspaces are
+\(\operatorname{span}\{(1,1,1)\}\) and \(\operatorname{span}\{(1,-r,r^2)\},\operatorname{span}\{(1,-\overline r,\overline r^{2})\}\).
+
+\item
+Matrix \(A=\begin{pmatrix}1&1\\1&-1\end{pmatrix}\).
+Characteristic polynomial: \(\lambda^2-2=0\), so \(\lambda=\pm\sqrt2\) (real).
+
+For a general eigenvalue \(\lambda\) an eigenvector satisfies \((1-\lambda)x_1+x_2=0\), so we may take
+\[
+v=(1,\;\lambda-1)^T.
+\]
+Thus for \(\lambda=\sqrt2\) an eigenvector is \((1,\sqrt2-1)^T\), and for \(\lambda=-\sqrt2\) an eigenvector is \((1,-\sqrt2-1)^T\). The same answers hold over \(\mathbb{C}\).
+
+\item
+Matrix of \(T\) is
+\(\begin{pmatrix}0&1&0&0\\0&0&2&0\\0&0&0&3\\0&0&0&0\end{pmatrix}\).
+Characteristic polynomial \(\lambda^4=0\), so the only eigenvalue (over \(\mathbb{R}\) and \(\mathbb{C}\)) is \(\lambda=0\).
+Solve \(T(v)=0\): \(x_2=0,\;x_3=0,\;x_4=0\), so the eigenspace is
+\(\operatorname{span}\{(1,0,0,0)\}\).
+\end{enumerate}
 
 
 

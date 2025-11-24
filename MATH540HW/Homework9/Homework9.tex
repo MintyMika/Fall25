@@ -1,0 +1,183 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+% Change enumerate labels to (a), (b), (c), ...
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+\def\ff{{\mathbb F}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 540
+    \hfill Homework 9
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+% \textbf{Remarks:} \\
+% \begin{enumerate}[A)]
+%     \item Definition is just a definition, there is no need to jjustify or explain it.
+%     \item Answers to questions with proofs should be written, as much as you can, in the following format: \\
+%     \begin{enumerate}[i)]
+%         \item Statement
+%         \item Main points that will appear in your proof
+%         \item The actual proof
+%     \end{enumerate}
+%     Answers to questions with computations should be written, as much as possible, in the following format:
+%     \begin{enumerate}[i)]
+%         \item Statement and Result
+%         \item Main points that will appear in your computation.
+%         \item The actual computation
+%     \end{enumerate}
+% \end{enumerate}
+
+
+
+% % Start of problems
+
+
+
+\begin{problem} \\
+\textbf{Cayley-Hamilton Theorem:} Let $T : V \to V$ be a linear transformation on a finite-dimensional vector space $V$ over a field $\mathbb{F}$, with the characteristic polynomial $p_T(x)$. Then, $p_T(T) = 0$. \\
+
+\begin{enumerate}[(a)]
+    \item Show that the theorem is true for $T_U :\ff^n \to \ff^n$ where 
+    \[
+        U = \begin{pmatrix}
+        \lambda_1 & * & \dots & * \\
+        0 & \lambda_2 & \dots & * \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \dots & \lambda_n
+        \end{pmatrix}.
+    \]
+    \textit{Hint:} Apply $p_{T_U}(U)$ on the standard basis vectors $e_1, \dots, e_n$.
+
+    \item Show that the theorem is true if there exists a "Flag" in $V$ invariant under $T$, i.e., a sequence of subspaces
+    \[
+        \{0_V\} \subset V_1 \subset V_2 \subset \dots \subset V_n = V,
+    \]
+    such that $\dim(V_i) = i$ and $T(V_i) \subset V_i$ for all $1 \leq i \leq n$.
+    \textit{Hint:} Take a basis $\mathscr{B} = \{v_1, \dots, v_n\}$ of $V$ with $\mathscr{B}_i = \{v_1, \dots, v_i\}$ a basis of $V_i$ for all $1 \leq i \leq n$, and consider $[T]_{\mathscr{B}} = U$.
+
+
+
+    \item Show by induction on $\dim V = n$ that such a flag exists for any linear transformation $T : V \to V$. The case $n = 1$ is trivial. Now assume the theorem holds for any linear transformation on a vector space of dimension less than $n$. Complete the inductions step in the following way:
+    
+    \begin{enumerate}[1.]
+        \item Show that $p_T(x)$ has a root $\lambda_1$ and an associated eigenvector $v_1$. Construct the subspace $V_1 = \text{span}\{v_1\}$ and note that it is $T$-invariant.
+        \item consider the induces linear transformation $\overline{T} : V/V_1 \to V/V_1$ and note that $\dim(V/V_1) = n - 1$. By the induction assumption, there is a flag of $\overline{T}$-invariant subspaces 
+        \[
+            \{0_{V/V_1}\} \subset \overline{V_2} \subset \overline{V_3} \subset \dots \subset \overline{V_n} = V/V_1.
+        \]
+        Recall, there is a canonical projection $\pi : V \to V/V_1$ and for any subset $S \subset V/V_1$, we have $\pi^{-1}(S) = \{v \in V : \pi(v) \in S\}$. Show that the sequence 
+        \[
+            \{0_V\} \subset V_1 \subset \pi^{-1}(\overline{V_2}) \subset \pi^{-1}(\overline{V_3}) \subset \dots \subset \pi^{-1}(\overline{V_n}) = V
+        \]
+        is a $T$-invariant flag in $V$.
+    \end{enumerate}
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}[(a)]
+    \item \begin{proof}
+            Let \(p_{T_U}(x)=\prod_{i=1}^n (x-\lambda_i)\). Let $ e_1, e_2, \dots, e_n$ be the standard basis vectors of $\ff^n$. We will show that \(p_{T_U}(U)(e_i) = 0\) for all \(1 \leq i \leq n\). We proceed by induction on \(i\). \\
+            \textbf{Base Case:} For \(i=1\), we have
+            \[
+                p_{T_U}(U)(e_1) = \left(\prod_{j=1}^n (U - \lambda_j I)\right)(e_1).
+            \]
+            Note that \((U - \lambda_1 I)(e_1) = 0\) since \(U(e_1) = \lambda_1 e_1\). Therefore, \(p_{T_U}(U)(e_1) = 0\). \\
+            \textbf{Inductive Step:} Assume that \(p_{T_U}(U)(e_k) = 0\) for all \(1 \leq k < i\). We need to show that \(p_{T_U}(U)(e_i) = 0\). We have
+            \[
+                p_{T_U}(U)(e_i) = \left(\prod_{j=1}^n (U - \lambda_j I)\right)(e_i).
+            \]
+            Note that \((U - \lambda_i I)(e_i) = 0\) since \(U(e_i) = \lambda_i e_i + \text{(linear combination of } e_1, \dots, e_{i-1})\). By the inductive hypothesis, applying the remaining factors \((U - \lambda_j I)\) for \(j < i\) to this linear combination will yield zero. Thus, \(p_{T_U}(U)(e_i) = 0\). \\
+            Therefore by induction, \(p_{T_U}(U)(e_i) = 0\) for all \(1 \leq i \leq n\). Since the \(e_i\) form a basis of \(\ff^n\), it follows that \(p_{T_U}(U) = 0\).
+        \end{proof}
+
+    \item \begin{proof}
+            Let \(\mathscr{B} = \{v_1, v_2, \dots, v_n\}\) be a basis of \(V\) such that \(\mathscr{B}_i = \{v_1, v_2, \dots, v_i\}\) is a basis of \(V_i\) for all \(1 \leq i \leq n\). Since \(T(V_i) \subset V_i\), the matrix representation of \(T\) with respect to the basis \(\mathscr{B}\) is upper triangular:
+            \[
+                [T]_{\mathscr{B}} = U = \begin{pmatrix}
+                \lambda_1 & * & \dots & * \\
+                0 & \lambda_2 & \dots & * \\
+                \vdots & \vdots & \ddots & \vdots \\
+                0 & 0 & \dots & \lambda_n
+                \end{pmatrix}.
+            \]
+            By part (a), we know that \(p_{T}(T) = p_{T_U}(U) = 0\). Therefore, the Cayley-Hamilton theorem holds for \(T\).
+        \end{proof}
+
+    \item \begin{proof}
+            We proceed by induction on \(n = \dim V\). \\
+            \textbf{Base Case:} For \(n=1\), any linear transformation \(T : V \to V\) trivially has a flag:
+            \[
+                \{0_V\} \subset V.
+            \]
+            \textbf{Inductive Step:} Assume that for any vector space \(W\) with \(\dim W < n\), any linear transformation \(S : W \to W\) has a \(S\)-invariant flag. We need to show that any linear transformation \(T : V \to V\) with \(\dim V = n\) also has a \(T\)-invariant flag. \\
+            1. Since \(p_T(x)\) is a polynomial of degree \(n\) over the field \(\mathbb{F}\), it has at least one root \(\lambda_1\). Let \(v_1\) be an associated eigenvector, i.e., \(T(v_1) = \lambda_1 v_1\). Define the subspace \(V_1 = \text{span}\{v_1\}\). Note that \(V_1\) is \(T\)-invariant since for any \(c \in \mathbb{F}\),
+            \[
+                T(cv_1) = cT(v_1) = c\lambda_1 v_1 \in V_1.
+            \]
+            2. Consider the induced linear transformation \(\overline{T} : V/V_1 \to V/V_1\) defined by
+            \[
+                \overline{T}(v + V_1) = T(v) + V_1.
+            \]
+            Note that \(\dim(V/V_1) = n - 1\). By the induction hypothesis, there exists a flag of \(\overline{T}\)-invariant subspaces:
+            \[
+                \{0_{V/V_1}\} \subset \overline{V_2} \subset \overline{V_3} \subset \dots \subset \overline{V_n} = V/V_1.
+            \]
+            Let \(\pi : V \to V/V_1\) be the canonical projection. For each \(2 \leq i \leq n\), define
+            \[
+                V_i = \pi^{-1}(\overline{V_i}) = \{v \in V : \pi(v) \in \overline{V_i}\}.
+            \]
+            We claim that the sequence
+            \[
+                \{0_V\} \subset V_1 \subset V_2 \subset V_3 \subset \dots \subset V_n = V
+            \]
+            is a \(T\)-invariant flag in \(V\). \\
+            To see that each \(V_i\) is \(T\)-invariant, let \(v \in V_i\). Then \(\pi(v) \in \overline{V_i}\). Since \(\overline{V_i}\) is \(\overline{T}\)-invariant, we have
+            \[
+                \overline{T}(\pi(v)) = T(v) + V_1 \in \overline{V_i}.
+            \]
+            Thus, \(T(v) \in V_i\), showing that \(V_i\) is \(T\)-invariant. \\
+            Therefore, we have constructed a \(T\)-invariant flag in \(V\). By induction, the result holds for all finite-dimensional vector spaces \(V\).
+    \end{proof}
+\end{enumerate}
+
+
+
+
+\end{document}
