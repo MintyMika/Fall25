@@ -1,0 +1,165 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage,mathpazo,amsmath,amssymb,amsfonts,nicefrac,microtype,graphicx}
+
+\usepackage{hyperref,color,textcomp}
+\usepackage[skip=-2pt,font=footnotesize]{caption}
+
+\definecolor{webgreen}{rgb}{0,.35,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{RoyalBlue}{rgb}{0,0,0.9}
+\definecolor{purp}{rgb}{0.6,0.3,0.9}
+\hypersetup{
+   colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,
+   breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,
+   plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,
+   hypertexnames=true, pdfhighlight=/O,
+   urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen,
+   pdfauthor={Chris H. Rycroft, Yue Sun},
+   pdfsubject={UW--Madison Math/CS 714 (Fall 2025)},
+   pdfkeywords={},
+   pdfcreator={pdfLaTeX},
+   pdfproducer={LaTeX with hyperref}
+}
+\hypersetup{pdftitle={Math/CS 714: Homework 5}}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\p}{\partial}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\Lag}{\mathcal{L}}
+\newcommand{\sep}{\,:\,}
+\setlength{\unitlength}{0.5mm}
+\renewcommand{\labelitemii}{$\diamond$}
+\DeclareMathOperator{\Real}{Re}
+
+\graphicspath{{./}{gr/}}
+
+\begin{document}
+\section*{Math/CS 714: Assignment 5}
+
+\begin{enumerate}
+  \item \textbf{Red light, green light (8 points).} In this problem, we will consider the behavior of traffic on a stretch of road $x\in[-1,1]$ due to a traffic light at $x=1$.
+        \begin{figure}[h!]
+          \centering
+          \vspace{-1em}
+          \includegraphics[width=0.65\textwidth]{traffic}
+        \end{figure}
+        \begin{enumerate}
+          \vspace{-1em}
+          \item Consider the 1D LWR traffic model with car density $q\in[0,1]$ and max car speed $u_\text{max}=1$, traffic flow velocity $u(q)=1-q \in[0,1]$, and the flux $f(q)=q(1-q)$. What is the analytical expression for the characteristic velocity $c(q)$ for this model? For what values of $q$ is the characteristic velocity negative?
+
+          \item Consider the discretization
+                \begin{equation}
+                  \label{cons_law}
+                  \frac{Q_j^{n+1}-Q_j^n}{\Delta{t}} + \frac{F^n_{j+\frac{1}{2}}-F^n_{j-\frac{1}{2}}}{\Delta{x}} = 0
+                \end{equation}
+                with
+                \begin{equation*}
+                  F^n_{j+\frac{1}{2}}=U^n_{j+\frac{1}{2}}Q^n_{j+\frac{1}{2}},\quad F^n_{j-\frac{1}{2}}=U^n_{j-\frac{1}{2}}Q^n_{j-\frac{1}{2}}.
+                \end{equation*}
+                Here, $F^n_{j+\frac{1}{2}}$, $U^n_{j+\frac{1}{2}}$, and $Q^n_{j+\frac{1}{2}}$ are numerical approximations of the flux $f(x_{j+\frac{1}{2}},t_n)$, velocity $u(x_{j+\frac{1}{2}},t_n)$, and density $q(x_{j+\frac{1}{2}},t_n)$, respectively, with $x_{j+\frac{1}{2}}=-1+\big(j+\frac{1}{2}\big)\Delta{x}$ and $t_n=n\Delta{t}$. Show that Eq.~\eqref{cons_law} can be rewritten as
+                \begin{equation}
+                  \label{traffic_model}
+                  \frac{Q_j^{n+1}-Q_j^n}{\Delta{t}} + C^n_j\frac{Q^n_{j+\frac{1}{2}}-Q^n_{j-\frac{1}{2}}}{\Delta{x}} = 0
+                \end{equation}
+                where the discrete characteristic velocity
+                \begin{equation}
+                  \label{char_vel}
+                  C^n_j=1-Q^n_{j+\frac{1}{2}}-Q^n_{j-\frac{1}{2}}.
+                \end{equation}
+
+          \item Implement the WENO scheme discussed in class to solve for the density in time using the discretization in Eq.~\eqref{traffic_model}. Discretize the domain $x\in[-1,1]$ by $m=201$ evenly-spaced points with spacing $\Delta{x}=2/(m-1)$. Use a timestep of $\Delta{t}=0.001$ and integrate to a final time $T=1.5$, outputting $150$ snapshots after the initial state ($151$ outputs total). As initial conditions, use the step function
+                \begin{equation}
+                  Q^0_j=\begin{cases}
+                    q_l, & x<0    \\
+                    q_r, & x\geq0
+                  \end{cases}
+                \end{equation}
+                for fixed values $q_l$ and $q_r$. When the interpolant for $Q^n_{j+\frac{1}{2}}$ or $Q^n_{j-\frac{1}{2}}$ relies on points outside the domain, use the ghost node approach and treat the density on these nodes as fixed at $q_l$ on the left and $q_r$ on the right, respectively.
+
+                At each grid cell, the sign of the characteristic velocity $C^n_j$ must be determined to select the appropriate upwind condition. At the start of the step, compute the intermediate value
+                \begin{equation}
+                  \widehat{C}^n_j=1-Q^n_{j+1}-Q^n_{j-1}
+                \end{equation}
+                from known values $Q^n_{j+1}$ and $Q^n_{j-1}$, and use its sign to select the proper set of upwind interpolants and compute $Q^n_{j+\frac{1}{2}}$ and $Q^n_{j-\frac{1}{2}}$. Then compute the final characteristic velocity $C^n_j$ from Eq.~\eqref{char_vel} and use it in the update rule given by Eq.~\eqref{traffic_model}.
+                You can consult \href{https://github.com/chr1shr/am205_g_activities/blob/master/eno_methods/lin_adv_eno_solutions.ipynb}{this Jupyter notebook} for implementing the WENO scheme, but not that the notations for density and velocity is different.
+
+                Run your program for the following two cases:
+                \begin{enumerate}
+                  \item \textbf{Red light:} $q_l=0.4, q_r=1.0$. Physically, we imagine that the traffic light at $x=1$ is red, and the traffic is initially backed up and standing still from $[0,1]$ while more vehicles approach from the left.
+                  \item \textbf{Green light:} $q_l=1.0, q_r=0.4$. Now, the light at $x=1$ is green, and traffic on $[0,1]$ has reduced, while cars on $[-1,0]$ are initially still at rest.
+                \end{enumerate}
+                For each case, plot snapshots of the density at the four times $t=0,0.5,1,1.5$.
+        \end{enumerate}
+
+  \item \textbf{Primers on spectral methods (6 points).}
+      \begin{enumerate}
+      \item Consider the infinite grid $h\Z$ with $h=1$. By considering the second derivative
+        of the constant function $v(x)=1$ on $h\Z$, show that
+        \begin{equation}
+          \frac{\pi^2}{12} = 1 - \frac{1}{2^2} + \frac{1}{3^2} - \frac{1}{4^2} + \ldots.
+        \end{equation}
+      \item Consider the function $v(x)=\sin \tfrac{\pi x}{2}$ on the infinite grid $h\Z$
+        with $h=1$. Introduce the function
+        \begin{equation}
+          p_\alpha(x) = \sum_{m=-\alpha}^\alpha v_m S_h(x-x_m)
+        \end{equation}
+        where $S_h$ is the sinc function introduced in the lectures, $x_m=mh$,
+        and $v_m=v(x_m)$. Write a program to compute\footnote{You will need to
+        use numerical integration to do this. You can use a library function,
+        trapezoid rule, or other quadrature rule.} $E_\alpha=\|p_\alpha -
+        v\|_2$ over the range $[-5,5]$ for $\alpha=1,2,4,8,\ldots,512$. Fit the
+        data to a power law
+        \begin{equation}
+          E_\alpha = C \alpha^q
+        \end{equation}
+        and determine the parameters $C$ and $q$.
+      \item The band-limited interpolant is $p(x) = \lim_{\alpha\to \infty}
+        p_\alpha(x)$. Part (b) shows that $E_\alpha \to 0$ as $\alpha \to \infty$,
+        and hence $p(x)=v(x)$. Explain from the theory of band-limited
+        interpolants why this must be the case.\footnote{It may be helpful to
+        know that the Fourier transform of $e^{i\lambda x}$ is
+        $\delta(k-\lambda)$ where $\delta$ is the Dirac delta function.}
+      \item By considering the first derivative of $v$ from part (b), show that
+        \begin{equation}
+          \frac{\pi}{4} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \ldots.
+        \end{equation}
+      \item By using an appropriate function choice, show that
+        \begin{equation}
+          \frac{\pi^2}{6} = 1 + \frac{1}{2^2} + \frac{1}{3^2} + \frac{1}{4^2} + \ldots.
+        \end{equation}
+    \end{enumerate}
+
+  \item \textbf{Chebyshev spectral method (6 points).}
+        Consider the boundary value problem
+        \begin{equation}
+          u_{xx} + u^5 = f \label{eq:cbvp}
+        \end{equation}
+        for the function $u(x)$ on the non-periodic interval $[-1,1]$, with a
+        source term $f(x)$. Use the Dirichlet conditions $u(-1)=u(1)=0$. Write
+        a program that can find $u$ represented on a Chebyshev grid with $N+1$ grid
+        points. Since Eq.~\eqref{eq:cbvp} is nonlinear, you will need to solve this
+        using the Newton method.\footnote{This is similar to Question 3 on Homework
+          1.}
+        \begin{enumerate}
+          \item Use the method of manufactured solutions, with the solution
+                \begin{equation}
+                  u(x)=e^x(x^2-1). \label{eq:uexact}
+                \end{equation}
+                Calculate what $f$ will be in order for $u$ to satify
+                Eq.~\eqref{eq:cbvp}.
+          \item For a range of $N$ from 4 to 64, calculate the numerical solution
+                $p_N(x)$ to Eq.~\eqref{eq:cbvp}. Start your Newton method from the
+                function $(x+1)^2(x-1)$ as an initial guess.\footnote{The nonlinear
+                  system has multiple solutions. This function is close enough to
+                  Eq.~\eqref{eq:uexact} that your Newton method will reliably converge to it.}
+                Make a semilog plot of $\|p_N-u\|_2$ as a function of $N$.
+        \end{enumerate}
+\end{enumerate}
+\end{document}
