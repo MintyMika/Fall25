@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{extarrows}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 714
+    \hfill Evaluation of the Black-Scholes equation via Crank-Nicolson and SINDy
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+
+\section{Introduction}
+
+\section{History and Derivation of the Black-Scholes Equation}
+
+\section{Numerical Methods for Solving the Black-Scholes Equation}
+\subsection{Crank-Nicolson Method}
+The Crank-Nicolson Finite Difference Method is an implicit method used for numerically solving partial differential equations and is in fact commonly used to solve the Black-Scholes equation \ref{}. The method is essentially a combination of the Forward Euler and Backward Euler methods, taking the average of the two to achieve a higher order of accuracy. The Crank-Nicolson method is unconditionally stable and second-order accurate in both time and space, making it a popular choice for solving parabolic PDEs like the Black-Scholes equation \ref{}.
+\subsubsection{History}
+The Crank-Nicolson method was developed in the 1940s by John Crank and Phyllis Nicolson as a way to improve the accuracy of numerical solutions to heat equations. Since then, it has been widely adopted in various fields, including finance, for solving the Black-Scholes equation \ref{}. The method's stability and accuracy make it particularly well-suited for pricing options, where precise calculations are crucial. The derivation of the Crank-Nicolson method involves discretizing the time and space domains and applying finite difference approximations to the derivatives in the PDE. By averaging the spatial derivatives at the current and next time steps, the method achieves its second-order accuracy \ref{}. We have that for a general parabolic PDE of the form:
+\begin{equation}
+    \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}
+\end{equation}
+the Crank-Nicolson method can be expressed as:
+\begin{equation}
+    \frac{u_i^{n+1} - u_i^n}{\Delta t} = \frac{\alpha}{2} \left( \frac{u_{i+1}^{n+1} - 2u_i^{n+1} + u_{i-1}^{n+1}}{(\Delta x)^2} + \frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n}{(\Delta x)^2} \right)
+\end{equation}
+where \(u_i^n\) represents the numerical solution at spatial point \(i\) and time step \(n\), \(\Delta t\) is the time step size, and \(\Delta x\) is the spatial step size. This leads to a system of linear equations that can be solved at each time step to obtain the numerical solution \ref{}. It is easy to see that this method is a combination of the Forward Euler and Backward Euler methods, taking the average of the two as seen below:
+\begin{align*}
+    \text{Forward Euler: } & \frac{u_i^{n+1} - u_i^n}{\Delta t} = \alpha \frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n}{(\Delta x)^2} \\
+    \text{Backward Euler: } & \frac{u_i^{n+1} - u_i^n}{\Delta t} = \alpha \frac{u_{i+1}^{n+1} - 2u_i^{n+1} + u_{i-1}^{n+1}}{(\Delta x)^2}. \\
+\end{align*}
+As mentioned earlier, the Crank-Nicolson method is unconditionally stable, meaning that it remains stable regardless of the choice of time step size \(\Delta t\) and spatial step size \(\Delta x\). To see this is true we can take the Fourier transform of the Crank-Nicolson scheme and analyze the amplification factor. The amplification factor \(G\) can be derived as follows:
+\begin{equation}
+    G = \frac{1 - \frac{\alpha \Delta t}{2} k^2}{1 + \frac{\alpha \Delta t}{2} k^2}
+\end{equation}
+where \(k\) is the wave number. The magnitude of the amplification factor is given by:
+\begin{equation}
+    |G| = \left| \frac{1 - \frac{\alpha \Delta t}{2} k^2}{1 + \frac{\alpha \Delta t}{2} k^2} \right|
+\end{equation}
+Since the denominator is always greater than the numerator for all values of \(\Delta t\) and \(k\), we have that \(|G| \leq 1\) for all choices of \(\Delta t\) and \(k\). This implies that the Crank-Nicolson method is unconditionally stable, as the numerical solution will not grow unbounded over time regardless of the time step size \(\Delta t\) and spatial step size \(\Delta x\) chosen. \\
+
+\subsubsection{Implementation of CN Method}
+Because I hate my life, I decided to implement to CN Method as a class in Python. The class takes in the following parameters:
+\begin{itemize}
+    \item \verb|S_max|: The maximum stock price considered in the grid.
+    \item \verb|K|: The strike price of the option.
+    \item \verb|T|: The time to maturity of the option.
+    \item \verb|r|: The risk-free interest rate.
+    \item \verb|sigma|: The volatility of the underlying asset.
+    \item \verb|S_steps|: The number of spatial grid points (stock prices).
+    \item \verb|T_steps|: The number of time steps.
+\end{itemize}
+The class then constructs the spatial and temporal grids, initializes the option price matrix, and sets up the boundary and initial conditions. The main method of the class is \verb|crank_nicolson|, which implements the Crank-Nicolson algorithm to compute the option prices at each grid point. The method constructs the tridiagonal matrix system based on the Crank-Nicolson discretization and solves it iteratively for each time step using a linear solver. Finally, the class provides a method to retrieve the computed option prices for analysis and visualization. % This isn't entirely true add all of the methods later
+
+
+\section{Results and Discussion}
+
+\section{Conclusion}
+
+
+
+
+\end{document}

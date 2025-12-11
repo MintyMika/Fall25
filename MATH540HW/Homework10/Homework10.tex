@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+% Change enumerate labels to (a), (b), (c), ...
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+\def\ff{{\mathbb F}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 540
+    \hfill Homework 10
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+% \textbf{Remarks:} \\
+% \begin{enumerate}[A)]
+%     \item Definition is just a definition, there is no need to jjustify or explain it.
+%     \item Answers to questions with proofs should be written, as much as you can, in the following format: \\
+%     \begin{enumerate}[i)]
+%         \item Statement
+%         \item Main points that will appear in your proof
+%         \item The actual proof
+%     \end{enumerate}
+%     Answers to questions with computations should be written, as much as possible, in the following format:
+%     \begin{enumerate}[i)]
+%         \item Statement and Result
+%         \item Main points that will appear in your computation.
+%         \item The actual computation
+%     \end{enumerate}
+% \end{enumerate}
+
+
+
+% % Start of problems
+
+\begin{problem} \\
+    \textit{Minimal Polynomials and Diagonalizability.} Let $T : V \to V$ be a linear transformation on a finite imensional vcetor space $V$ over a field $\ff$. \\ 
+    \begin{enumerate}[(a)]
+        \item Define the minimal polynomial of $T$, denoted $m_T(x)$.
+        \item Prove the following:
+        \begin{theorem}
+            $T$ is diagonalizable if and only if $m_T(x)$ is a product of different linear factors of the form $x - \lambda$, for some  $\lambda \in \ff$.
+        \end{theorem}
+    \end{enumerate}
+\end{problem}
+
+
+
+\begin{enumerate}[(a)]
+    \item The minimal polynomial of $T$, denoted $m_T(x)$, is the monic polynomial of smallest degree with coefficients in $\ff$ such that $m_T(T) = 0$.
+
+    \item \begin{proof}
+        ($\Rightarrow$) Suppose $T$ is diagonalizable. Then there exists a basis $\{v_1, \ldots, v_n\}$ of $V$ consisting of eigenvectors of $T$ with corresponding eigenvalues $\lambda_1, \ldots, \lambda_k$ (distinct). Let $p(x) = (x - \lambda_1) \cdots (x - \lambda_k)$. For any $v_i$, we have $p(T)(v_i) = (T - \lambda_1 I) \cdots (T - \lambda_k I)(v_i) = 0$ since $v_i$ is an eigenvector. Thus $p(T) = 0$, so $m_T(x)$ divides $p(x)$. Since $m_T(x)$ is monic and has no repeated factors, $m_T(x) = (x - \lambda_1) \cdots (x - \lambda_m)$ for distinct $\lambda_i \in \ff$.
+
+        ($\Leftarrow$) Suppose $m_T(x) = (x - \lambda_1) \cdots (x - \lambda_k)$ with distinct $\lambda_i$. Then $V = \ker(T - \lambda_1 I) \oplus \cdots \oplus \ker(T - \lambda_k I)$ by the Primary Decomposition Theorem. Each kernel consists of eigenvectors, so $V$ has a basis of eigenvectors of $T$. Thus $T$ is diagonalizable.
+    \end{proof}
+
+    
+\end{enumerate}
+
+
+
+\begin{problem} \\
+    \textit{Simultaneously diagonalizable operators.} Let $S,T$ be two operators defined on a finite-dimensional vector space $V$.
+    \begin{enumerate}[(a)]
+        \item Define when we say that $S$ and $T$ are simultaneously diagonalizable.
+        \item Suppose $S$ and $T$ are both diagonalizable. Show that TFAE:
+        \begin{enumerate}[1.]
+            \item $S$ and $T$ commute, i.e., $S \circ T = T \circ S$.
+            \item $S$ and $T$ are simultaneously diagonalizable.
+        \end{enumerate}
+        \item Can you extend the result above to arbitrary collection of diagonalizable operators on $V$?
+    \end{enumerate}
+\end{problem}
+
+
+
+
+\begin{enumerate}[(a)]
+    \item Two operators $S$ and $T$ on a finite-dimensional vector space $V$ are \textit{simultaneously diagonalizable} if there exists a single basis $\{v_1, \ldots, v_n\}$ of $V$ such that both $S$ and $T$ are diagonal with respect to this basis. Equivalently, $S$ and $T$ share the same eigenbasis.
+    \item \begin{proof}
+        ($1 \Rightarrow 2$) Suppose $S \circ T = T \circ S$. Since $S$ is diagonalizable, there exists a basis $\{v_1, \ldots, v_n\}$ of eigenvectors of $S$ with eigenvalues $\lambda_1, \ldots, \lambda_k$. Let $V_i = \ker(S - \lambda_i I)$. Since $S$ and $T$ commute, $T(V_i) \subseteq V_i$ for each $i$. Thus $T$ restricted to each $V_i$ is diagonalizable. Therefore, each $V_i$ has a basis of common eigenvectors of both $S$ and $T$. The union of these bases is a basis of $V$ diagonalizing both $S$ and $T$.
+
+        ($2 \Rightarrow 1$) Suppose $S$ and $T$ are simultaneously diagonalizable. Then there exists a basis where both are diagonal. Diagonal matrices commute, so $S \circ T = T \circ S$.
+    \end{proof}
+
+    \item Yes. The result extends to any finite collection of diagonalizable operators. If $T_1, \ldots, T_m$ are diagonalizable operators on $V$, then they are simultaneously diagonalizable if and only if they pairwise commute, i.e., $T_i \circ T_j = T_j \circ T_i$ for all $i, j$.
+\end{enumerate}
+
+
+
+\end{document}

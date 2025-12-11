@@ -56,6 +56,27 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     Construct natural isomorphisms $W^{*} \cong (V^*/W^{\perp})$ and $W^{\perp} \cong (V/W)^*$. (The assumption that $V$ is finite-dimensional is not actually required, but it makes the problem easier.)
 \end{problem}
 
+\begin{proof}
+    We give explicit constructions and check they are linear bijections.
+
+    (1) Constructing $W^*\cong V^*/W^{\perp}$. Define
+    \[
+    R:V^*\to W^*,\qquad R(\phi)=\phi|_W.
+    \]
+    Then $R$ is linear and $R(\phi)=0$ iff $\phi\in W^{\perp}$, so $\ker R=W^{\perp}$. Hence $R$ induces a linear map
+    \[
+    \overline R:V^*/W^{\perp}\to W^*,\qquad \overline R(\phi+W^{\perp})=\phi|_W,
+    \]
+    which is well-defined. To see $\overline R$ is bijective directly: injectivity holds because if $\overline R(\phi+W^{\perp})=0$ then $\phi|_W=0$ so $\phi\in W^{\perp}$ and $\phi+W^{\perp}=0$. For surjectivity, let $\psi\in W^*$. Choose a basis $w_1,\dots,w_k$ of $W$ and extend it to a basis $w_1,\dots,w_k,v_{k+1},\dots,v_n$ of $V$. Define $\phi\in V^*$ by $\phi(w_i)=\psi(w_i)$ and $\phi(v_j)=0$ for the extra basis vectors. Then $\phi|_W=\psi$, so $\overline R(\phi+W^{\perp})=\psi$. Thus $\overline R$ is an isomorphism.
+
+    (2) Constructing $W^{\perp}\cong (V/W)^*$. Let $\pi:V\to V/W$ be the quotient map. For $\alpha\in W^{\perp}$ define
+    \[
+    S(\alpha):V/W\to K,\qquad S(\alpha)(v+W)=\alpha(v).
+    \]
+    This is well-defined because $\alpha|_W=0$. Clearly $S(\alpha)$ is linear, and $S:W^{\perp}\to (V/W)^*$ is linear. If $S(\alpha)=0$ then $\alpha(v)=0$ for all $v\in V$, so $\alpha=0$, hence $S$ is injective. For surjectivity, given $f\in (V/W)^*$ set $\alpha=f\circ\pi\in V^*$. Then $\alpha|_W=0$, so $\alpha\in W^{\perp}$ and $S(\alpha)=f$. Thus $S$ is an isomorphism.
+\end{proof}
+
+
 
 \begin{problem} \\
     Let $V$ be a finite-dimesional vector space, $\dim(V) = n$. For $k \geq 0$, let $G(V,k)$ be the set of all the $k$-dimensional subspaces of $V$ (it is called the Grassmannian of $V$). Show that the correspondence 
@@ -67,6 +88,169 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
         G(V,k) \cong G(V^*, n-k).
     \]
 \end{problem} 
+
+\begin{proof}
+    To show that the map $W \mapsto W^{\perp}$ is a bijection from $G(V,k)$ to $G(V^*, n-k)$, we need to prove that it is both injective and surjective.
+
+    \textbf{Injectivity:} Suppose $W_1, W_2 \in G(V,k)$ such that $W_1^{\perp} = W_2^{\perp}$. We want to show that $W_1 = W_2$. Since $W_1^{\perp} = W_2^{\perp}$, any linear functional that vanishes on $W_1$ also vanishes on $W_2$, and vice versa. This implies that the annihilators of $W_1$ and $W_2$ are the same, which means that the subspaces themselves must be equal. Therefore, $W_1 = W_2$, proving injectivity.
+
+    \textbf{Surjectivity:} Let $U \in G(V^*, n-k)$. We want to find a subspace $W \in G(V,k)$ such that $W^{\perp} = U$. Consider the annihilator of $U$, denoted by $U^{\perp}$. By the properties of dual spaces, we have $\dim(U^{\perp}) = n - \dim(U) = n - (n - k) = k$. Thus, $U^{\perp}$ is a $k$-dimensional subspace of $V$. Now, we can set $W = U^{\perp}$. Then, by definition, we have
+    \[
+        W^{\perp} = (U^{\perp})^{\perp} = U,
+    \]
+    completing the proof of surjectivity.
+
+    Since the map is both injective and surjective, we conclude that it is a bijection:
+    \[
+        G(V,k) \cong G(V^*, n-k).
+    \]
+\end{proof}
+
+
+
+\begin{problem} \\
+    Let $V$ and $W$ be two vector spaces, not neccessarily finite-dimensional. Consider the map
+    \[
+        V^* \otimes W \to \operatorname{Hom}_K(V,W) \quad \phi \otimes w \mapsto (v \mapsto \phi(v)w).  
+    \]
+    (the maps were considered in class). Prove that the map is an isomorphism if either $V$ or $W$ is finite-dimensional. (In fact, this is an "if and only if"; in general, the map is only injective.)
+\end{problem}
+
+
+\begin{proof}
+    First we show injectivity. Suppose that
+    \[
+        \sum_{i=1}^m \phi_i \otimes w_i \mapsto 0,
+    \]
+    meaning that for all $v \in V$,
+    \[
+        \sum_{i=1}^m \phi_i(v) w_i = 0.
+    \]
+    We want to show that $\sum_{i=1}^m \phi_i \otimes w_i = 0$ in $V^* \otimes W$. To do this, we can use the fact that if a linear combination of tensors maps to zero under the given map, then the coefficients must be zero. Then, without loss of generality, we have that the $w_i$ are linearly independent so it follows that $\phi_i(v) = 0$ for all $v \in V$ and for all $i$. Thus, each $\phi_i = 0$, and hence $\sum_{i=1}^m \phi_i \otimes w_i = 0$. This shows that the map is injective. \\
+    Now suppose that $V$ is finite-dimensional. Let $\{v_1, \ldots, v_m\}$ be a basis for $V$, and let $\{\phi_1, \ldots, \phi_m\}$ be the dual basis for $V^*$. For any linear transformation $T: V \to W$, we can express it as
+    \[
+        T(v) = \sum_{i=1}^m \phi_i(v) T(v_i).
+    \]
+    We can do this since for any $v \in V$, we can write $v = \sum_{i=1}^m a_i v_i$, and thus 
+    \[
+        T(v) = T\left(\sum_{i=1}^m a_i v_i\right) = \sum_{i=1}^m a_i T(v_i) = \sum_{i=1}^m \phi_i(v) T(v_i).
+    \]
+    Thus, we can write
+    \[
+        T = \sum_{i=1}^m \phi_i \otimes T(v_i) = \psi \otimes w, \quad \text{where } \psi = \sum \phi_i, w = \sum T(v_i),
+    \]
+    showing that the map is surjective when $V$ is finite-dimensional. \\
+    Now suppose that $W$ is finite-dimensional. Let $\{w_1, \ldots, w_n\}$ be a basis for $W$. For any linear transformation $T: V \to W$, we can express it as
+    \[
+        T(v) = \sum_{j=1}^n \psi_j(v) w_j,
+    \]
+    where $\psi_j: V \to K$ are linear functionals. Thus, we can write
+    \[
+        T = \sum_{j=1}^n \psi_j \otimes w_j,
+    \]
+    showing that the map is surjective when $W$ is finite-dimensional. \\
+    Therefore, the map is an isomorphism if either $V$ or $W$ is finite-dimensional.
+\end{proof}
+
+
+\newpage
+\begin{problem} \\ 
+    Let $V$ and $W$ be finite-dimensional vector spaces, and let $\phi: V \to V$ and $\psi: W \to W$ be linear transformations. Consider the linear transformation
+    \[
+        \phi \otimes \psi: V \otimes W \to V \otimes W, \quad v \otimes w \mapsto \phi(v) \otimes \psi(w).
+    \]
+    Find a formula for $\det(\phi \otimes \psi)$. If you want, you can assume that you work over an algebraically closed field.
+\end{problem}
+
+\begin{proof}
+    Let $\dim(V) = m$ and $\dim(W) = n$. Let $\{\lambda_1, \ldots, \lambda_m\}$ be the eigenvalues of $\phi$ and $\{\mu_1, \ldots, \mu_n\}$ be the eigenvalues of $\psi$. The eigenvalues of the tensor product transformation $\phi \otimes \psi$ are given by the products of the eigenvalues of $\phi$ and $\psi$. Specifically, the eigenvalues of $\phi \otimes \psi$ are
+    \[
+        \{\lambda_i \mu_j \mid 1 \leq i \leq m, 1 \leq j \leq n\}.
+    \]
+    Therefore, the determinant of $\phi \otimes \psi$ is the product of all these eigenvalues:
+    \[
+        \det(\phi \otimes \psi) = \prod_{i=1}^m \prod_{j=1}^n (\lambda_i \mu_j).
+    \]
+    This can be rewritten as
+    \[
+        \det(\phi \otimes \psi) = \left( \prod_{i=1}^m \lambda_i^n \right) \left( \prod_{j=1}^n \mu_j^m \right) = (\det(\phi))^n (\det(\psi))^m.
+    \]
+    Thus, we have the formula
+    \[
+        \det(\phi \otimes \psi) = (\det(\phi))^{\dim(W)} (\det(\psi))^{\dim(V)}.
+    \]
+\end{proof}
+
+
+
+\begin{problem} \\ 
+    Let $V$ be a finite-dimensional vector space over $\cc$, and let $\phi, \psi : V \to V$ be two linear operators. Suppose that the operators commute: $\phi \circ \psi = \psi \circ \phi$. Prove that there exists a vector $v \in  V, v \neq 0$, that is an eigenvector for both $\phi$ and $\psi$ simultaneously. (Consider the restriction of $\psi$ to the eigenspaces of $\phi$.)
+\end{problem}
+
+\begin{proof}
+    Since we work over \(\mathbb{C}\), the operator \(\phi\) has at least one eigenvalue. Let \(\lambda\in\mathbb{C}\) be an eigenvalue of \(\phi\) and set
+    \[
+    E_\lambda=\ker(\phi-\lambda I),
+    \]
+    the corresponding eigenspace. By choice of \(\lambda\) we have \(E_\lambda\neq\{0\}\).
+
+    Since $\phi$ and $\psi$ commute, for any \(v\in E_\lambda\) we have
+    \[
+    (\phi-\lambda I)(\psi v)=\phi(\psi v)-\lambda\psi v=\psi(\phi v)-\lambda\psi v=\psi(\lambda v)-\lambda\psi v=0,
+    \]
+    so \(\psi v\in E_\lambda\). Thus \(E_\lambda\) is a nonzero \(\psi\)-invariant subspace, and \(\psi|_{E_\lambda}\) is a linear endomorphism of the finite-dimensional space \(E_\lambda\).
+
+    Working over \(\mathbb{C}\), the restriction \(\psi|_{E_\lambda}\) has an eigenvector \(v\neq0\) with eigenvalue \(\mu\). Since \(v\in E_\lambda\) we also have \(\phi v=\lambda v\). Hence \(v\) is a nonzero vector that is simultaneously an eigenvector for \(\phi\) and \(\psi\):
+    \[
+    \phi v=\lambda v,\qquad \psi v=\mu v.
+    \]
+    This completes the proof.
+\end{proof}
+
+
+\begin{problem} \\ 
+    Let $G$ be an abelian group, and $V$ be a finite-dimensional irreducible representation of $G$ over $\cc$. Show that $\dim(V) = 1$. %(Hint: Since $G$ is abelian, the linear operators $\rho(g), g \in G,$ commute with each other. Use the previous problem.)
+    (This is closely related to the previous problem.)
+\end{problem}
+
+
+\begin{proof}
+    We can use Schur's lemma to prove this. Since $V$ is an irreducible representation of the abelian group $G$, any linear operator that commutes with all $\rho(g)$ for $g \in G$ must be a scalar multiple of the identity operator. \\
+    Now, consider the action of $G$ on $V$. Since $G$ is abelian, for any $g,h \in G$, we have $\rho(g)\rho(h) = \rho(h)\rho(g)$. Thus, all the linear operators $\rho(g)$ commute with each other. By the previous problem, there exists a nonzero vector $v \in V$ that is an eigenvector for all $\rho(g)$ simultaneously. That is, for each $g \in G$, there exists a scalar $\lambda_g \in \cc$ such that
+    \[
+        \rho(g)(v) = \lambda_g v.
+    \]
+    Consider the subspace $W = \text{span}\{v\}$. Since $V$ is irreducible, the only subspaces invariant under the action of $G$ are $\{0\}$ and $V$ itself. Since $W$ is nonzero and invariant under the action of $G$, we must have $W = V$. Therefore, $\dim(V) = 1$.
+    % Since $G$ is abelian, for any $g,h \in G$, we have $\rho(g)\rho(h) = \rho(h)\rho(g)$. Thus, all the linear operators $\rho(g)$ commute with each other. By the previous problem, there exists a nonzero vector $v \in V$ that is an eigenvector for all $\rho(g)$ simultaneously. That is, for each $g \in G$, there exists a scalar $\lambda_g \in \cc$ such that 
+    % \[
+    %     \rho(g)(v) = \lambda_g v.
+    % \]
+    % Consider the subspace $W = \text{span}\{v\}$. Since $V$ is irreducible, the only subspaces invariant under the action of $G$ are $\{0\}$ and $V$ itself. Since $W$ is nonzero and invariant under the action of $G$, we must have $W = V$. Therefore, $\dim(V) = 1$.
+\end{proof}
+
+
+\begin{problem} \\ 
+    Let $V_{d,n}$ be the vector space of homogeneous polynomials of degree $d$ in the variables $x_1, \ldots, x_n$. The symmetric group $S_n$ acts on $V_{d,n}$ by permuting the variables. Write this representation as a direct sum of irreducibles of $(d,n) = (2,2), (3,1), (3,2)$. 
+\end{problem}
+
+\begin{itemize}
+    \item For \((d,n)=(2,2)\), the space \(V_{2,2}\) consists of homogeneous polynomials of degree 2 in two variables \(x_1\) and \(x_2\). A basis for this space is given by \(\{x_1^2, x_1x_2, x_2^2\}\). For the basis element $x_1x_2$, the action of $S_2$ in effect, does nothing. So we have that $\langle x_1x_2 \rangle$ is a one-dimensional invariant subspace of $V_{2,2}$. The action of $S_2$ on the other basis elements $x_1^2$ and $x_2^2$ swaps them. So we have that the subspace spanned by $\{x_1^2, x_2^2\}$ is also invariant under the action of $S_2$. This subspace can be further decomposed into two one-dimensional irreducible representations: the symmetric part spanned by \(x_1^2 + x_2^2\) and the antisymmetric part spanned by \(x_1^2 - x_2^2\). Therefore, we have
+    \[
+        V_{2,2} \cong \langle x_1x_2 \rangle \oplus \langle x_1^2 + x_2^2 \rangle \oplus \langle x_1^2 - x_2^2 \rangle.
+    \]
+    
+    \item For \((d,n)=(3,1)\), the space \(V_{3,1}\) consists of homogeneous polynomials of degree 3 in one variable \(x_1\). A basis for this space is given by \(\{x_1^3\}\). Since there is only one variable, the action of \(S_1\) (which is trivial) leaves the polynomial unchanged. Therefore, \(V_{3,1}\) is already irreducible and we have
+    \[
+        V_{3,1} \cong \langle x_1^3 \rangle.
+    \]
+
+    \item For \((d,n)=(3,2)\), the space \(V_{3,2}\) consists of homogeneous polynomials of degree 3 in two variables \(x_1\) and \(x_2\). A basis for this space is given by \(\{x_1^3, x_1^2x_2, x_1x_2^2, x_2^3\}\). The action of \(S_2\) on these basis elements swaps \(x_1\) and \(x_2\). We can identify invariant subspaces under this action. The polynomial \(x_1^2x_2 + x_1x_2^2\) is symmetric under the action of \(S_2\), while the polynomial \(x_1^3 + x_2^3\) is also symmetric. The antisymmetric part can be represented by \(x_1^3 - x_2^3\). Therefore, we can decompose \(V_{3,2}\) as follows:
+    \[
+        V_{3,2} \cong \langle x_1^2x_2 + x_1x_2^2 \rangle \oplus \langle x_1^3 + x_2^3 \rangle \oplus \langle x_1^3 - x_2^3 \rangle.
+    \]
+
+\end{itemize}
+
 
 
 \end{document}
