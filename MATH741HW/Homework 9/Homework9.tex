@@ -1,0 +1,106 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[margin=0.5in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage{extarrows}
+\graphicspath{./}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+% Define a new environment for problems
+\newcounter{problemCounter}
+\newtcolorbox{problem}[2][]{colback=white, colframe=black, boxrule=0.5mm, arc=4mm, auto outer arc, title={\ifstrempty{#1}{Problem \stepcounter{problemCounter}\theproblemCounter}{#1}}}
+
+% \renewcommand{\labelenumi}{\alph{enumi})}
+\def\zz{{\mathbb Z}}
+\def\rr{{\mathbb R}}
+\def\qq{{\mathbb Q}}
+\def\cc{{\mathbb C}}
+\def\nn{{\mathbb N}}
+\def\ss{{\mathbb S}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtcolorbox{proposition}[1][]{colback=white, colframe=blue, boxrule=0.5mm, arc=4mm, auto outer arc, title={Proposition #1}}
+\newtcolorbox{definition}[1][]{colback=white, colframe=violet, boxrule=0.5mm, arc=4mm, auto outer arc, title={Definition #1}}
+\newcommand{\Zmod}[1]{\zz/#1\zz}
+\newcommand{\partFrac}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand\Mydiv[2]{%
+$\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
+        \overline{\enspace\strut#2}$}
+
+\begin{document}
+
+\begin{center}
+    Math 741
+    \hfill Homework 9
+    \hfill \textit{Stephen Cornelius}
+\end{center}
+
+\begin{problem} \\ 
+    Fix $n$, and denote $X_k$ the set of all $k$-element subsets of $\{ 1, \dots, n \} \, (k \leq n)$. It carries an action of $S_n$, and we can consider the corresponding representation $V_k$ of $S_n$, where $V_k$ is the space of $\cc$-valued functions on $X_k$. \\ 
+    Show that $V_k \cong V_{n-k}$.
+\end{problem}
+
+
+\begin{proof}
+    We will show that there is an isomorphism of representations between $V_k$ and $V_{n-k}$. Let $A \in X_k$ be a $k$-element subset of $\{1, \dots, n\}$. Define a map $\phi: V_k \to V_{n-k}$ by sending a function $f \in V_k$ to a function $\phi(f) \in V_{n-k}$ defined as follows:
+    \[
+    \phi(f)(B) = f(\{1, \dots, n\} \setminus B)
+    \]
+    for every $(n-k)$-element subset $B \in X_{n-k}$. Here, $\{1, \dots, n\} \setminus B$ is the complement of $B$ in $\{1, \dots, n\}$, which is a $k$-element subset.
+
+    To show that $\phi$ is a representation isomorphism, we need to verify two things:
+    1. $\phi$ is linear.
+    2. $\phi$ commutes with the action of $S_n$.
+
+    1. **Linearity**: For any $f_1, f_2 \in V_k$ and scalars $a, b \in \cc$, we have
+    \[
+    \phi(af_1 + bf_2)(B) = (af_1 + bf_2)(\{1, \dots, n\} \setminus B) = a f_1(\{1, \dots, n\} \setminus B) + b f_2(\{1, \dots, n\} \setminus B) = a\phi(f_1)(B) + b\phi(f_2)(B).
+    \]
+    Thus, $\phi$ is linear.
+
+    2. **Commuting with the action of $S_n$**: For any $\sigma \in S_n$, we need to show that
+    \[
+    \phi(\sigma \cdot f) = \sigma \cdot (\phi(f)).
+    \]
+    By definition of the action on functions,
+    \[
+    (\sigma \cdot f)(A) = f(\sigma^{-1}(A)).
+    \]
+    Therefore,
+    \[
+    \phi(\sigma \cdot f)(B) = (\sigma \cdot f)(\{1, \dots, n\} \setminus B) = f(\sigma^{-1}(\{1, \dots, n\} \setminus B)).
+    \]
+    On the other hand,
+    \[
+    (\sigma \cdot (\phi(f)))(B) = \phi(f)(\sigma^{-1}(B)) = f(\{1, \dots, n\} \setminus \sigma^{-1}(B)).
+    \]
+    Since $\sigma$ is a bijection, we have
+    \[
+    \sigma^{-1}(\{1, \dots, n\} \setminus B) = \{1, \dots, n\} \setminus \sigma^{-1}(B).
+    \]
+    Thus,
+    \[
+    \phi(\sigma \cdot f)(B) = f(\{1, \dots, n\} \setminus \sigma^{-1}(B)) = (\sigma \cdot (\phi(f)))(B).
+    \]
+    This shows that $\phi$ commutes with the action of $S_n$.
+    Since $\phi$ is a linear bijection that commutes with the action of $S_n$, it is an isomorphism of representations. Therefore, we conclude that $V_k \cong V_{n-k}$.
+\end{proof}
+
+
+
+
+
+\end{document}

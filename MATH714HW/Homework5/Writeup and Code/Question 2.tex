@@ -1,0 +1,46 @@
+
+
+    \section{Solution to Problem 2}
+
+    \begin{enumerate}[(a)]
+        \item On the infinite grid $h\mathbb{Z}$ with $h=1$, the second derivative operator applied to the constant function $v(x)=1$ yields zero at all grid points. Consider the standard Fourier-Spectral formula
+        \[ 
+        S''(j) = \begin{cases}
+        -\frac{\pi^2}{3} & j=0 \\
+        \frac{2(-1)^{j+1}}{j^2} & j \neq 0
+        \end{cases}
+        \]
+        Applying this to $v(x)=1$, where its second derivative is zero, we have
+        \[
+        0 = S''(0) + \sum_{j \neq 0} S''(j) = -\frac{\pi^2}{3} + 2\sum_{j=1}^{\infty} \frac{(-1)^{j+1}}{j^2}.
+        \]
+        Rearranging gives
+        \[
+        \frac{\pi^2}{12} = \sum_{j=1}^{\infty} \frac{(-1)^{j+1}}{j^2} = 1 - \frac{1}{2^2} + \frac{1}{3^2} - \frac{1}{4^2} + \ldots.
+        \]
+        \item See the accompanying code file \texttt{Homework5.py} for the implementation of the numerical computation of \(E_\alpha\) and the fitting to a power law. I decided to follow the hint and use a library function to numerically integrate. The results yield specific values for \(C\) and \(q\). Below is the output from the fitting process: \\ 
+        \verb|Power law fit: E_alpha = 2.341002e+00 * alpha^-1.243544|
+        
+        \item The band-limited interpolant \(p(x)\) converges to \(v(x)\) as \(\alpha \to \infty\) because \(v(x)\) is band-limited with a maximum frequency of \(\frac{\pi}{2}\). The sinc interpolation reconstructs any band-limited function exactly when sampled at the Nyquist rate, which in this case is satisfied by the grid spacing \(h=1\). Thus, as \(\alpha\) increases, the approximation \(p_\alpha(x)\) approaches \(v(x)\). 
+        \item Considering the first derivative of \(v(x)=\sin \frac{\pi x}{2}\), we have
+        \[
+        v'(x) = \frac{\pi}{2} \cos \frac{\pi x}{2}.
+        \]
+        Applying the Fourier-Spectral formula for the first derivative, we find that
+        \[
+        0 = S'(0) + \sum_{j \neq 0} S'(j) = 0 + \sum_{j=1}^{\infty} \frac{2(-1)^{j}}{j}.
+        \]
+        Rearranging gives
+        \[
+        \frac{\pi}{4} = \sum_{j=0}^{\infty} \frac{(-1)^j}{2j+1} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \ldots.
+        \]
+        \item By considering the function \(v(x) = x^2\) on the infinite grid \(h\mathbb{Z}\) with \(h=1\), we can apply the second derivative operator. The second derivative of \(v(x)\) is constant, specifically \(v''(x) = 2\). Using the Fourier-Spectral formula for the second derivative, we have
+        \[
+        2 = S''(0) + \sum_{j \neq 0} S''(j) = -\frac{\pi^2}{3} + 2\sum_{j=1}^{\infty} \frac{1}{j^2}.
+        \]
+        Rearranging gives
+        \[
+        \frac{\pi^2}{6} = \sum_{j=1}^{\infty} \frac{1}{j^2} = 1 + \frac{1}{2^2} + \frac{1}{3^2} + \frac{1}{4^2} + \ldots
+        \]
+        as desired.\footnote{I am a fan of the Basel problem.}
+    \end{enumerate}

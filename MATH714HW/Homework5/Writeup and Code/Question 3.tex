@@ -1,0 +1,24 @@
+\section{Solution to Problem 3}
+
+\begin{enumerate}[(a)]
+    \item To find $f$, we compute the derivatives of $u(x) = e^x(x^2-1)$:
+
+            \begin{align*}
+            u_x &= e^x(x^2-1) + e^x(2x) = e^x(x^2 + 2x - 1) \\
+            u_{xx} &= e^x(x^2 + 2x - 1) + e^x(2x + 2) = e^x(x^2 + 4x + 1)
+            \end{align*}
+
+            Also, $u^5 = e^{5x}(x^2-1)^5$.
+
+            Therefore, the source term is:
+            \begin{equation}
+            f(x) = u_{xx} + u^5 = e^x(x^2 + 4x + 1) + e^{5x}(x^2-1)^5
+            \end{equation}
+
+        \item Using a Chebyshev spectral method with Newton's method, we compute the numerical solution $p_N(x)$ for various values of $N$. The following plot shows the semilog plot of $\|p_N - u\|_2$ as a function of $N$:
+        \begin{figure*}[h]
+            \centering
+            \includegraphics[width=0.7\textwidth]{Question3b.png}
+            \caption{Semilog plot of the error $\|p_N - u\|_2$ as a function of $N$.}
+        \end{figure*}
+\end{enumerate}

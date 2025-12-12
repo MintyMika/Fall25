@@ -1,0 +1,61 @@
+\section*{Solution to Problem 1}
+\begin{enumerate}[a)]
+    \item The characteristic velocity is given by the derivative of the flux with respect to the density:
+        \[
+        c(q) = \frac{df}{dq} = \frac{d}{dq}(q(1-q)) = 1 - 2q.
+        \]
+        The characteristic velocity is negative when:
+        \[
+        1 - 2q < 0 \implies q > \frac{1}{2}.
+        \]
+    \item Since $u(q) = 1 - q$, we have:
+        \[
+        F^n_{j+\frac{1}{2}} = U^n_{j+\frac{1}{2}} Q^n_{j+\frac{1}{2}} = (1 - Q^n_{j+\frac{1}{2}}) Q^n_{j+\frac{1}{2}} = Q^n_{j+\frac{1}{2}} - (Q^n_{j+\frac{1}{2}})^2,
+        \]
+        and similarly,
+        \[
+        F^n_{j-\frac{1}{2}} = Q^n_{j-\frac{1}{2}} - (Q^n_{j-\frac{1}{2}})^2.
+        \]
+        Substituting these into the following equation,
+        \[
+            \frac{Q_j^{n+1}-Q_j^n}{\Delta{t}} + \frac{F^n_{j+\frac{1}{2}}-F^n_{j-\frac{1}{2}}}{\Delta{x}} = 0
+        \] we get:
+        \[
+        \frac{Q_j^{n+1} - Q_j^n}{\Delta t} + \frac{(Q^n_{j+\frac{1}{2}} - (Q^n_{j+\frac{1}{2}})^2) - (Q^n_{j-\frac{1}{2}} - (Q^n_{j-\frac{1}{2}})^2)}{\Delta x} = 0.
+        \]
+        Simplifying the numerator:
+        \[
+        = \frac{Q^n_{j+\frac{1}{2}} - Q^n_{j-\frac{1}{2}} - ((Q^n_{j+\frac{1}{2}})^2 - (Q^n_{j-\frac{1}{2}})^2)}{\Delta x} = \frac{Q^n_{j+\frac{1}{2}} - Q^n_{j-\frac{1}{2}} - (Q^n_{j+\frac{1}{2}} - Q^n_{j-\frac{1}{2}})(Q^n_{j+\frac{1}{2}} + Q^n_{j-\frac{1}{2}})}{\Delta x}.
+        \]
+        Factoring out $(Q^n_{j+\frac{1}{2}} - Q^n_{j-\frac{1}{2}})$, we have:
+        \[
+        = \frac{(Q^n_{j+\frac{1}{2}} - Q^n_{j-\frac{1}{2}})(1 - (Q^n_{j+\frac{1}{2}} + Q^n_{j-\frac{1}{2}}))}{\Delta x}.
+        \]
+        Thus, 
+        \[
+        \frac{Q_j^{n+1} - Q_j^n}{\Delta t} + \frac{F^n_{j+\frac{1}{2}} - F^n_{j-\frac{1}{2}}}{\Delta x} = 0,
+        \]
+        can be rewritten as:
+        \[
+        \frac{Q_j^{n+1} - Q_j^n}{\Delta t} + \left(1 - Q^n_{j+\frac{1}{2}} - Q^n_{j-\frac{1}{2}}\right) \frac{Q^n_{j+\frac{1}{2}} - Q^n_{j-\frac{1}{2}}}{\Delta x} = 0,
+        \]
+        which matches
+        \[
+        \frac{Q_j^{n+1} - Q_j^n}{\Delta t} + C^n_j \frac{Q^n_{j+\frac{1}{2}} - Q^n_{j-\frac{1}{2}}}{\Delta x} = 0,
+        \]
+        with the discrete characteristic velocity given by 
+        \[
+        C^n_j = 1 - Q^n_{j+\frac{1}{2}} - Q^n_{j-\frac{1}{2}}.
+        \]
+    \item Implementation can be found in \texttt{Homework5.py} in the function \texttt{Problem1()}. As mentioned in the problem statement, initial code was implem=ented from \href{https://github.com/chr1shr/am205_g_activities/blob/master/eno_methods/lin_adv_eno_solutions.ipynb}{this Jupyter notebook}. The results for both the red light and green light scenarios are shown in the plots below.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{red_light_traffic.png}
+        \caption{Traffic density evolution for the red light scenario ($q_l=0.4, q_r=1.0$) at times $t=0, 0.5, 1, 1.5$.}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{green_light_traffic.png}
+        \caption{Traffic density evolution for the green light scenario ($q_l=1.0, q_r=0.4$) at times $t=0, 0.5, 1, 1.5$.}
+    \end{figure}
+\end{enumerate}
