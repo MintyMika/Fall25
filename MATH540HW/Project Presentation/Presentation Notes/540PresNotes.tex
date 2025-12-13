@@ -1,0 +1,30 @@
+Each person should choose one of the following parts to present on. 
+Part 1: LWE
+Part 2: One time Pad
+Part 3: Construction of Secret Key Encryption
+Part 4: Security Proof (We probably won’t get this far but this part is kinda hard)
+
+LWE - Divyesh
+
+
+
+Suppose we have our message sender Alice and our attacker Charles. For the purpose of this assumption, we won’t worry about the receiver Bob. Alice will then start with sampling a simple M x N matrix from Z mod q such that each value in the matrix ai∈{0,1,…,q−1} is equally likely, making the matrix A uniformly random. Alice also will pick, or have a predetermined secret key which is a column vector X of n entries in Z modulo n, as well as sample a “small” random vector E of M length in Z mod q.However, instead of being randomly selected from Z mod q, we instead sample values for e from a “small” distribution such which favors values close to 0 and the chance of selecting a value gets smaller and smaller as the value gets closer to q (ex. A discrete gaussian distribution). Then if we set b = Ax+e computed under mod q, we compute using matrix multiplication and vector addition under mod Q which gives us the m-length vector B. Now suppose we were to sample a truly random vector B’ of length M from Z mod Q. Using these vectors, suppose Alice sends out a message consisting of either (B, A) or (B’, A). The LWE assumption is that Charles is not able to differentiate the truly random vector B’ from the pseudorandom vector B’ from the LWE problem when given A.
+
+One Time Pad - Liam
+Here we define the magical secret key encryption system that we wish we had. The cool thing about one-time-pad is that it is so powerful that we can prove that nobody, even someone given an infinite amount of time and computing resources, can break the security of our system. This property is called ‘information-theoretic security’. 
+The goal here is to show a system that we know is secure, and then later we will compare our construction to this magical system to prove that our system is secure. More specifically, we will suppose for the sake of contradiction that there exists an attacker on our construction. We then can show that the attacker either has to break the security of One Time Pad (which is impossible), or break the LWE assumption. This gives us a contradiction, which proves no such attacker can exist, and thus our system is secure.
+
+Script:
+Building off of what Divyesh said about our learning with errors assumption, we can observe another secret key encryption to show the strength of the learning with errors assumption. This encryption system is the one-time-pad which is theoretically uncrackable when used once. The way this encryption system works is through the use of a random vector. Let’s call this random vector r in our vector space V over a finite field. Our message that we want to encrypt called m is also a vector in V. Both m and r have the same dimension. If we want to send a message to our friend bob, we take m and r and use vector addition to create a ciphertext which we will call c. (Additionally, this addition is XOR where if the inputs for each are the same then XOR returns 0 and when they are different it outputs 1.) So if we send our friend Bob the random vector r which in this case is our key, as well as c, then bob can decrypt the message to return r. This is because r would be its own additive inverse. So if Bob adds r back to c, he would be returned with m. For example if we have a message m that is the vector {1, 0 1} and a key r that is the vector (0, 0 ,1). Then our ciphertext c would be {1, 0, 0 }. If Bob had our r he could then add back r and it would return m. If there was a third party, let's say charles that wanted to break our system they would need our random vector r to be able to decrypt c. Since one-time-pad has information-theoretic security, then we know that for a one time use Charles can not break it. 
+
+
+
+Our Construction (Ideally Charles does this since he already knows it)
+First notice how this is literally identical to the One Time Pad system, except that we have replaced the random vector r with Ax+e. We have also changed the message slightly to accommodate for the error. Since bob can only recover the vector m+e, we need to store the important information about m in the most significant digits. When Bob decrypts he will just remove the less significant digits and be able to recover the message.
+
+
+
+
+Security Proof
+Here we change Alice so that she randomly chooses either the magical one time pad system, or the real construction that we made. Suppose there was an attacker that could decrypt one of the ciphertexts here. First we know that the attacker is incapable of decrypting the ciphertexts while we are in the one time pad mode of encryption, so the attacker must be capable of decrypting only while we are in the LWE mode of encryption. But if the attacker can decrypt the LWE ciphertexts and not decrypt the random ciphertext we can use it to distinguish between the two types of ciphertexts. Because odds are that if the attacker can decrypt it, it’s probably the LWE ciphertext. However if the attacker can distinguish between (Ax+e, A) from (r,A) then it is able to break our LWE assumption! This causes a contradiction, which means no such attacker can exist.
+

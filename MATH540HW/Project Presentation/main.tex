@@ -1,6 +1,8 @@
 \documentclass{beamer}
+% The "beamerthemeMadison.sty" file is in ./uw-beamer-template directory
+%\usepackage{./uw-beamer-template/beamerthemeMadison} 
+% \usetheme[compactlogo,white]{Madison}
 
-\usetheme[compactlogo,white]{Madison}
 \usefonttheme[onlymath]{serif}
 
 
@@ -11,17 +13,17 @@
 \usepackage{natbib}
 
 
-\title{A Cool Title}
-\subtitle{a clever subtitle}
+\title{Learning With Errors (LWE)}
+\subtitle{an explanation for beginners}
 
-\author{First A.\ Author and Second B. Author}
+\author{Stephen Cornelius, Liam Thomassen, and Divyesh Pandey }
 
 \date[]{
   \\
-  Workshop on
-  \emph{Various Mathematical Things}\\
-  Cool Institute, Somewhere  (Online)\\
-  1 January 2098
+  A presentation for
+  \emph{MATH540: Linear Algebra II}\\
+  University of Wisconsin--Madison\\
+  \today
 }
 
 \begin{document}
@@ -32,18 +34,45 @@
   \maketitle
 \end{frame}
 
+\begin{frame}{Learning With Errors (LWE)}
+  \begin{itemize}
+    \item Sample uniformly random matrix $A \in \mathbb{Z}_q^{m \times n}$
+    \item Sample secret key $\mathbf{x} \in \mathbb{Z}_q^n$
+    \item Sample small error vector $\mathbf{e} \in \mathbb{Z}_q^m$ from discrete Gaussian
+    \item Compute $\mathbf{b} = A\mathbf{x} + \mathbf{e} \pmod{q}$
+    \item LWE assumption: $(\mathbf{b}, A)$ is computationally indistinguishable from random
+  \end{itemize}
+\end{frame}
 
+\begin{frame}{One-Time Pad}
+  \begin{itemize}
+    \item Message $m$ and random key $r$ in vector space $V$ over finite field
+    \item Ciphertext: $c = m \oplus r$
+    \item Decryption: $m = c \oplus r$ (since $r \oplus r = 0$)
+    \item Information-theoretic security: unbreakable even with infinite computing power
+    \item Used as baseline for security proofs
+  \end{itemize}
+\end{frame}
 
-\begin{frame}{A slide}
+\begin{frame}{Our Construction}
+  \begin{itemize}
+    \item Replace random vector $r$ with $A\mathbf{x} + \mathbf{e}$
+    \item Ciphertext: $\mathbf{c} = m \oplus (A\mathbf{x} + \mathbf{e})$
+    \item Store message in most significant digits
+    \item Receiver recovers $m$ by removing least significant digits (error)
+  \end{itemize}
+\end{frame}
 
-  \begin{center}
-    \includegraphics[width=.5\textwidth]{decay_corr_sketch}
-  \end{center}
-
-  \begin{enumerate}[<+->]
-  \item Item 1
-  \item Item 2 and a citation \cite{Thurston1988}.
-\end{enumerate}
+\begin{frame}{Security Proof}
+  \begin{itemize}
+    \item Assume attacker can break our construction
+    \item Alice randomly chooses: One-Time Pad or LWE construction
+    \item Attacker cannot break One-Time Pad (information-theoretic security)
+    \item Therefore, attacker must break LWE ciphertexts
+    \item Attacker's success distinguishes $(A\mathbf{x} + \mathbf{e}, A)$ from $(r, A)$
+    \item This breaks LWE assumption—contradiction!
+    \item Conclusion: No such attacker exists
+  \end{itemize}
 \end{frame}
 
 
@@ -54,5 +83,6 @@
   \frametitle{References}
   \bibliography{main}
 \end{frame}
+
 
 \end{document}

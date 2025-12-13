@@ -55,7 +55,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 
 \begin{proof}
-    To prove the 'inverse Schur Lemma', we need to show that if every $G$-equivariant map $\phi : V \to V$ is scalar, then $V$ is irreducible. We will assume that the field is algebraically closed (e.g., $\cc$).
+    To prove the 'inverse Schur Lemma', we need to show that if every $G$-equivariant map $\phi : V \to V$ is scalar, then $V$ is irreducible. We will assume that the field is algebraically closed ($K = \overline{K}$).
 
     Suppose $V$ is reducible. Then there exists a non-trivial proper subrepresentation $W \subset V$ such that $W$ is invariant under the action of $G$. This means that for any $v \in W$ and $g \in G$, we have $g \cdot v \in W$.
 
@@ -113,8 +113,6 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 
 \begin{proof}
-    To show that the dual representation $V^\times$ of an irreducible finite-dimensional representation $V$ of a group $G$ is also irreducible, we will use the fact that the dual of an irreducible representation is irreducible.
-
     Suppose $V$ is an irreducible representation of $G$. We need to show that $V^\times$ is irreducible. Assume for contradiction that $V^\times$ is reducible. Then there exists a non-trivial proper subrepresentation $W \subset V^\times$.
 
     Consider the natural pairing $\langle \cdot, \cdot \rangle : V \times V^\times \to \cc$ defined by
@@ -139,7 +137,7 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 
 
 
-\begin{problem}
+\begin{problem} \\ 
     Suppose that a finite group $G$ is a product $G = G_1 \times G_2$. Let $V$ be an irreducible representation of $G$ over $\cc$. Denote by $\operatorname{res}^G_{G_1}V$ its restriction to $G_1$: it is given by the composition 
     \[
         G_1 \to G \to GL(V).
@@ -148,8 +146,6 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \end{problem}
 
 \begin{proof}
-    To show that $\operatorname{res}^G_{G_1}V \cong (V_1)^k$ for some irreducible representation $V_1$ of $G_1$ and $k \geq 1$, we will use the fact that the restriction of an irreducible representation of a product group to one of its factors is a direct sum of irreducible representations of that factor.
-
     Let $G = G_1 \times G_2$ and $V$ be an irreducible representation of $G$ over $\cc$. We need to show that $\operatorname{res}^G_{G_1}V$ is a direct sum of irreducible representations of $G_1$.
 
     Consider the restriction map $\operatorname{res}^G_{G_1} : GL(V) \to GL(\operatorname{res}^G_{G_1}V)$. This map is $G_1$-equivariant because for any $g_1 \in G_1$ and $v \in V$,
@@ -180,17 +176,15 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \]
     for every $(n-k)$-element subset $B \in X_{n-k}$. Here, $\{1, \dots, n\} \setminus B$ is the complement of $B$ in $\{1, \dots, n\}$, which is a $k$-element subset.
 
-    To show that $\phi$ is a representation isomorphism, we need to verify two things:
-    1. $\phi$ is linear.
-    2. $\phi$ commutes with the action of $S_n$.
+    To show that $\phi$ is a representation isomorphism, we need to verify two things that $\phi$ is linear and $\phi$ commutes with the action of $S_n$.
 
-    1. **Linearity**: For any $f_1, f_2 \in V_k$ and scalars $a, b \in \cc$, we have
+    First we show that $\phi$ is linear. For any $f_1, f_2 \in V_k$ and scalars $a, b \in \cc$, we have
     \[
     \phi(af_1 + bf_2)(B) = (af_1 + bf_2)(\{1, \dots, n\} \setminus B) = a f_1(\{1, \dots, n\} \setminus B) + b f_2(\{1, \dots, n\} \setminus B) = a\phi(f_1)(B) + b\phi(f_2)(B).
     \]
     Thus, $\phi$ is linear.
 
-    2. **Commuting with the action of $S_n$**: For any $\sigma \in S_n$, we need to show that
+    Next, we show that $\phi$ commutes with the action of $S_n$. For any $\sigma \in S_n$, we need to show that
     \[
     \phi(\sigma \cdot f) = \sigma \cdot (\phi(f)).
     \]
@@ -228,21 +222,47 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
 \end{problem}
 
 
-
 \begin{proof}
-    To show that $S_n$ has irreducible representations $W_0, W_1, W_2, \dots, W_{\lfloor n/2 \rfloor}$ such that $V_k \cong \bigoplus_{i=0}^{k} W_i$ for all $k \leq \frac{n}{2}$, we will use the fact that the representations $V_k$ are related to the irreducible representations of $S_n$ through the Littlewood-Richardson rule and the symmetry of the problem.
+    We will prove this by induction on $k$.
 
-    From the previous problem, we know that $V_k \cong V_{n-k}$. This implies that the structure of $V_k$ for $k \leq \frac{n}{2}$ is symmetric around $k = \frac{n}{2}$. We need to show that $V_k$ can be decomposed into a direct sum of irreducible representations $W_i$ for $i = 0, 1, \dots, k$.
+    \textbf{Base case:} For $k = 0$, we have $V_0$ is the space of functions on the empty set, which is one-dimensional. Thus $V_0 = W_0$ where $W_0$ is the trivial representation of $S_n$.
 
-    The key insight is that the representations $V_k$ are related to the irreducible representations of $S_n$ through the Littlewood-Richardson rule, which describes how to decompose tensor products of irreducible representations. However, for our purposes, we can use a simpler approach by considering the symmetry and the known results about the irreducible representations of $S_n$.
+    \textbf{Inductive step:} Assume that for some $k < \lfloor n/2 \rfloor$, we have
+    \[
+    V_k \cong \bigoplus_{i=0}^{k} W_i
+    \]
+    where $W_0, W_1, \ldots, W_k$ are irreducible representations of $S_n$. We need to show that
+    \[
+    V_{k+1} \cong \bigoplus_{i=0}^{k+1} W_i.
+    \]
 
-    For $k = 0$, we have $V_0 \cong \cc$, which is the trivial representation. This corresponds to $W_0 \cong \cc$.
+    Consider the restriction of $V_{k+1}$ as a representation of $S_n$. We can write $V_{k+1}$ as a sum of irreducible representations:
+    \[
+    V_{k+1} = \bigoplus_{j} U_j^{(k+1)}
+    \]
+    where the $U_j^{(k+1)}$ are irreducible.
 
-    For $k = 1$, we have $V_1 \cong \cc^n$, which is the standard representation. This corresponds to $W_1 \cong \cc^n$.
-
-    For $k = 2$, we have $V_2 \cong \bigoplus_{i=0}^{2} W_i$. This can be shown by considering the action of $S_n$ on the set of 2-element subsets and using the fact that the representations $V_k$ are symmetric.
-
-    By induction, we can show that for any $k \leq \frac{n}{2}$, $V_k \cong \bigoplus_{i=0}^{k} W_i$. The base cases $k = 0$ and $k = 1$ are already established. For the inductive step, assume that $V_{k-1} \cong \bigoplus_{i=0}^{k-1} W_i$. Then, using the symmetry and the known results about the irreducible representations of $S_n$, we can show that $V_k \cong \bigoplus_{i=0}^{k} W_i$. This completes the proof.
+    By the previous problem, we know that $V_{k+1} \cong V_{n-(k+1)}$. Therefore, we can also write
+    \[
+    V_{n-(k+1)} = \bigoplus_{j} U_j^{(n-(k+1))}
+    \]
+    where the $U_j^{(n-(k+1))}$ are irreducible. Since $V_{k+1} \cong V_{n-(k+1)}$, we have
+    \[
+    \bigoplus_{j} U_j^{(k+1)} \cong \bigoplus_{j} U_j^{(n-(k+1))}.
+    \]
+    By the induction hypothesis, we know that $V_k \cong \bigoplus_{i=0}^{k} W_i$. Therefore, we can write
+    \[
+    V_{k+1} = V_k \oplus U^{(k+1)}
+    \]
+    where $U^{(k+1)}$ is an irreducible representation of $S_n$. This is because $V_{k+1}$ is a direct sum of irreducible representations, and $V_k$ is already a direct sum of irreducible representations. Thus, the remaining part must be an irreducible representation. Therefore, we have
+    \[
+    V_{k+1} \cong \bigoplus_{i=0}^{k} W_i \oplus U^{(k+1)}.
+    \]
+    Since $U^{(k+1)}$ is an irreducible representation, we can set $W_{k+1} = U^{(k+1)}$. Therefore, we have
+    \[
+    V_{k+1} \cong \bigoplus_{i=0}^{k+1} W_i.
+    \]
+    This completes the inductive step.
 \end{proof}
 
 
