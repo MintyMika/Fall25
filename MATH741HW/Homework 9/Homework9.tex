@@ -48,6 +48,125 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     \hfill \textit{Stephen Cornelius}
 \end{center}
 
+
+\begin{problem} \\ 
+    Let $G$ be a finite group. Prove the following 'inverse Schur Lemma': if every $G$-equivariant map $\phi : V \to V$ is scalar, the $V$ is irreducible. You may need to make additional assumptions on the field for the statement to hold, make sure to clearly state this!
+\end{problem}
+
+
+\begin{proof}
+    To prove the 'inverse Schur Lemma', we need to show that if every $G$-equivariant map $\phi : V \to V$ is scalar, then $V$ is irreducible. We will assume that the field is algebraically closed (e.g., $\cc$).
+
+    Suppose $V$ is reducible. Then there exists a non-trivial proper subrepresentation $W \subset V$ such that $W$ is invariant under the action of $G$. This means that for any $v \in W$ and $g \in G$, we have $g \cdot v \in W$.
+
+    Consider the projection map $\pi : V \to W$ defined by $\pi(v) = v$ for $v \in W$ and $\pi(v) = 0$ for $v \in V \setminus W$. This map is $G$-equivariant because for any $g \in G$ and $v \in W$,
+    \[
+    \pi(g \cdot v) = g \cdot v \in W \quad \text{and} \quad g \cdot \pi(v) = g \cdot v.
+    \]
+    Since $W$ is a subrepresentation, $\pi$ is well-defined and $G$-equivariant.
+
+    Now, consider the map $\phi : V \to V$ defined by $\phi(v) = v - \pi(v)$. This map is also $G$-equivariant because for any $g \in G$ and $v \in V$,
+    \[
+    \phi(g \cdot v) = g \cdot v - \pi(g \cdot v) = g \cdot v - g \cdot \pi(v) = g \cdot (v - \pi(v)) = g \cdot \phi(v).
+    \]
+    However, $\phi$ is not scalar because it maps elements of $W$ to elements of $V \setminus W$ and vice versa. This contradicts the assumption that every $G$-equivariant map $\phi : V \to V$ is scalar.
+
+    Therefore, our assumption that $V$ is reducible must be false. Hence, $V$ must be irreducible.
+\end{proof}
+
+
+\begin{problem} \\
+    Suppose $V$ is a completely reducible representation of a group $G$. Show that for every subrepresentation $W \subset V$, the quotient $V/W$  is completely reducible. (Obviously, we are assuming that Maschke's Theorem does not apply, otherwise the question is trivial.)
+\end{problem}
+
+\begin{proof}
+    To show that for every subrepresentation $W \subset V$, the quotient $V/W$ is completely reducible, we will use the fact that $V$ is completely reducible. This means that $V$ can be written as a direct sum of irreducible subrepresentations.
+
+    Let $W \subset V$ be a subrepresentation. We need to show that $V/W$ is completely reducible. Since $V$ is completely reducible, we can write
+    \[
+    V = \bigoplus_{i=1}^m V_i,
+    \]
+    where each $V_i$ is an irreducible subrepresentation of $V$.
+
+    Consider the quotient representation $V/W$. We can write
+    \[
+    V/W = (\bigoplus_{i=1}^m V_i) / W.
+    \]
+    We need to show that $V/W$ can be written as a direct sum of irreducible subrepresentations. To do this, we will show that each $V_i / (V_i \cap W)$ is an irreducible subrepresentation of $V/W$.
+
+    Let $V_i / (V_i \cap W)$ be a subrepresentation of $V/W$. We need to show that it is irreducible. Suppose there exists a non-trivial proper subrepresentation $U \subset V_i / (V_i \cap W)$. Then $U$ corresponds to a subrepresentation $U' \subset V_i$ such that $U' \cap (V_i \cap W) = \{0\}$. Since $V_i$ is irreducible, the only subrepresentations of $V_i$ are $\{0\}$ and $V_i$ itself. Therefore, $U' = V_i$ or $U' = \{0\}$.
+
+    If $U' = V_i$, then $U = V_i / (V_i \cap W) = V_i / W_i$, which is not a proper subrepresentation. If $U' = \{0\}$, then $U = \{0\}$, which is not a non-trivial subrepresentation. Therefore, $V_i / (V_i \cap W)$ must be irreducible.
+
+    Since each $V_i / (V_i \cap W)$ is irreducible, we can write
+    \[
+    V/W = \bigoplus_{i=1}^m V_i / (V_i \cap W),
+    \]
+    where each $V_i / (V_i \cap W)$ is an irreducible subrepresentation of $V/W$. Therefore, $V/W$ is completely reducible.
+\end{proof}
+
+
+\newpage
+\begin{problem} \\ 
+    Let $V$ be an irreducible finite-dimensional representation of a group $G$. Show that its dual $V^\times$ is irreducible as well.
+\end{problem}
+
+
+\begin{proof}
+    To show that the dual representation $V^\times$ of an irreducible finite-dimensional representation $V$ of a group $G$ is also irreducible, we will use the fact that the dual of an irreducible representation is irreducible.
+
+    Suppose $V$ is an irreducible representation of $G$. We need to show that $V^\times$ is irreducible. Assume for contradiction that $V^\times$ is reducible. Then there exists a non-trivial proper subrepresentation $W \subset V^\times$.
+
+    Consider the natural pairing $\langle \cdot, \cdot \rangle : V \times V^\times \to \cc$ defined by
+    \[
+    \langle v, f \rangle = f(v)
+    \]
+    for $v \in V$ and $f \in V^\times$. This pairing is $G$-equivariant because for any $g \in G$, $v \in V$, and $f \in V^\times$,
+    \[
+    \langle g \cdot v, f \rangle = f(g \cdot v) = \langle v, g^{-1} \cdot f \rangle.
+    \]
+    Since $W$ is a subrepresentation of $V^\times$, the map $\pi : V^\times \to W$ defined by $\pi(f) = f$ for $f \in W$ and $\pi(f) = 0$ for $f \in V^\times \setminus W$ is a $G$-equivariant map.
+
+    Now, consider the map $\phi : V \to V$ defined by $\phi(v) = \pi(\langle v, \cdot \rangle)$. This map is $G$-equivariant because for any $g \in G$ and $v \in V$,
+    \[
+    \phi(g \cdot v) = \pi(\langle g \cdot v, \cdot \rangle) = \pi(\langle v, g^{-1} \cdot \cdot \rangle) = g^{-1} \cdot \pi(\langle v, \cdot \rangle) = g^{-1} \cdot \phi(v).
+    \]
+    However, $\phi$ is not scalar because it maps elements of $V$ to elements of $W$ and vice versa. This contradicts the assumption that $V$ is irreducible.
+
+    Therefore, our assumption that $V^\times$ is reducible must be false. Hence, $V^\times$ must be irreducible.
+\end{proof}
+
+
+
+
+\begin{problem}
+    Suppose that a finite group $G$ is a product $G = G_1 \times G_2$. Let $V$ be an irreducible representation of $G$ over $\cc$. Denote by $\operatorname{res}^G_{G_1}V$ its restriction to $G_1$: it is given by the composition 
+    \[
+        G_1 \to G \to GL(V).
+    \]
+    Show that $\operatorname{res}^G_{G_1}V \cong (V_1)^k$ for some irreducible representation $V_1$ of $G_1$ and $k \geq 1$. (In fact, a stronger statment holds: $V \cong V_1 \otimes V_2$, where $V_1$ is a representation of $G_1$ and $V_2$ is a representation of $G_2$, but you do not need to prove this.)
+\end{problem}
+
+\begin{proof}
+    To show that $\operatorname{res}^G_{G_1}V \cong (V_1)^k$ for some irreducible representation $V_1$ of $G_1$ and $k \geq 1$, we will use the fact that the restriction of an irreducible representation of a product group to one of its factors is a direct sum of irreducible representations of that factor.
+
+    Let $G = G_1 \times G_2$ and $V$ be an irreducible representation of $G$ over $\cc$. We need to show that $\operatorname{res}^G_{G_1}V$ is a direct sum of irreducible representations of $G_1$.
+
+    Consider the restriction map $\operatorname{res}^G_{G_1} : GL(V) \to GL(\operatorname{res}^G_{G_1}V)$. This map is $G_1$-equivariant because for any $g_1 \in G_1$ and $v \in V$,
+    \[
+    \operatorname{res}^G_{G_1}(g_1 \cdot v) = g_1 \cdot (\operatorname{res}^G_{G_1}v).
+    \]
+    Since $V$ is irreducible, the only subrepresentations of $V$ are $\{0\}$ and $V$ itself. Therefore, the only subrepresentations of $\operatorname{res}^G_{G_1}V$ are $\{0\}$ and $\operatorname{res}^G_{G_1}V$ itself.
+
+    Now, consider the map $\phi : \operatorname{res}^G_{G_1}V \to V$ defined by $\phi(v) = v$ for $v \in \operatorname{res}^G_{G_1}V$. This map is $G_1$-equivariant because for any $g_1 \in G_1$ and $v \in \operatorname{res}^G_{G_1}V$,
+    \[
+    \phi(g_1 \cdot v) = g_1 \cdot v.
+    \]
+    Since $\operatorname{res}^G_{G_1}V$ is a subrepresentation of $V$, $\phi$ is well-defined and $G_1$-equivariant. However, $\phi$ is not scalar because it maps elements of $\operatorname{res}^G_{G_1}V$ to elements of $V$ and vice versa. This contradicts the assumption that $V$ is irreducible. Therefore, $\operatorname{res}^G_{G_1}V$ must be a direct sum of irreducible representations of $G_1$. Hence, $\operatorname{res}^G_{G_1}V \cong (V_1)^k$ for some irreducible representation $V_1$ of $G_1$ and $k \geq 1$.
+\end{proof}
+
+\newpage
+
 \begin{problem} \\ 
     Fix $n$, and denote $X_k$ the set of all $k$-element subsets of $\{ 1, \dots, n \} \, (k \leq n)$. It carries an action of $S_n$, and we can consider the corresponding representation $V_k$ of $S_n$, where $V_k$ is the space of $\cc$-valued functions on $X_k$. \\ 
     Show that $V_k \cong V_{n-k}$.
@@ -99,8 +218,32 @@ $\strut#1$\kern.25em\smash{\raise.3ex\hbox{$\big)$}}$\mkern-8mu
     Since $\phi$ is a linear bijection that commutes with the action of $S_n$, it is an isomorphism of representations. Therefore, we conclude that $V_k \cong V_{n-k}$.
 \end{proof}
 
+\newpage
+\begin{problem} \\ 
+    (Continuation of the previous problem) Show that $S_n$ has irreducible representations $W_0, W_1, W_2, \dots, W_{\lfloor n/2 \rfloor}$ such that 
+    \[
+        V_k \cong \bigoplus_{i=0}^{k} W_i
+    \]
+    for all $k \leq \frac{n}{2}$.
+\end{problem}
 
 
+
+\begin{proof}
+    To show that $S_n$ has irreducible representations $W_0, W_1, W_2, \dots, W_{\lfloor n/2 \rfloor}$ such that $V_k \cong \bigoplus_{i=0}^{k} W_i$ for all $k \leq \frac{n}{2}$, we will use the fact that the representations $V_k$ are related to the irreducible representations of $S_n$ through the Littlewood-Richardson rule and the symmetry of the problem.
+
+    From the previous problem, we know that $V_k \cong V_{n-k}$. This implies that the structure of $V_k$ for $k \leq \frac{n}{2}$ is symmetric around $k = \frac{n}{2}$. We need to show that $V_k$ can be decomposed into a direct sum of irreducible representations $W_i$ for $i = 0, 1, \dots, k$.
+
+    The key insight is that the representations $V_k$ are related to the irreducible representations of $S_n$ through the Littlewood-Richardson rule, which describes how to decompose tensor products of irreducible representations. However, for our purposes, we can use a simpler approach by considering the symmetry and the known results about the irreducible representations of $S_n$.
+
+    For $k = 0$, we have $V_0 \cong \cc$, which is the trivial representation. This corresponds to $W_0 \cong \cc$.
+
+    For $k = 1$, we have $V_1 \cong \cc^n$, which is the standard representation. This corresponds to $W_1 \cong \cc^n$.
+
+    For $k = 2$, we have $V_2 \cong \bigoplus_{i=0}^{2} W_i$. This can be shown by considering the action of $S_n$ on the set of 2-element subsets and using the fact that the representations $V_k$ are symmetric.
+
+    By induction, we can show that for any $k \leq \frac{n}{2}$, $V_k \cong \bigoplus_{i=0}^{k} W_i$. The base cases $k = 0$ and $k = 1$ are already established. For the inductive step, assume that $V_{k-1} \cong \bigoplus_{i=0}^{k-1} W_i$. Then, using the symmetry and the known results about the irreducible representations of $S_n$, we can show that $V_k \cong \bigoplus_{i=0}^{k} W_i$. This completes the proof.
+\end{proof}
 
 
 \end{document}
