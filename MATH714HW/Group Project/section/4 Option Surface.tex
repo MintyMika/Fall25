@@ -1,0 +1,90 @@
+\section{Construction of a Smooth Option Surface from Sparse Market Data}
+
+The empirical option data used in this study consists of prices sampled at a
+monthly frequency across a discrete grid of underlying prices and times to
+maturity. While sufficient for descriptive analysis, this data presents
+substantial challenges for derivative-based system identification methods such
+as SINDy. The Black--Scholes PDE depends on local derivatives of the option price
+surface, which are highly sensitive to noise, irregular sampling, and market
+microstructure effects.
+
+To make the data more amenable to analysis, we explored interpolation and
+filtering strategies aimed at constructing a smoother approximation to the
+option price surface
+\[
+V = V(S,t),
+\]
+where $S$ denotes the underlying price and $t$ denotes time to maturity.
+
+\subsection{Interpolation in the Underlying Price}
+
+At each fixed maturity $t_j$, option prices are observed only at a discrete set of
+underlying prices $\{S_i\}$. To enable stable estimation of spatial derivatives
+$V_S$ and $V_{SS}$, we interpolated across $S$ using smooth basis
+representations. The approaches considered were:
+
+\begin{itemize}
+    \item \textbf{Spline interpolation:} Cubic splines were fit to $V(S,t_j)$ for
+    each maturity slice, ensuring continuity of the function and its first two
+    derivatives with respect to $S$.
+
+    \item \textbf{Local polynomial regression:} Low-order local polynomial fits
+    were applied in $S$ to reduce sensitivity to outliers and irregular spacing.
+
+    \item \textbf{Implied-volatility–space interpolation:} In some cases,
+    interpolation was performed on the implied volatility surface
+    $\sigma_{\mathrm{imp}}(S,t)$ rather than directly on prices, leveraging its
+    empirically smoother structure.
+\end{itemize}
+
+Each method imposes different smoothness assumptions on the option surface,
+directly affecting the accuracy of higher-order derivative estimates.
+
+\subsection{Interpolation in Time to Maturity}
+
+The monthly sampling frequency is insufficient to directly approximate the time
+derivative $V_t$. To mitigate this limitation, intermediate surfaces were
+introduced between observed maturities using temporal interpolation. The
+strategies examined were:
+
+\begin{itemize}
+    \item \textbf{Linear interpolation:} Option prices were interpolated linearly
+    in time for fixed $S$, imposing minimal temporal structure.
+
+    \item \textbf{Higher-order interpolation:} Polynomial and spline-based
+    interpolants were also considered to produce smoother estimates of $V_t$,
+    at the cost of introducing additional modeling assumptions.
+\end{itemize}
+
+These interpolations create a pseudo-continuous time dimension, enabling
+finite-difference approximations of temporal derivatives.
+
+\subsection{Feature-Based Filtering}
+
+Rather than smoothing the option surface directly, we applied feature-based
+filtering to reduce variance in variables not explicitly represented in the
+Black--Scholes PDE. Specifically, filtering was performed over combinations of
+\[
+S - K, \quad K, \quad \sigma_{\mathrm{imp}}, \quad t,
+\]
+where $K$ denotes the strike price.
+
+By restricting attention to subsets of the data with limited variation in these
+features—such as narrow moneyness bands, strike ranges, implied volatility
+windows, or maturity intervals—we aimed to suppress cross-sectional
+heterogeneity arising from volatility smiles, term structure effects, and
+discrete quoting behavior. This conditioning reduces extraneous variability while
+preserving the raw structure of the data.
+
+\subsection{Modeling Implications}
+
+Interpolation and filtering introduce implicit assumptions about smoothness and
+local behavior of the option surface. While necessary for derivative-based
+analysis, these regularization steps constrain the extent to which governing
+equations can be recovered from empirical data. In practice, aggressive
+regularization suppresses genuine market structure, while insufficient
+regularization leads to unstable derivative estimates.
+
+Accordingly, the constructed surfaces should be viewed as regularized
+approximations suitable for exploratory PDE identification rather than exact
+representations of the underlying market dynamics.

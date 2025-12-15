@@ -1,0 +1,398 @@
+\section{SINDy Method}
+% Section 1
+\subsection{Introduction and Motivation}
+\label{sec:sindy-intro}
+
+In this section we introduce the \emph{Sparse Identification of
+Nonlinear Dynamics} (SINDy) framework and describe how to validate our 
+numerical solutions of the Black--Scholes equation. SINDy is a data-driven
+method for discovering governing differential equations directly from
+time-resolved measurements, under the assumption that the true
+dynamics can be represented by a small number of active terms in a
+larger candidate library of functions
+(for example, 
+%\cite{brunton2016discovering,rudy2017data}
+).
+
+In our setting, a Crank--Nicolson scheme is used to compute
+approximate option values \(V(t,S)\) on a discrete grid of asset
+prices and times to maturity. The resulting spatio-temporal data set
+serves as input to SINDy, which attempts to recover the underlying
+partial differential equation from the data alone. By comparing the
+identified model to the classical Black--Scholes equation, we are able to
+obtain a data-driven consistency check on both the numerical scheme and 
+the model assumptions.
+
+
+%Section 2
+\subsection{Overview of the SINDy Framework}
+\label{sec:sindy-overview}
+
+SINDy provides a systematic approach for uncovering the 
+governing equations of a dynamical system directly from data. 
+The central idea is to represent the unknown dynamics in terms of a 
+library of candidate functions and to determine a parsimonious model 
+by selecting only the few terms that actively contribute to the evolution
+of the system 
+%\cite{brunton2016discovering}. 
+This sparsity assumption reflects the structure of many physical and financial 
+models, where the underlying equations typically involve only a small 
+subset of all possible functional combinations.
+
+In the context of partial differential equations (PDEs), SINDy is extended to
+the PDE-FIND methodology introduced in 
+%\cite{rudy2017data},
+where spatio-temporal data are used to estimate both temporal and spatial
+derivatives. A function library consisting of candidate terms such as
+\(u\), \(u_x\), \(u_{xx}\), and nonlinear products is constructed, and
+the algorithm identifies the subset of terms that best explains the
+observed dynamics.
+
+
+
+%Section 3
+\subsection{Mathematical Foundations of SINDy}
+\label{sec:sindy-theory}
+
+SINDy is built on the assumption that dynamical systems---including those 
+governed by partial differential equations---has simple underlying 
+structure. Despite the large number of admissible functional 
+forms, the true governing equation typically contains only a small subset of
+all possible terms. The goal of SINDy is to exploit this sparsity to
+recover the governing equation directly from data
+%\cite{brunton2016discovering}.
+
+\subsubsection{Representation of Dynamics Using a Function Library}
+
+Consider a dynamical system with state variable \(x(t)\in\mathbb{R}^d\)
+governed by an unknown differential equation
+\[
+\dot{x}(t) = f(x(t)).
+\]
+SINDy approximates \(f(x)\) by expressing it as a linear combination of its
+candidate nonlinear functions. To do so, one constructs a library
+\(\Theta(x)\) consisting of functions such as constants, polynomial
+terms, trig functions, or some other nonlinearities:
+\[
+\Theta(x) = 
+\big[
+1,\; x,\; x^2,\; x^3,\; \sin(x),\; \ldots
+\big].
+\]
+The dynamics are then assumed to satisfy
+\[
+\dot{x}(t) \approx \Theta(x(t))\,\Xi,
+\]
+where \(\Xi\in\mathbb{R}^{K\times d}\) is a matrix of coefficients. Here, 
+SINDy seeks a \emph{sparse} coefficient matrix: most rows of \(\Xi\) are zero.
+
+\subsubsection{Formulation as a Sparse Regression Problem}
+
+Given measurement data \(\{x(t_j)\}_{j=1}^N\), one computes numerical
+estimates of the time derivative \(\dot{x}(t_j)\). Evaluating the
+library at all data samples yields the matrix equation
+\[
+\dot{X} = \Theta(X)\,\Xi,
+\]
+where \(\dot{X}\in\mathbb{R}^{N\times d}\) and
+\(\Theta(X)\in\mathbb{R}^{N\times K}\). Recovering the model becomes a
+sparse regression problem: identify the few active columns of
+\(\Theta(X)\) that best explain the observed dynamics.
+
+A common approach is \emph{sequential thresholded least squares}
+(STLSQ), introduced in 
+%\cite{brunton2016discovering}. This iterative
+method alternates between:
+\begin{enumerate}
+    \item solving a standard least-squares regression, and
+    \item thresholding (setting to zero) coefficients whose magnitudes
+          fall below a prescribed sparsity level.
+\end{enumerate}
+This procedure is analogous to performing an \(\ell_0\)-type model
+selection step but avoids the combinatorial complexity of exhaustive
+search. Connections to LASSO and other sparse regression techniques
+%\cite{tibshirani1996lasso,hastie2009elements}
+further justify the stability and parsimony properties of the method.
+
+\subsubsection{Extension to Partial Differential Equations (PDE-FIND)}
+
+To identify partial differential equations, SINDy is extended 
+to incorporate spatial derivatives. Let \(u(t,x)\) denote the
+solution of an unknown PDE. The PDE-FIND approach introduced in
+%\cite{rudy2017data} 
+estimates temporal and spatial derivatives from a
+spatio-temporal data set and constructs a function library of candidate
+terms such as
+\[
+u,\quad u_x,\quad u_{xx},\quad u^2,\quad u\,u_x,\quad x\,u_x,\quad
+\text{etc.}
+\]
+The governing equation is assumed to have the form
+\[
+u_t = \Theta(u, u_x, u_{xx}, \ldots)\,\Xi,
+\]
+and sparse regression is again used to determine the active terms.
+
+\subsubsection{Conditions for Successful Model Recovery}
+
+The accuracy of SINDy depends on several identifiability conditions:
+\begin{itemize}
+    \item \textbf{Rich data:} the solution must sufficiently explore the
+          dynamics so that active terms in \(\Theta\) can be
+          distinguished.
+    \item \textbf{Derivative accuracy:} numerical differentiation errors
+          should be small relative to the magnitudes of the terms in the
+          PDE.
+    \item \textbf{Low correlation in the function library:} highly
+          collinear candidate terms make sparse regression unstable.
+    \item \textbf{Correct library specification:} the true terms must be
+          included in the candidate dictionary.
+    \item \textbf{Appropriate sparsity thresholding:} prevents
+          overfitting and guards against noise amplification.
+\end{itemize}
+
+When these conditions are met, SINDy provides a mathematically justified
+and computationally efficient framework for discovering interpretable
+governing equations from data.
+
+
+
+%Section 4
+\subsection{Why SINDy is Well Suited for the Black--Scholes Equation}
+\label{sec:sindy-bs}
+
+SINDy is well suited for our case because the Black--Scholes
+equation is sparse in its natural variables and can be expressed using
+a small number of linear terms involving \(V\), \(V_S\), and
+\(V_{SS}\). By SINDy, our goal is not to derive the equation
+from first principles, but to demonstrate that the numerical solution
+generated by the Crank--Nicolson method is consistent with the
+equation identified by SINDy.
+
+The Black--Scholes equation possesses a structure that makes it
+especially compatible with the SINDy framework. The PDE is linear in
+the option value \(V\) and involves only a small number of active terms:
+\[
+V_t = -\frac{1}{2}\sigma^2 S^2 V_{SS} - r S V_S + rV.
+\]
+Although financial models can be highly nonlinear, the Black--Scholes
+equation depends only on three fundamental components: \(V\), \(V_S\),
+and \(V_{SS}\), along with multiplicative factors involving the asset
+price \(S\). This sparsity matches one of the core assumptions of SINDy:
+that the governing equation can be represented using only a few
+elements from a larger library of candidate terms.
+
+Moreover, the solution \(V(t,S)\) of the Black--Scholes equation is
+smooth in both variables under standard boundary and payoff conditions,
+ensuring that numerical derivatives such as \(V_S\), \(V_{SS}\), and
+\(V_t\) can be estimated with sufficient accuracy. This smoothness is an
+important assumption for the PDE-FIND extension of SINDy
+%\cite{rudy2017data}, 
+since derivative estimation is typically the most sensitive part 
+of the identification process.
+
+Crucially, the terms in the Black--Scholes PDE can be expressed using a
+simple candidate library of the form
+\[
+\big\{\, V,\; V_S,\; V_{SS},\; S V_S,\; S^2 V_{SS} \,\big\},
+\]
+all of which fall within the class of polynomial and product terms that
+SINDy handles efficiently. Therefore, SINDy can be expected to
+identify the correct combination of active terms and recover coefficients
+that correspond to the parameters \(r\) and \(\sigma\).
+
+From a practical perspective, SINDy provides a data-driven mechanism for
+verifying that the numerical solution generated by the Crank--Nicolson
+scheme is consistent with the theoretical Black--Scholes model. Instead
+of assuming the PDE, we attempt to rediscover it directly from the
+computed solution surface. Agreement between the identified PDE and the
+classical equation serves as a validation of both the numerical method
+and the suitability of the Black--Scholes assumptions for the given
+input data.
+
+
+
+%Section 5
+\subsection{Application of SINDy to Crank--Nicolson Data}
+\label{sec:sindy-application}
+
+To apply the SINDy framework to the Black--Scholes equation, we will
+convert the numerical solution produced by the Crank--Nicolson method
+into a form suitable for sparse regression. This section summarizes the
+steps required to construct the data matrices, compute numerical
+derivatives, assemble the function library, and perform the regression.
+
+\subsubsection{Discrete Data Generated by the Crank--Nicolson Scheme}
+
+Let the asset price domain \([0,S_{\max}]\) be discretized into
+\(M+1\) grid points
+\[
+S_0,\, S_1,\,\ldots,\, S_M,
+\]
+and let the time interval \([0,T]\) be discretized into \(N+1\) time
+levels
+\[
+t_0,\, t_1,\,\ldots,\, t_N.
+\]
+The Crank--Nicolson scheme produces numerical approximations of the
+option price at each grid point, yielding a matrix
+\[
+V \in \mathbb{R}^{(N+1)\times (M+1)},
+\]
+where
+\[
+V_{n,j} \approx V(t_n, S_j).
+\]
+Each row corresponds to a fixed time level and each column corresponds
+to a fixed asset price.
+
+\subsubsection{Numerical Derivatives}
+
+To construct the regression matrix for SINDy, we must estimate the
+temporal and spatial derivatives of \(V\).
+
+\paragraph{Temporal derivative.}
+For each spatial index \(j\), we approximate \(V_t\) using a backward
+difference:
+\[
+(V_t)_{n,j} \approx \frac{V_{n,j} - V_{n-1,j}}{\Delta t},
+\qquad n = 1, \ldots, N.
+\]
+This results in a derivative matrix
+\[
+V_t \in \mathbb{R}^{N\times (M+1)}.
+\]
+
+\paragraph{First spatial derivative.}
+Using centered differences for interior points,
+\[
+(V_S)_{n,j} \approx
+\frac{V_{n, j+1} - V_{n, j-1}}{2\,\Delta S},
+\qquad j = 1, \ldots, M-1.
+\]
+At boundaries, one-sided differences are used. The resulting matrix
+lies in
+\[
+V_S \in \mathbb{R}^{(N+1)\times (M+1)}.
+\]
+
+\paragraph{Second spatial derivative.}
+For interior points,
+\[
+(V_{SS})_{n,j} \approx
+\frac{V_{n, j+1} - 2V_{n, j} + V_{n, j-1}}{(\Delta S)^2}.
+\]
+Again, boundary handling is applied where necessary. The matrix
+satisfies
+\[
+V_{SS} \in \mathbb{R}^{(N+1)\times (M+1)}.
+\]
+
+\subsubsection{Vectorization and Data Alignment}
+
+SINDy expects the data in vectorized form. For each quantity \(Q\in
+\{V, V_S, V_{SS}, V_t\}\), we reshape the matrix into a column vector
+by stacking rows or columns:
+\[
+q = \mathrm{vec}(Q) \in \mathbb{R}^{L},
+\]
+where
+\[
+L = N \times (M+1)
+\]
+for quantities defined only on time levels \(1,\ldots,N\), such as
+\(V_t\), and
+\[
+L = (N+1)\times (M+1)
+\]
+for quantities defined at all time levels. To ensure consistency, we
+truncate all variables to use the same \(L=N(M+1)\) data points
+corresponding to time levels where \(V_t\) is defined.
+
+\subsubsection{Construction of the Library Matrix}
+
+For each data point \((t_n, S_j)\), we evaluate the candidate functions
+in the SINDy library. A typical library for the Black--Scholes equation
+includes
+\[
+\Theta = 
+\big[
+V,\;
+V_S,\;
+V_{SS},\;
+S V_S,\;
+S^2 V_{SS},\;
+V_t \text{ (target)}
+\big].
+\]
+
+To build the regression matrix, we vectorize each candidate term and
+form the column-stacked library matrix
+\[
+\Theta(X) \in \mathbb{R}^{L \times K},
+\]
+where each column corresponds to a candidate function and \(K\) is the
+number of functions in the library.
+
+For the Black--Scholes example above, \(K = 5\), and thus
+\[
+\Theta(X) =
+\begin{bmatrix}
+| & | & | & | & | \\
+\theta_1 & \theta_2 & \theta_3 & \theta_4 & \theta_5 \\
+| & | & | & | & |
+\end{bmatrix},
+\]
+where \(\theta_k = \mathrm{vec}(\text{candidate term}_k)\).
+
+The target vector is
+\[
+u_t = \mathrm{vec}(V_t) \in \mathbb{R}^{L}.
+\]
+
+\subsubsection{Sparse Regression}
+
+SINDy seeks a sparse coefficient vector \(\Xi \in \mathbb{R}^{K}\) such
+that
+\[
+u_t \approx \Theta(X)\,\Xi.
+\]
+Sequential thresholded least squares (STLSQ)
+%\cite{brunton2016discovering} 
+is used to determine which columns of
+\(\Theta(X)\) contribute significantly to the dynamics:
+\[
+\Xi^{(k+1)} = \mathcal{T}_{\lambda}
+\Big(
+  (\Theta^T \Theta)^{-1}\Theta^T u_t
+\Big),
+\]
+where \(\mathcal{T}_{\lambda}\) is a hard-thresholding operator that
+zeros out coefficients smaller than a prescribed level \(\lambda\).
+
+\subsubsection{Interpretation of the Identified PDE}
+
+Once the sparse vector \(\Xi\) is obtained, the corresponding active
+terms reconstruct the PDE:
+\[
+V_t
+= \xi_1 V
++ \xi_2 V_S
++ \xi_3 V_{SS}
++ \xi_4 (S V_S)
++ \xi_5 (S^2 V_{SS}).
+\]
+If the Crank--Nicolson solution is consistent with the theoretical
+Black--Scholes model, SINDy should identify
+\[
+\xi_4 \approx r, \qquad
+\xi_5 \approx \tfrac{1}{2}\sigma^2,
+\qquad
+\xi_1 \approx -r,
+\]
+with all other coefficients close to zero.
+
+This provides a fully data-driven verification of the numerical
+solution and the governing dynamics.
+
+

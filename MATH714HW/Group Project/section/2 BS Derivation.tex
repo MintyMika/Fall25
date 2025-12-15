@@ -1,0 +1,85 @@
+\section{Black--Scholes Derivation}
+
+The Black--Scholes equation links the stochastic dynamics of a traded asset to the
+deterministic pricing of derivatives written on that asset. Its derivation rests on
+a single central idea: by dynamically hedging a derivative with the underlying
+asset, all market risk can be eliminated over an infinitesimal time interval.
+The absence of arbitrage then forces the hedged portfolio to grow at the risk-free
+rate, yielding a partial differential equation for the option price.
+
+\subsection{Asset Dynamics and Option Dependence}
+
+We assume the underlying asset price $S_t$ follows a geometric Brownian motion,
+\begin{equation}
+    dS_t = \mu S_t\,dt + \sigma S_t\,dW_t,
+\end{equation}
+where $\mu$ is the expected return, $\sigma$ is the volatility, and $W_t$ is a standard
+Wiener process. Let $V(S,t)$ denote the value of a derivative written on the asset.
+Since $V$ depends on the random variable $S_t$, its evolution is itself stochastic.
+
+\subsection{Propagation of Randomness}
+
+Applying It\^o’s Lemma to $V(S,t)$ gives
+\begin{equation}
+    dV =
+    \left(
+    V_t + \frac{1}{2}\sigma^2 S^2 V_{SS} + \mu S V_S
+    \right)dt
+    + \sigma S V_S\,dW_t.
+\end{equation}
+
+The key observation is that both the asset and the derivative are driven by the
+same Brownian motion. This shared source of randomness makes it possible to
+construct a hedging strategy that removes risk.
+
+\subsection{Delta Hedging and Risk Elimination}
+
+Consider a portfolio that is short one derivative and long $\Delta$ shares of the
+underlying asset,
+\begin{equation}
+    \Pi = -V + \Delta S.
+\end{equation}
+Choosing
+\[
+\Delta = V_S
+\]
+eliminates the stochastic term proportional to $dW_t$, rendering the portfolio
+locally risk-free. This step is the conceptual core of the Black--Scholes argument:
+risk is neutralized through trading rather than priced directly.
+
+\subsection{No-Arbitrage and the Black--Scholes PDE}
+
+A risk-free portfolio must earn the risk-free interest rate $r$. Enforcing this
+condition yields the Black--Scholes partial differential equation,
+\begin{equation}
+    \boxed{
+    V_t
+    + \frac{1}{2}\sigma^2 S^2 V_{SS}
+    + rS V_S
+    - rV = 0.
+    }
+\end{equation}
+
+Notably, the expected return $\mu$ does not appear in the equation, reflecting
+the risk-neutral nature of derivative pricing.
+
+\subsection{Interpretation and Boundary Conditions}
+
+Introducing the option Greeks
+\[
+\theta = V_t, \qquad \Delta = V_S, \qquad \Gamma = V_{SS},
+\]
+the equation may be written as
+\begin{equation}
+    \theta + \frac{1}{2}\sigma^2 S^2 \Gamma = r\bigl(V - S\Delta\bigr),
+\end{equation}
+which equates the intrinsic evolution of the option to the required return on the
+delta-hedged position.
+
+To price a specific derivative, the PDE is solved backward in time subject to a
+terminal condition at expiration $t = T$,
+\[
+V(S,T) = \Phi(S),
+\]
+where $\Phi(S)$ is the payoff function. This yields the unique arbitrage-free option
+price.
